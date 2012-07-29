@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="6f4822b7-750b-4c4d-abb8-b1e52f036aec" Version="1.0.0.0" Publisher="CN=bennage" />
+  <Properties>
+    <DisplayName>space</DisplayName>
+    <PublisherDisplayName>Christopher Bennage</PublisherDisplayName>
+    <Logo>images\storelogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.0</OSMinVersion>
+    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <VisualElements DisplayName="space" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="space" ForegroundText="light" BackgroundColor="#464646">
+        <DefaultTile ShowName="allLogos" />
+        <SplashScreen Image="images\splashscreen.png" />
+      </VisualElements>
+    </Application>
+  </Applications>
+</Package>

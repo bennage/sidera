@@ -1,0 +1,13 @@
+﻿{
+  'things': [{
+    'type': 'asteroid',
+    'x': 100,
+    'y': 100,
+    'amount': 1000
+  }, {
+    type: 'asteroid',
+    x: 300,
+    y: 100,
+    amount: 500
+  }]
+}
