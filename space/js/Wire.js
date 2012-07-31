@@ -1,15 +1,10 @@
 (function () {
     'use strict';
 
-    var Entity = space.Entity;
-    var vector = space.vector;
-    var geo = space.geometry;
-
-    var Wire = WinJS.Class.derive(Entity, function (head, tail) {
+    var Wire = WinJS.Class.define(function (head, tail) {
         this.head = head;
         this.tail = tail;
         this.pumping = 0;
-        this.setup('Wire');
     }, {
         render: function (ctx, ghost) {
             var self = this;
@@ -29,4 +24,5 @@
     WinJS.Namespace.define('space', {
         Wire: Wire
     });
+
 }());

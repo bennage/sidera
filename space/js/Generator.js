@@ -18,8 +18,6 @@
         this.untilPulse = 0;
         this.charge = 10;
         this.battery = 0;
-
-
     }, {
         render: function (ctx, ghost) {
             var self = this;
@@ -44,7 +42,6 @@
             self.wires.forEach(function (wire) {
                 wire.render(ctx, ghost);
             });
-
         },
         update: function (elapsed, entities) {
             // this probably should not be on every update, it is expensive
