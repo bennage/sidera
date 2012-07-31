@@ -65,21 +65,6 @@
         if (cursor.find) cursor.find(cursor, entities);
 
         entities.forEach(function (entity) {
-            // var v = vector(cursor, entity);
-
-            // var d = v.distance();
-
-            // if ((d - entity.radius) <= 250) {
-
-            // 	var blocked = entities.some(function(blocker) {
-            // 		if (blocker === entity) return false;
-
-            // 		var intersected = geo.lineIntersectsCircle([cursor, entity], blocker);
-            // 		return (intersected && geo.pointProjectsOntoSegment(cursor, entity, blocker));
-            // 	});
-            // 	if (!blocked) cursor.targets.push(entity);
-            // }
-
             if (entity.update) entity.update(elapsed, entities);
         });
     }
