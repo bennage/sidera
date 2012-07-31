@@ -6,7 +6,7 @@
 
     var pulse_rate = 2500; //ms
     var mine_rate = 10;
-    var range = 70;
+    var range = 270;
     var required_charge = 5;
     var max_battery = 15;
 
@@ -14,6 +14,7 @@
 
     var Miner = WinJS.Class.derive(space.Entity, function () {
         counter++;
+        this.setup('Miner');
 
         this.id = counter;
 
@@ -24,7 +25,6 @@
         this.powered = true;
 
         this.radius = 10;
-        this.setup('Miner');
     }, {
         render: function (ctx, ghost) {
             var self = this;

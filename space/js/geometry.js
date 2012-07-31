@@ -31,16 +31,16 @@
 
     function intersect(line, circle) {
         var a = line[0],
-          b = line[1];
+            b = line[1];
 
         var p1_x = a.x - circle.x,
-          p1_y = a.y - circle.y,
-          p2_x = b.x - circle.x,
-          p2_y = b.y - circle.y;
+            p1_y = a.y - circle.y,
+            p2_x = b.x - circle.x,
+            p2_y = b.y - circle.y;
 
         var dx = p2_x - p1_x,
-          dy = p2_y - p1_y,
-          dr = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+            dy = p2_y - p1_y,
+            dr = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
         var D = (p1_x * p2_y) - (p2_x * p1_y);
 
