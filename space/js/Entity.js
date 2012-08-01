@@ -9,16 +9,18 @@
             this.radius = 0;
         },
 
-        hydrate: function (options) {
-            for (var p in options) {
-                if (options.hasOwnProperty(p)) {
-                    this[p] = options[p];
+        // Copy the members to this
+        hydrate: function (members) {
+            for (var p in members) {
+                if (members.hasOwnProperty(p)) {
+                    this[p] = members[p];
                 }
             }
         },
 
-        destroy: function () { },
+        destroy: function () { debugger; /* we expect this to be overriden */ },
 
+        // default render function
         render: function (ctx) {
             ctx.fillStyle = "white";
             ctx.font = "10px sans-serif";

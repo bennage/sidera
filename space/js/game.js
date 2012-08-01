@@ -7,25 +7,18 @@
         Asteroid = space.Asteroid,
         Generator = space.Generator;
 
-    var geo = space.geometry,
-        vector = space.vector;
-
-    var resolution = { height: 900, width: 1200 };
-
-    var entities = [];
-    var mode;
-    var money = 0;
-    var context = Miner;
-    var cursor;
+    var resolution = { height: 900, width: 1200 },
+        entities = [],
+        mode,
+        money = 0,
+        context = Miner,
+        cursor,
+        canPlace = false;
 
     Entity.prototype.destroy = function () {
         var index = entities.indexOf(this);
         entities.splice(index, 1);
     };
-
-    setContext(Miner);
-
-    var canPlace = false;
 
     function render_background(ctx) {
         ctx.beginPath();
@@ -67,37 +60,6 @@
         entities.forEach(function (entity) {
             if (entity.update) entity.update(elapsed, entities);
         });
-    }
-
-    function loadLevel(done) {
-        console.log('load level');
-        var request = new XMLHttpRequest();
-        request.open('GET', '/level.json', false);
-        request.send(null);
-
-        if (request.status === 200) {
-            var responseText = JSON.stringify({
-                'things': [{
-                    'type': 'asteroid',
-                    'x': 100,
-                    'y': 100,
-                    'amount': 1000
-                }, {
-                    type: 'asteroid',
-                    x: 300,
-                    y: 100,
-                    amount: 500
-                }]
-            });
-            //var data = JSON.parse(request.responseText);
-            var data = JSON.parse(responseText);
-            money = 1000;
-            data.things.forEach(function (x) {
-                var a = new Asteroid();
-                a.hydrate(x);
-                entities.push(a);
-            });
-        }
     }
 
     function handle_click(evt) {
@@ -147,7 +109,9 @@
     }
 
     function start() {
-        loadLevel();
+        money = 1000;
+        space.levels.next(entities, resolution);
+        setContext(Miner);
     }
 
     WinJS.Namespace.define('space.game', {
