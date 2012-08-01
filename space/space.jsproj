@@ -66,6 +66,7 @@
     <Content Include="js\game.js" />
     <Content Include="js\Generator.js" />
     <Content Include="js\geometry.js" />
+    <Content Include="js\levels.js" />
     <Content Include="js\Miner.js" />
     <Content Include="js\start.js" />
     <Content Include="js\vector.js" />
