@@ -9,14 +9,19 @@
         var r = Math.random;
         var asteroid_count = 15;
 
-        while (asteroid_count > 0) {
-            var a = new Asteroid();
-            a.x = parseInt(r() * resolution.width, 10);
-            a.y = parseInt(r() * resolution.height, 10);
-            a.amount = parseInt(r() * 2000, 10) + 200;
-            entities.push(a);
-            asteroid_count--;
-        }
+        //while (asteroid_count > 0) {
+        //    var a = new Asteroid();
+        //    a.x = parseInt(r() * resolution.width, 10);
+        //    a.y = parseInt(r() * resolution.height, 10);
+        //    a.amount = parseInt(r() * 2000, 10) + 200;
+        //    entities.push(a);
+        //    asteroid_count--;
+        //}
+
+        var f = new space.Fighter();
+        f.x = 100;
+        f.y = 100;
+        entities.push(f);
     }
 
     //function loadLevel(done) {

@@ -4,7 +4,6 @@
 
     var Entity = space.Entity,
         Miner = space.Miner,
-        Asteroid = space.Asteroid,
         Generator = space.Generator;
 
     var resolution = { height: 900, width: 1200 },

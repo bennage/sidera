@@ -63,6 +63,7 @@
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\Entity.js" />
+    <Content Include="js\Fighter.js" />
     <Content Include="js\game.js" />
     <Content Include="js\Generator.js" />
     <Content Include="js\geometry.js" />
