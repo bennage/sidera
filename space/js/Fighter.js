@@ -16,6 +16,7 @@
         this.orientation = 0;
         this.velocity = vector(0, 0);
         this.thrust = 0;
+        this.laser = 0;
 
         this.untilRecharge = rechargeRate;
 
@@ -41,6 +42,14 @@
             ctx.fill();
 
             ctx.restore();
+
+            if (this.laser > 0) {
+                ctx.strokeStyle = 'yellow';
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(this.target.x, this.target.y);
+                ctx.stroke();
+            }
         },
 
         update: function (elapsed, entities) {
@@ -51,17 +60,42 @@
 
             var to_target = vector(this.target, this);
 
+            if (this.laser > 0) {
+                this.laser = this.laser - 1;
+            }
+
             if (this.untilRecharge > 0) {
                 this.untilRecharge -= elapsed;
             } else if (this.target) {
                 if (to_target.distance() <= range) {
                     //attack target
-                    this.untilRechage = rechargeRate;
+                    this.laser = 3;
+                    this.untilRecharge = rechargeRate;
                 }
             }
+            
             this.orientation = this.orientation % (2 * Math.PI);
 
-            if (this.orientation !== to_target.angle()) {
+            if (to_target.distance() < 70) {
+                if (!this.focus) {
+                    this.focus = {
+                        x: this.target.x + 100,
+                        y: this.target.y + 100
+                    };
+                }
+                
+                var target_angle = vector(this.focus, this).angle();
+
+                var delta = this.orientation - target_angle;
+                if (Math.abs(delta) > Math.PI) {
+                    delta = (-2 * Math.PI) + Math.abs(delta);
+                }
+                var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
+                var adjust = Math.min(max_angle, Math.abs(delta));
+                this.orientation -= (sign * adjust);
+            }
+            if (to_target.distance() > 50 && this.orientation !== to_target.angle()) {
+                this.focus = null;
                 var delta = this.orientation - to_target.angle();
                 if (Math.abs(delta) > Math.PI) {
                     delta = (-2 * Math.PI) + Math.abs(delta);
