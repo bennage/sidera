@@ -3,6 +3,7 @@
 
     var vector = space.vector;
     var geo = space.geometry;
+
     var max_speed = 20;
     var max_angle = Math.PI / 100;
     var range = 200;
@@ -58,18 +59,20 @@
                     this.untilRechage = rechargeRate;
                 }
             }
-            if (this.orientation !== to_target.angle()) {
-                this.orientation = to_target.angle();
-                console.log(this.orientation * (180 / Math.PI));
-                console.log(to_target.x + ',' + to_target.y);
-            }
-            //var orientation_delta = this.orientation - to_target.angle();
-            //var sign = (orientation_delta < 0) ? 1 : -1;
-            //this.orientation += (sign * max_angle);
-            //this.orientation %= (Math.PI * 2)
-            //console.log(orientation_delta);
+            this.orientation = this.orientation % (2 * Math.PI);
 
-            // accel towards target
+            if (this.orientation !== to_target.angle()) {
+                var delta = this.orientation - to_target.angle();
+                if (Math.abs(delta) > Math.PI) {
+                    delta = (-2 * Math.PI) + Math.abs(delta);
+                }
+                var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
+                var adjust = Math.min(max_angle, Math.abs(delta));
+                this.orientation -= (sign * adjust);
+            }
+
+            this.x += Math.cos(this.orientation);
+            this.y += Math.sin(this.orientation);
         }
 
     });
