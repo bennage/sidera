@@ -22,6 +22,11 @@
         f.x = 100;
         f.y = 100;
         entities.push(f);
+
+        var f = new space.Fighter();
+        f.x = 300;
+        f.y = 100;
+        entities.push(f);
     }
 
     //function loadLevel(done) {

@@ -3,97 +3,93 @@
 
     var vector = space.vector;
     var geo = space.geometry;
+    var max_speed = 20;
+    var max_angle = Math.PI / 100;
+    var range = 200;
+    var rechargeRate = 5 * 1000; /* ms */
 
     var Fighter = WinJS.Class.derive(space.Entity, function () {
 
         this.setup('Fighter');
-        this.orientation = Math.PI/3;
-        this.canvas = document.createElement('canvas');
-        this.canvas.setAttribute('width', 40);
-        this.canvas.setAttribute('height', 40);
-        this.ctx = this.canvas.getContext('2d');
 
+        this.orientation = 0;
+        this.velocity = vector(0, 0);
+        this.thrust = 0;
+
+        this.untilRecharge = rechargeRate;
+
+        this.target = null;
     }, {
         render: function (ctx, ghost) {
             var self = this;
-            var local = this.ctx;
-
-            local.clearRect(0,0,40,40);
-            local.strokeStyle = 'gray';
-            local.fillStyle = 'gray';
-            local.lineWidth = 1;
-            local.save();
-            local.translate(20,20);
-            local.rotate(this.orientation);
-
-            local.beginPath();
-            local.moveTo(-20, 0);
-            local.lineTo(20, -10);
-            local.lineTo(10, 0);
-            local.lineTo(20, 10);
-            local.lineTo(-20, 0);
-
-            local.fill();
-            local.restore();
-
             var x = self.x;
             var y = self.y;
-            ctx.drawImage(this.canvas, x, y);
+
+            ctx.fillStyle = 'blue';
+
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(this.orientation);
+
+            ctx.beginPath();
+            ctx.moveTo(10, 0);
+            ctx.lineTo(-10, -5);
+            ctx.lineTo(-5, 0);
+            ctx.lineTo(-10, 5);
+            ctx.lineTo(10, 0);
+            ctx.fill();
+
+            ctx.restore();
         },
+
         update: function (elapsed, entities) {
-            var angle = (Math.PI / 1800) * elapsed;
-            this.orientation += angle;
-            this.orientation %= (2 * Math.PI);
-        },
 
-        find: find_targets
-    });
+            this.target = acquireTarget(this, entities);
 
-    function strokeByPulse(self) {
-        var alpha = 1 - ((pulse_rate - self.untilPulse) / pulse_rate);
-        return 'rgba(0,255,0,' + alpha + ')';
-    }
+            if (!this.target) return;
 
-    function pulse(self, entities) {
-        self.targets = [];
+            var to_target = vector(this.target, this);
 
-        find_targets(self, entities, function (entity) {
-            if (self.battery < required_charge) return;
-            console.log('mining ' + self.id + ' w/' + self.battery);
-            self.battery -= required_charge;
-
-            entity.mine(mine_rate, self.onmining);
-
-            self.targets.push(entity);
-        });
-    }
-
-    function find_targets(self, entities, action) {
-
-        entities.filter(function (entity) {
-            return !!entity.mine;
-        }).forEach(function (entity) {
-
-            var v = vector(self, entity);
-            var d = v.distance();
-            if ((d - entity.radius) <= range) {
-
-                var blocked = entities.some(function (blocker) {
-                    if (blocker === self || blocker === entity) return false;
-
-                    var intersected = geo.lineIntersectsCircle([self, entity], blocker);
-                    var projected = geo.pointProjectsOntoSegment(self, entity, blocker)
-                    return (intersected && projected);
-                });
-                if (!blocked) {
-                    if (action) {
-                        action(entity);
-                    } else {
-                        self.targets.push(entity);
-                    }
+            if (this.untilRecharge > 0) {
+                this.untilRecharge -= elapsed;
+            } else if (this.target) {
+                if (to_target.distance() <= range) {
+                    //attack target
+                    this.untilRechage = rechargeRate;
                 }
             }
-        })
+            if (this.orientation !== to_target.angle()) {
+                this.orientation = to_target.angle();
+                console.log(this.orientation * (180 / Math.PI));
+                console.log(to_target.x + ',' + to_target.y);
+            }
+            //var orientation_delta = this.orientation - to_target.angle();
+            //var sign = (orientation_delta < 0) ? 1 : -1;
+            //this.orientation += (sign * max_angle);
+            //this.orientation %= (Math.PI * 2)
+            //console.log(orientation_delta);
+
+            // accel towards target
+        }
+
+    });
+
+    function acquireTarget(self, entities) {
+        var candidates = entities.filter(function (entity) {
+            return (entity !== self) && entity.type === 'Miner';
+        });
+
+        if (candidates.length === 0) return null;
+
+        var current_distance = vector(self, candidates[0]);
+
+        return candidates.reduce(function (current, next) {
+            var next_distance = vector(self, next);
+
+            return (next_distance.distance() >= current_distance.distance())
+                ? current
+                : next;
+        });
     }
 
     WinJS.Namespace.define('space', { Fighter: Fighter });
