@@ -65,6 +65,7 @@
     <Content Include="js\Entity.js" />
     <Content Include="js\Fighter.js" />
     <Content Include="js\game.js" />
+    <Content Include="js\Turret.js" />
     <Content Include="js\Generator.js" />
     <Content Include="js\geometry.js" />
     <Content Include="js\levels.js" />

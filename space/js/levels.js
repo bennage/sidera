@@ -17,28 +17,6 @@
             entities.push(a);
             asteroid_count--;
         }
-
-        var f = new space.Fighter();
-        f.x = 100;
-        f.y = 100;
-        entities.push(f);
-
-        //var f = new space.Fighter();
-        //f.x = 300;
-        //f.y = 100;
-        //entities.push(f);
-
-
-        //var f = new space.Fighter();
-        //f.x = 200;
-        //f.y = 100;
-        //entities.push(f);
-
-
-        //var f = new space.Fighter();
-        //f.x = 300;
-        //f.y = 300;
-        //entities.push(f);
     }
 
     //function loadLevel(done) {

@@ -6,7 +6,7 @@
 
     var pulse_rate = 2500; //ms
     var mine_rate = 10;
-    var range = 270;
+    var range = 100;
     var required_charge = 5;
     var max_battery = 15;
     var max_health = 5;
@@ -88,7 +88,6 @@
 
         find_targets(self, entities, function (entity) {
             if (self.battery < required_charge) return;
-            console.log('mining ' + self.id + ' w/' + self.battery);
             self.battery -= required_charge;
 
             entity.mine(mine_rate, self.onmining);

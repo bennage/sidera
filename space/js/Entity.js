@@ -42,6 +42,7 @@
             var x = this.x + offset.x;
             var y = this.y - offset.y;
 
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.fillStyle = color;
             ctx.strokeStyle = color;

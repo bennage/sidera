@@ -17,6 +17,7 @@
         this.velocity = vector(0, 0);
         this.thrust = 0;
         this.laser = 0;
+        this.hp = 5;
 
         this.untilRecharge = rechargeRate;
 
@@ -45,6 +46,7 @@
 
             if (this.laser > 0 && this.target) {
                 ctx.strokeStyle = 'yellow';
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(x, y);
                 ctx.lineTo(this.target.x, this.target.y);

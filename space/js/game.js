@@ -4,6 +4,7 @@
 
     var Entity = space.Entity,
         Miner = space.Miner,
+        Turret = space.Turret,
         Generator = space.Generator;
 
     var resolution = { height: 900, width: 1200 },
@@ -66,10 +67,10 @@
         if (next_wave < 0) {
             next_wave = 10000;
 
-            for (var i = 7; i > 0; i--) {
+            for (var i = 3; i > 0; i--) {
                 var f = new space.Fighter();
-                f.x = -50 - (i*15);
-                f.y = -50 - (i * 15);
+                f.x = -50 - (i * 25);
+                f.y = -50 - (i * 25);
                 entities.push(f);
             }
         }
@@ -116,7 +117,8 @@
     function handle_onkeypress(evt) {
         var types = {
             49: Miner,
-            50: Generator
+            50: Generator,
+            51: Turret
         };
         setContext(types[evt.keyCode]);
     }
