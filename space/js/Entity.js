@@ -18,6 +18,14 @@
             }
         },
 
+        hit: function (damage) {
+            if (!this.hp) return;
+            this.hp -= damage;
+            if (this.hp <= 0) {
+                this.destroy();
+            }
+        },
+
         destroy: function () { debugger; /* we expect this to be overriden */ },
 
         // default render function
@@ -25,6 +33,20 @@
             ctx.fillStyle = "white";
             ctx.font = "10px sans-serif";
             ctx.fillText(this.type, this.x, this.y);
+        },
+
+        renderMeter: function (ctx, percent, color, offset) {
+            var height = 12;
+            var width = 4;
+            var amount = percent * height;
+            var x = this.x + offset.x;
+            var y = this.y - offset.y;
+
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.strokeRect(x, y, width, height);
+            ctx.fillRect(x, y + height - amount, width, amount);
         },
 
         canPlace: function (entities) {

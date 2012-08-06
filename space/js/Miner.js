@@ -9,6 +9,7 @@
     var range = 270;
     var required_charge = 5;
     var max_battery = 15;
+    var max_health = 5;
 
     var counter = 0;
 
@@ -23,6 +24,7 @@
         this.targets = [];
 
         this.powered = true;
+        this.hp = max_health;
 
         this.radius = 10;
     }, {
@@ -44,14 +46,11 @@
             ctx.arc(self.x, self.y, 10, 0, 2 * Math.PI, false);
             ctx.fill();
 
-            //battery meter
-            var h = 12;
-            var p = (this.battery / max_battery) * h;
-            ctx.beginPath();
-            ctx.fillStyle = 'yellow';
-            ctx.strokeStyle = 'yellow';
-            ctx.strokeRect(self.x + 12, self.y - 10, 4, h);
-            ctx.fillRect(self.x + 12, self.y - 10 + h - p, 4, p);
+            // battery meter
+            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 });
+
+            // health meter
+            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
 
             //id
             ctx.fillStyle = "white";
@@ -73,7 +72,7 @@
             var used = Math.min(available, capacity);
             this.battery += used;
             return used;
-        },
+        },        
         find: find_targets
     }, {
         cost: 100,

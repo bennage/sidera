@@ -18,6 +18,7 @@
             surface.drawImage(buffer, 0, 0);
 
             elapsed = time - last;
+            if (elapsed < 0) elapsed = 0;
             last = time;
         }
 

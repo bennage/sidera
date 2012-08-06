@@ -8,13 +8,13 @@
     var output_rate = 10;
     var range = 100;
     var max_battery = 500;
-
+    var max_health = 20;
     var Generator = WinJS.Class.derive(space.Entity, function () {
         this.setup('Generator');
 
         this.radius = 20;
         this.wires = [];
-
+        this.hp = max_health;
         this.untilPulse = 0;
         this.charge = 10;
         this.battery = 0;
@@ -38,6 +38,9 @@
             ctx.fillStyle = ghost ? 'rgba(0,0,255,0.8)' : fillByCharge(this);
             ctx.arc(self.x, self.y, 8, 0, 2 * Math.PI, false);
             ctx.fill();
+
+            // health meter
+            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
 
             self.wires.forEach(function (wire) {
                 wire.render(ctx, ghost);

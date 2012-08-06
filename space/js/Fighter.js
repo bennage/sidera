@@ -7,12 +7,12 @@
     var max_speed = 20;
     var max_angle = Math.PI / 100;
     var range = 200;
-    var rechargeRate = 5 * 1000; /* ms */
+    var rechargeRate = 1 * 1000; /* ms */
 
     var Fighter = WinJS.Class.derive(space.Entity, function () {
 
         this.setup('Fighter');
-
+        this.enemy = true;
         this.orientation = 0;
         this.velocity = vector(0, 0);
         this.thrust = 0;
@@ -43,7 +43,7 @@
 
             ctx.restore();
 
-            if (this.laser > 0) {
+            if (this.laser > 0 && this.target) {
                 ctx.strokeStyle = 'yellow';
                 ctx.beginPath();
                 ctx.moveTo(x, y);
@@ -56,55 +56,59 @@
 
             this.target = acquireTarget(this, entities);
 
-            if (!this.target) return;
+            if (this.target) {
+                var to_target = vector(this.target, this);
 
-            var to_target = vector(this.target, this);
+                if (this.laser > 0) {
+                    this.laser = this.laser - 1;
+                }
 
-            if (this.laser > 0) {
-                this.laser = this.laser - 1;
-            }
+                if (this.untilRecharge > 0) {
+                    this.untilRecharge -= elapsed;
+                }
 
-            if (this.untilRecharge > 0) {
-                this.untilRecharge -= elapsed;
-            } else if (this.target) {
-                if (to_target.distance() <= range) {
-                    //attack target
-                    this.laser = 3;
-                    this.untilRecharge = rechargeRate;
+                this.orientation = this.orientation % (2 * Math.PI);
+
+                if (to_target.distance() < 70) {
+                    if (!this.focus) {
+                        this.focus = {
+                            x: this.target.x + 100,
+                            y: this.target.y + 100
+                        };
+                    }
+
+                    var target_angle = vector(this.focus, this).angle();
+
+                    var delta = this.orientation - target_angle;
+                    if (Math.abs(delta) > Math.PI) {
+                        delta = (-2 * Math.PI) + Math.abs(delta);
+                    }
+                    var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
+                    var adjust = Math.min(max_angle, Math.abs(delta));
+                    this.orientation -= (sign * adjust);
+                }
+
+                if (to_target.distance() > 50 && this.orientation !== to_target.angle()) {
+                    this.focus = null;
+                    var delta = this.orientation - to_target.angle();
+                    if (Math.abs(delta) > Math.PI) {
+                        delta = (-2 * Math.PI) + Math.abs(delta);
+                    }
+                    var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
+                    var adjust = Math.min(max_angle, Math.abs(delta));
+                    this.orientation -= (sign * adjust);
+
+                    // fire laser
+                    if (this.untilRecharge <= 0 && this.target) {
+                        if (to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
+                            //attack target
+                            this.laser = 5;
+                            this.untilRecharge = rechargeRate;
+                            this.target.hit(1);
+                        }
+                    }
                 }
             }
-            
-            this.orientation = this.orientation % (2 * Math.PI);
-
-            if (to_target.distance() < 70) {
-                if (!this.focus) {
-                    this.focus = {
-                        x: this.target.x + 100,
-                        y: this.target.y + 100
-                    };
-                }
-                
-                var target_angle = vector(this.focus, this).angle();
-
-                var delta = this.orientation - target_angle;
-                if (Math.abs(delta) > Math.PI) {
-                    delta = (-2 * Math.PI) + Math.abs(delta);
-                }
-                var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
-                var adjust = Math.min(max_angle, Math.abs(delta));
-                this.orientation -= (sign * adjust);
-            }
-            if (to_target.distance() > 50 && this.orientation !== to_target.angle()) {
-                this.focus = null;
-                var delta = this.orientation - to_target.angle();
-                if (Math.abs(delta) > Math.PI) {
-                    delta = (-2 * Math.PI) + Math.abs(delta);
-                }
-                var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
-                var adjust = Math.min(max_angle, Math.abs(delta));
-                this.orientation -= (sign * adjust);
-            }
-
             this.x += Math.cos(this.orientation);
             this.y += Math.sin(this.orientation);
         }
@@ -113,7 +117,7 @@
 
     function acquireTarget(self, entities) {
         var candidates = entities.filter(function (entity) {
-            return (entity !== self) && entity.type === 'Miner';
+            return (entity !== self) && !entity.enemy && entity.hp;
         });
 
         if (candidates.length === 0) return null;

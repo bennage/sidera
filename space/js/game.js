@@ -51,6 +51,7 @@
         render_status(ctx);
     }
 
+    var next_wave = 4000;
     function update(elapsed) {
 
         cursor.targets = [];
@@ -59,6 +60,19 @@
         entities.forEach(function (entity) {
             if (entity.update) entity.update(elapsed, entities);
         });
+
+        //todo: temp
+        next_wave -= elapsed;
+        if (next_wave < 0) {
+            next_wave = 10000;
+
+            for (var i = 7; i > 0; i--) {
+                var f = new space.Fighter();
+                f.x = -50 - (i*15);
+                f.y = -50 - (i * 15);
+                entities.push(f);
+            }
+        }
     }
 
     function handle_click(evt) {
