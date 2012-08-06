@@ -7,7 +7,8 @@
     var max_speed = 20;
     var max_angle = Math.PI / 100;
     var range = 200;
-    var rechargeRate = 1 * 1000; /* ms */
+    var rechargeRate = 1 * 1000; // ms
+    var laser_cooldown = 500; // ms
 
     var Fighter = WinJS.Class.derive(space.Entity, function () {
 
@@ -19,6 +20,7 @@
         this.laser = 0;
         this.hp = 5;
 
+        this.cooldown = 0;
         this.untilRecharge = rechargeRate;
 
         this.target = null;
@@ -44,9 +46,10 @@
 
             ctx.restore();
 
-            if (this.laser > 0 && this.target) {
-                ctx.strokeStyle = 'yellow';
+            if (this.cooldown > 0 && this.target) {
+                var fade = this.cooldown / laser_cooldown;
                 ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(255,255,0,' + fade + ')';
                 ctx.beginPath();
                 ctx.moveTo(x, y);
                 ctx.lineTo(this.target.x, this.target.y);
@@ -61,8 +64,8 @@
             if (this.target) {
                 var to_target = vector(this.target, this);
 
-                if (this.laser > 0) {
-                    this.laser = this.laser - 1;
+                if (this.cooldown > 0) {
+                    this.cooldown -= elapsed;
                 }
 
                 if (this.untilRecharge > 0) {
@@ -90,7 +93,7 @@
                     this.orientation -= (sign * adjust);
                 }
 
-                if (to_target.distance() > 50 && this.orientation !== to_target.angle()) {
+                if (to_target.distance() > 70 && this.orientation !== to_target.angle()) {
                     this.focus = null;
                     var delta = this.orientation - to_target.angle();
                     if (Math.abs(delta) > Math.PI) {
@@ -104,7 +107,7 @@
                     if (this.untilRecharge <= 0 && this.target) {
                         if (to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
                             //attack target
-                            this.laser = 5;
+                            this.cooldown = laser_cooldown;
                             this.untilRecharge = rechargeRate;
                             this.target.hit(1);
                         }

@@ -4,13 +4,13 @@
     var vector = space.vector;
     var geo = space.geometry;
 
-    var range = 180;
+    var range = 200;
     var laser_charge = 5;
     var laser_cooldown = 1 * 1000; // ms
 
     var max_battery = 25;
     var max_health = 20;
-    var max_angle = Math.PI / 100;
+    var max_angle = Math.PI / 30;
 
     var Turret = WinJS.Class.derive(space.Entity, function () {
         this.setup('Turret');
@@ -22,7 +22,7 @@
         this.hp = max_health;
         this.orientation = (Math.PI * 2) * Math.random(); // start with the turrent pointing a random direction
 
-        this.radius = 10;
+        this.radius = 5;
     }, {
         render: function (ctx, ghost) {
             var self = this;
@@ -40,15 +40,15 @@
 
             // cannon
             ctx.lineWidth = 3;
-            ctx.strokeStyle = 'rgb(0,127,0)';
+            ctx.strokeStyle = 'rgba(0,64,0,1)';
 
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.rotate(this.orientation);
-            
+
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(20, 0);
+            ctx.lineTo(10, 0);
             ctx.stroke();
 
             ctx.restore();
@@ -88,7 +88,7 @@
 
             this.orientation = this.orientation % (2 * Math.PI);
 
-            if (to_target.distance() <= range) {
+            if (to_target.distance() <= range && Math.abs(delta) <= max_angle) {
                 this.cooldown = laser_cooldown;
                 this.battery -= laser_charge;
                 this.target.hit(1);
