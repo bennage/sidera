@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    var vector = space.vector;
-    var geo = space.geometry;
+    var vector = sphera.math.vector;
+    var geo = sphera.math.geometry;
 
     var pulse_rate = 2500; //ms
     var mine_rate = 10;
@@ -13,7 +13,7 @@
 
     var counter = 0;
 
-    var Miner = WinJS.Class.derive(space.Entity, function () {
+    var Miner = WinJS.Class.derive(sphera.entities.Entity, function () {
         counter++;
         this.setup('Miner');
 
@@ -124,5 +124,5 @@
         })
     }
 
-    WinJS.Namespace.define('space', { Miner: Miner });
+    WinJS.Namespace.define('sphera.entities', { Miner: Miner });
 }());

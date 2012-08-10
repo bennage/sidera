@@ -3,7 +3,6 @@
 
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
-    WinJS.strictProcessing();
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
@@ -15,7 +14,7 @@
                 // Restore application state here.
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
-                space.start();
+                sphera.start();
             }));
         }
     };

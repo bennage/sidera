@@ -63,7 +63,7 @@
         return (delta >= 0);
     }
 
-    WinJS.Namespace.define('space.geometry', {
+    WinJS.Namespace.define('sphera.math.geometry', {
         pointProjectsOntoSegment: point_over_line,
         lineIntersectsCircle: intersect
     });

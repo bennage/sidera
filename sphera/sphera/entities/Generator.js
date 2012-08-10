@@ -1,15 +1,15 @@
 (function () {
     'use strict';
 
-    var vector = space.vector;
-    var geo = space.geometry;
+    var vector = sphera.math.vector;
+    var geo = sphera.math.geometry;
 
     var pulse_rate = 2000; //ms
     var output_rate = 10;
     var range = 100;
     var max_battery = 500;
     var max_health = 20;
-    var Generator = WinJS.Class.derive(space.Entity, function () {
+    var Generator = WinJS.Class.derive(sphera.entities.Entity, function () {
         this.setup('Generator');
 
         this.radius = 20;
@@ -102,7 +102,7 @@
                 });
 
                 if (!blocked) {
-                    var wire = new space.Wire(self, entity);
+                    var wire = new sphera.entities.Wire(self, entity);
                     self.wires.push(wire);
                 }
 
@@ -120,5 +120,5 @@
         return 'rgba(255,255,255,' + alpha + ')';
     }
 
-    WinJS.Namespace.define('space', { Generator: Generator });
+    WinJS.Namespace.define('sphera.entities', { Generator: Generator });
 }());

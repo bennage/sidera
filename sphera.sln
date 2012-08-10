@@ -1,38 +1,38 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "space", "space\space.jsproj", "{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "sphera", "sphera\sphera.jsproj", "{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|ARM = Debug|ARM
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|ARM = Release|ARM
 		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|ARM.ActiveCfg = Debug|ARM
-		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|ARM.Build.0 = Debug|ARM
-		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|ARM.Deploy.0 = Debug|ARM
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|ARM.ActiveCfg = Debug|ARM
+		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|ARM.Build.0 = Debug|ARM
+		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|ARM.Deploy.0 = Debug|ARM
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|x64.ActiveCfg = Debug|x64
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|x64.Build.0 = Debug|x64
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|x64.Deploy.0 = Debug|x64
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|x86.ActiveCfg = Debug|x86
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|x86.Build.0 = Debug|x86
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Debug|x86.Deploy.0 = Debug|x86
-		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|ARM.ActiveCfg = Release|ARM
-		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|ARM.Build.0 = Release|ARM
-		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|ARM.Deploy.0 = Release|ARM
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|ARM.ActiveCfg = Release|ARM
+		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|ARM.Build.0 = Release|ARM
+		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|ARM.Deploy.0 = Release|ARM
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|x64.ActiveCfg = Release|x64
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|x64.Build.0 = Release|x64
 		{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}.Release|x64.Deploy.0 = Release|x64

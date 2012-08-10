@@ -1,8 +1,8 @@
 ﻿(function () {
     'use strict';
 
-    var vector = space.vector;
-    var geo = space.geometry;
+    var vector = sphera.math.vector;
+    var geo = sphera.math.geometry;
 
     var max_speed = 20;
     var max_angle = Math.PI / 100;
@@ -10,7 +10,7 @@
     var rechargeRate = 1 * 1000; // ms
     var laser_cooldown = 500; // ms
 
-    var Fighter = WinJS.Class.derive(space.Entity, function () {
+    var Fighter = WinJS.Class.derive(sphera.entities.Entity, function () {
 
         this.setup('Fighter');
         this.enemy = true;
@@ -151,5 +151,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('space', { Fighter: Fighter });
+    WinJS.Namespace.define('sphera.entities', { Fighter: Fighter });
 }());

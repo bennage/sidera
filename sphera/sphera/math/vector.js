@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    WinJS.Namespace.define('space', {
+    WinJS.Namespace.define('sphera.math', {
         vector: function vector(a, b) {
 
             if (b === undefined) b = {

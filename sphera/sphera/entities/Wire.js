@@ -21,7 +21,7 @@
         }
     });
 
-    WinJS.Namespace.define('space', {
+    WinJS.Namespace.define('sphera.entities', {
         Wire: Wire
     });
 

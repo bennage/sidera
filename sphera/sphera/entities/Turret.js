@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    var vector = space.vector;
-    var geo = space.geometry;
+    var vector = sphera.math.vector;
+    var geo = sphera.math.geometry;
 
     var range = 200;
     var laser_charge = 5;
@@ -12,7 +12,7 @@
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
-    var Turret = WinJS.Class.derive(space.Entity, function () {
+    var Turret = WinJS.Class.derive(sphera.entities.Entity, function () {
         this.setup('Turret');
 
         this.cooldown = 0;
@@ -122,5 +122,5 @@
         });
     }
 
-    WinJS.Namespace.define('space', { Turret: Turret });
+    WinJS.Namespace.define('sphera.entities', { Turret: Turret });
 }());

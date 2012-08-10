@@ -59,5 +59,5 @@
         }
     });
 
-    WinJS.Namespace.define('space', { Entity: Entity });
+    WinJS.Namespace.define('sphera.entities', { Entity: Entity });
 }());

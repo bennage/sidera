@@ -54,26 +54,26 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
-    <Content Include="default.html" />
+    <Content Include="app.html" />
+    <Content Include="app.js" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
-    <Content Include="js\Asteroid.js" />
-    <Content Include="js\default.js" />
     <Content Include="css\default.css" />
-    <Content Include="js\Entity.js" />
-    <Content Include="js\Fighter.js" />
-    <Content Include="js\game.js" />
-    <Content Include="js\Turret.js" />
-    <Content Include="js\Generator.js" />
-    <Content Include="js\geometry.js" />
-    <Content Include="js\levels.js" />
-    <Content Include="js\Miner.js" />
-    <Content Include="js\start.js" />
-    <Content Include="js\vector.js" />
-    <Content Include="js\Wire.js" />
-    <Content Include="level.json" />
+    <Content Include="levels\level.json" />
+    <Content Include="sphera\entities\Asteroid.js" />
+    <Content Include="sphera\entities\Entity.js" />
+    <Content Include="sphera\entities\Fighter.js" />
+    <Content Include="sphera\entities\Generator.js" />
+    <Content Include="sphera\entities\Miner.js" />
+    <Content Include="sphera\entities\Turret.js" />
+    <Content Include="sphera\entities\Wire.js" />
+    <Content Include="sphera\game.js" />
+    <Content Include="sphera\levels.js" />
+    <Content Include="sphera\math\geometry.js" />
+    <Content Include="sphera\math\vector.js" />
+    <Content Include="sphera\start.js" />
     <None Include="space_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

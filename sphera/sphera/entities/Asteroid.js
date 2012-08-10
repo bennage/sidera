@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var Asteroid = WinJS.Class.derive(space.Entity, function () {
+    var Asteroid = WinJS.Class.derive(sphera.entities.Entity, function () {
         this.amount = 0;
         this.setup('Asteroid');
     }, {
@@ -28,5 +28,5 @@
         }
     });
 
-    WinJS.Namespace.define('space', { Asteroid: Asteroid });
+    WinJS.Namespace.define('sphera.entities', { Asteroid: Asteroid });
 }());

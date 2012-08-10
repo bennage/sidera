@@ -2,10 +2,10 @@
 
     'use strict';
 
-    var Entity = space.Entity,
-        Miner = space.Miner,
-        Turret = space.Turret,
-        Generator = space.Generator;
+    var Entity = sphera.entities.Entity,
+        Miner = sphera.entities.Miner,
+        Turret = sphera.entities.Turret,
+        Generator = sphera.entities.Generator;
 
     var resolution = { height: 900, width: 1200 },
         entities = [],
@@ -120,7 +120,7 @@
     function wave() {
 
         for (var i = 7; i > 0; i--) {
-            var f = new space.Fighter();
+            var f = new sphera.entities.Fighter();
             f.x = -50 - (i * 25);
             f.y = -50 - (i * 25);
             entities.push(f);
@@ -129,11 +129,11 @@
 
     function start() {
         money = 10000;
-        space.levels.next(entities, resolution);
+        sphera.levels.next(entities, resolution);
         setContext(Miner);
     }
 
-    WinJS.Namespace.define('space.game', {
+    WinJS.Namespace.define('sphera.game', {
         draw: draw,
         update: update,
         start: start,

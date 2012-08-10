@@ -3,7 +3,7 @@
 
     'use strict';
 
-    var Asteroid = space.Asteroid;
+    var Asteroid = sphera.entities.Asteroid;
 
     function next(entities, resolution) {
         var r = Math.random;
@@ -50,7 +50,7 @@
     //    }
     //}
 
-    WinJS.Namespace.define('space.levels', {
+    WinJS.Namespace.define('sphera.levels', {
         next: next
     });
 

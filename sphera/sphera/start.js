@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var game = space.game;
+    var game = sphera.game;
     var ctx;
     var buffer, surface;
 
@@ -46,7 +46,7 @@
         loop(last);
     }
 
-    WinJS.Namespace.define('space', {
+    WinJS.Namespace.define('sphera', {
         start: function () {
 
             buffer = document.createElement('canvas');
