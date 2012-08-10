@@ -122,6 +122,8 @@
                 blocker = entities[j];
                 if (blocker === self || blocker === entity) { continue; };
 
+                // todo: these are very expensive
+                // let's find a way to call them less frequently
                 intersected = geo.lineIntersectsCircle([self, entity], blocker);
                 projected = geo.pointProjectsOntoSegment(self, entity, blocker)
                 blocked = (intersected && projected);

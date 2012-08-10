@@ -66,7 +66,8 @@
     WinJS.Namespace.define('sphera.math.geometry', {
         pointProjectsOntoSegment: point_over_line,
         lineIntersectsCircle: intersect,
-        lengthSquared: length_squared
+        lengthSquared: length_squared,
+        fullCircle: Math.PI * 2
     });
 
 }());
