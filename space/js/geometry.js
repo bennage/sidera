@@ -1,8 +1,6 @@
 (function () {
     'use strict';
 
-    var vector = space.vector;
-
     // float minimum_distance(vec2 v, vec2 w, vec2 p) {
     //   // Return minimum distance between line segment vw and point p
     //   const float l2 = length_squared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
@@ -21,12 +19,28 @@
         return (v.x * w.x + v.y * w.y);
     }
 
-    function point_over_line(v, w, p) {
-        var l2 = Math.pow(vector(v, w).distance(), 2);
-        if (l2 == 0.0) return false;
-        var t = dot(vector(p, v), vector(w, v)) / l2;
+    function length_squared(v, w) {
+        return Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2);
+    }
 
-        return (t >= 0.0 && t <= 1.0);
+    function vector(v, w) {
+        return {
+            x: v.x - w.x,
+            y: v.y - w.y, 
+        };
+    }
+
+    function point_over_line(v, w, p) {
+        // does point p fall on the line segment vw?
+        var l2 = length_squared(v, w);
+        if (l2 == 0.0) {
+            // the line segment has no length
+            return false;
+        }
+
+        var t = dot(vector(p, v), vector(w, v));
+
+        return (t >= 0.0 && t <= l2);
     }
 
     function intersect(line, circle) {
