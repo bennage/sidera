@@ -83,31 +83,57 @@
 
         self.wires = [];
 
-        entities.filter(function (entity) {
-            return entity.powered && !(self.wires.some(function (wire) {
-                return wire.tail === entity;
-            }));
-        }).forEach(function (entity) {
+        var entity,
+            already_connected,
+            distance_to_entity,
+            distance_to_edge,
+            blocker,
+            blocked,
+            intersected,
+            projected;
 
-            var v = vector(self, entity);
-            var d = v.distance();
-            if ((d - entity.radius) <= range) {
+        for (var i = entities.length - 1; i >= 0; i--) {
 
-                var blocked = entities.some(function (blocker) {
-                    if (blocker === self || blocker === entity) return false;
+            entity = entities[i];
 
-                    var intersected = geo.lineIntersectsCircle([self, entity], blocker);
-                    var projected = geo.pointProjectsOntoSegment(self, entity, blocker)
-                    return (intersected && projected);
-                });
+            // we don't care about unpowered entities
+            if (!entity.powered) { continue; }
 
-                if (!blocked) {
-                    var wire = new sphera.entities.Wire(self, entity);
-                    self.wires.push(wire);
+            // are we already connected to the entity?
+            already_connected = false;
+            for (var j = self.wires.length - 1; j >= 0; j--) {
+                if (self.wires[j].tail === entity) {
+                    already_connected = true;
+                    break;
                 }
-
             }
-        })
+
+            if (already_connected) { continue; }
+
+            // is the entity within range?
+            distance_to_entity = vector(self, entity).distance();
+            distance_to_edge = distance_to_entity - entity.radius;
+
+            if (distance_to_edge > range) { continue; }
+
+            // is the entity blocked?
+            blocked = false;
+            for (var j = entities.length - 1; j >= 0; j--) {
+                blocker = entities[j];
+                if (blocker === self || blocker === entity) { continue; };
+
+                intersected = geo.lineIntersectsCircle([self, entity], blocker);
+                projected = geo.pointProjectsOntoSegment(self, entity, blocker)
+                blocked = (intersected && projected);
+
+                if (blocked) { break; }
+            }
+
+            // if we are not blocked, create a new wire
+            if (!blocked) {
+                self.wires.push(new sphera.entities.Wire(self, entity));
+            }
+        }
     }
 
     function strokeByPulse(self) {

@@ -26,7 +26,7 @@
     function vector(v, w) {
         return {
             x: v.x - w.x,
-            y: v.y - w.y, 
+            y: v.y - w.y,
         };
     }
 
@@ -65,7 +65,8 @@
 
     WinJS.Namespace.define('sphera.math.geometry', {
         pointProjectsOntoSegment: point_over_line,
-        lineIntersectsCircle: intersect
+        lineIntersectsCircle: intersect,
+        lengthSquared: length_squared
     });
 
 }());

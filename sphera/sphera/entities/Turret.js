@@ -105,21 +105,26 @@
     });
 
     function acquireTarget(self, entities) {
-        var candidates = entities.filter(function (entity) {
-            return entity.enemy;
-        });
+        var entity,
+            current_distance,
+            closest,
+            last_distance = Number.POSITIVE_INFINITY;
 
-        if (candidates.length === 0) return null;
+        for (var i = entities.length - 1; i >= 0; i--) {
 
-        var current_distance = vector(self, candidates[0]);
+            entity = entities[i];
+            if (entity.enemy) {
 
-        return candidates.reduce(function (current, next) {
-            var next_distance = vector(self, next);
+                current_distance = geo.lengthSquared(self, entity);
 
-            return (next_distance.distance() >= current_distance.distance())
-                ? current
-                : next;
-        });
+                if (current_distance < last_distance) {
+                    last_distance = current_distance;
+                    closest = entity;
+                }
+            }
+        }
+
+        return closest;
     }
 
     WinJS.Namespace.define('sphera.entities', { Turret: Turret });

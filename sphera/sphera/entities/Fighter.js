@@ -124,10 +124,6 @@
 
     });
 
-    function length_squared(v, w) {
-        return Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2);
-    }
-
     function acquireTarget(self, entities) {
         var entity,
             current_distance,
@@ -139,7 +135,7 @@
             entity = entities[i];
             if ((entity !== self) && !entity.enemy && entity.hp) {
 
-                current_distance = length_squared(self, entity);
+                current_distance = geo.lengthSquared(self, entity);
 
                 if (current_distance < last_distance) {
                     last_distance = current_distance;
