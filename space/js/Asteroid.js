@@ -15,7 +15,7 @@
             if (this.amount > 0) {
                 var took = Math.min(this.amount, amount);
                 this.amount -= took;
-                success(took);
+                if (success) { success(took); }
             }
 
             if (this.amount <= 0) {
