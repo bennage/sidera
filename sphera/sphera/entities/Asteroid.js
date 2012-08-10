@@ -19,7 +19,7 @@
             }
 
             if (this.amount <= 0) {
-                this.destroy();
+                this.dead = true;
                 this.amount = 0;
             }
         },

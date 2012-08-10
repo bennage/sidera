@@ -15,11 +15,6 @@
         cursor,
         canPlace = false;
 
-    Entity.prototype.destroy = function () {
-        var index = entities.indexOf(this);
-        entities.splice(index, 1);
-    };
-
     function render_background(ctx) {
         ctx.beginPath();
         ctx.fillStyle = 'black';
@@ -56,6 +51,7 @@
 
     function update(elapsed) {
         var i, x;
+        var dead = [], index;
 
         cursor.targets = [];
         if (cursor.find) cursor.find(cursor, entities);
@@ -63,6 +59,22 @@
         for (i = entities.length - 1; i >= 0; i--) {
             x = entities[i];
             if (x.update) x.update(elapsed, entities);
+
+            // collect the dead
+            if (x.dead) {
+                dead.push(x);
+            }
+        }
+
+        // bury the dead
+        for (i = dead.length - 1; i >= 0; i--) {
+            index = entities.indexOf(dead[i]);
+            entities.splice(index, 1);
+
+            if (dead[i].shoudExplode) {
+                var explosion = new sphera.entities.Explosion(dead[i]);
+                entities.push(explosion);
+            }
         }
     }
 

@@ -22,6 +22,7 @@
         this.thrust = 0;
         this.laser = 0;
         this.hp = 5;
+        this.shoudExplode = true;
 
         this.cooldown = 0;
         this.untilRecharge = rechargeRate;

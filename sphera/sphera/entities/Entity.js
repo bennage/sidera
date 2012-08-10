@@ -7,6 +7,7 @@
             this.x = 100;
             this.y = 100;
             this.radius = 0;
+            this.shoudExplode = false;
         },
 
         // Copy the members to this
@@ -22,11 +23,9 @@
             if (!this.hp) return;
             this.hp -= damage;
             if (this.hp <= 0) {
-                this.destroy();
+                this.dead = true;
             }
         },
-
-        destroy: function () { debugger; /* we expect this to be overriden */ },
 
         // default render function
         render: function (ctx) {

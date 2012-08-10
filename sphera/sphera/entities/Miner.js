@@ -25,6 +25,7 @@
 
         this.powered = true;
         this.hp = max_health;
+        this.shoudExplode = true;
 
         this.radius = 10;
     }, {

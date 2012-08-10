@@ -15,6 +15,7 @@
         this.radius = 20;
         this.wires = [];
         this.hp = max_health;
+        this.shoudExplode = true;
         this.untilPulse = 0;
         this.charge = 10;
         this.battery = 0;

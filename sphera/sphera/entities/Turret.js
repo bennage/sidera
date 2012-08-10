@@ -20,6 +20,8 @@
 
         this.powered = true;
         this.hp = max_health;
+        this.shoudExplode = true;
+
         this.orientation = (Math.PI * 2) * Math.random(); // start with the turrent pointing a random direction
 
         this.radius = 5;

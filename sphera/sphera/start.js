@@ -31,7 +31,7 @@
             game.update(elapsed, time);
             game.draw(surface, elapsed, time);
             //surface.drawImage(buffer, 0, 0);
-            
+
             render_fps(surface);
         }
 
