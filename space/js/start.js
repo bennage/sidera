@@ -9,17 +9,36 @@
         var frameId = 0;
 
         var last, elapsed;
+        var frames = 0,
+            ms = 0,
+            fps = 0;
 
         function loop(time) {
             frameId = window.requestAnimationFrame(loop);
 
-            game.update(elapsed, time);
-            game.draw(ctx, elapsed, time);
-            surface.drawImage(buffer, 0, 0);
-
             elapsed = time - last;
-            if (elapsed < 0) elapsed = 0;
+            if (elapsed < 0) elapsed = 0; // why is this here again?
             last = time;
+
+            frames++;
+            ms += elapsed;
+            if (ms > 1000) {
+                fps = Math.round(frames * 1000 / ms);
+                ms = 0;
+                frames = 0;
+            }
+
+            game.update(elapsed, time);
+            game.draw(surface, elapsed, time);
+            //surface.drawImage(buffer, 0, 0);
+            
+            render_fps(surface);
+        }
+
+        function render_fps(ctx) {
+            ctx.fillStyle = "white";
+            ctx.font = "18px sans-serif";
+            ctx.fillText(fps + ' fps', 300, 20);
         }
 
         last = new Date().getTime();
