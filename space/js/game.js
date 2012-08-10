@@ -38,41 +38,31 @@
     }
 
     function draw(ctx, elapsed) {
+        var i, x;
 
         ctx.clearRect(0, 0, resolution.width, resolution.height);
 
         render_background(ctx);
 
-        entities.forEach(function (x) {
+        for (i = entities.length - 1; i >= 0; i--) {
+            x = entities[i];
             if (!x.render) debugger;
             x.render(ctx);
-        });
+        }
 
         render_cursor(ctx);
         render_status(ctx);
     }
 
-    var next_wave = 4000;
     function update(elapsed) {
+        var i, x;
 
         cursor.targets = [];
         if (cursor.find) cursor.find(cursor, entities);
 
-        entities.forEach(function (entity) {
-            if (entity.update) entity.update(elapsed, entities);
-        });
-
-        //todo: temp
-        next_wave -= elapsed;
-        if (next_wave < 0) {
-            next_wave = 10000;
-
-            for (var i = 3; i > 0; i--) {
-                var f = new space.Fighter();
-                f.x = -50 - (i * 25);
-                f.y = -50 - (i * 25);
-                entities.push(f);
-            }
+        for (i = entities.length - 1; i >= 0; i--) {
+            x = entities[i];
+            if (x.update) x.update(elapsed, entities);
         }
     }
 
@@ -120,11 +110,25 @@
             50: Generator,
             51: Turret
         };
-        setContext(types[evt.keyCode]);
+        if (types[evt.keyCode]) {
+            setContext(types[evt.keyCode]);
+        } else {
+            wave();
+        }
+    }
+
+    function wave() {
+
+        for (var i = 7; i > 0; i--) {
+            var f = new space.Fighter();
+            f.x = -50 - (i * 25);
+            f.y = -50 - (i * 25);
+            entities.push(f);
+        }
     }
 
     function start() {
-        money = 1000;
+        money = 10000;
         space.levels.next(entities, resolution);
         setContext(Miner);
     }
