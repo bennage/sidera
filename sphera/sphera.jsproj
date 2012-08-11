@@ -62,9 +62,11 @@
     <Content Include="images\storelogo.png" />
     <Content Include="css\default.css" />
     <Content Include="levels\level.json" />
+    <Content Include="sphera\entities\Missile.js" />
     <Content Include="sphera\entities\Explosion.js" />
     <Content Include="sphera\entities\Asteroid.js" />
     <Content Include="sphera\entities\Entity.js" />
+    <Content Include="sphera\entities\Bomber.js" />
     <Content Include="sphera\entities\Fighter.js" />
     <Content Include="sphera\entities\Generator.js" />
     <Content Include="sphera\entities\Miner.js" />

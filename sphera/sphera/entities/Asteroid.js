@@ -1,9 +1,13 @@
 (function () {
     'use strict';
 
-    var Asteroid = WinJS.Class.derive(sphera.entities.Entity, function () {
+    var Entity = sphera.entities.Entity;
+
+    var Asteroid = WinJS.Class.derive(Entity, function () {
+        Entity.prototype.constructor.call(this, 'Asteroid');
+
         this.amount = 0;
-        this.setup('Asteroid');
+
     }, {
         render: function (ctx) {
             ctx.beginPath();

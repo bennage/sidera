@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var Entity = sphera.entities.Entity;
+
     var vector = sphera.math.vector;
     var geo = sphera.math.geometry;
 
@@ -9,8 +11,9 @@
     var range = 100;
     var max_battery = 500;
     var max_health = 20;
-    var Generator = WinJS.Class.derive(sphera.entities.Entity, function () {
-        this.setup('Generator');
+
+    var Generator = WinJS.Class.derive(Entity, function () {
+        Entity.prototype.constructor.call(this, 'Generator');
 
         this.radius = 20;
         this.wires = [];

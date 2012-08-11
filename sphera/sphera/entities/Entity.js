@@ -1,14 +1,13 @@
 (function () {
     'use strict';
 
-    var Entity = WinJS.Class.define(function () { }, {
-        setup: function (type) {
-            this.type = type;
-            this.x = 100;
-            this.y = 100;
-            this.radius = 0;
-            this.shoudExplode = false;
-        },
+    var Entity = WinJS.Class.define(function (type) {
+        this.type = type;
+        this.x = 100;
+        this.y = 100;
+        this.radius = 0;
+        this.shoudExplode = false;
+    }, {
 
         // Copy the members to this
         hydrate: function (members) {

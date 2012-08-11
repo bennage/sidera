@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var Entity = sphera.entities.Entity;
+
     var vector = sphera.math.vector;
     var geo = sphera.math.geometry;
 
@@ -11,13 +13,8 @@
     var max_battery = 15;
     var max_health = 5;
 
-    var counter = 0;
-
-    var Miner = WinJS.Class.derive(sphera.entities.Entity, function () {
-        counter++;
-        this.setup('Miner');
-
-        this.id = counter;
+    var Miner = WinJS.Class.derive(Entity, function () {
+        Entity.prototype.constructor.call(this, 'Miner');
 
         this.untilPulse = 0;
         this.battery = 0;
@@ -52,11 +49,6 @@
 
             // health meter
             this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
-
-            //id
-            ctx.fillStyle = "white";
-            ctx.font = "10px sans-serif";
-            ctx.fillText(this.id, self.x, self.y - 10);
         },
         update: function (elapsed, entities) {
             if (this.untilPulse <= 0) {

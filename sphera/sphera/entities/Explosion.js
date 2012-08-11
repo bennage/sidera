@@ -1,12 +1,14 @@
 (function () {
     'use strict';
 
+    var Entity = sphera.entities.Entity;
+
     var circle = sphera.math.geometry.fullCircle;
 
-    var Explosion = WinJS.Class.derive(sphera.entities.Entity, function (corpse) {
-        this.clouds = [];
-        this.setup('Explosion');
+    var Explosion = WinJS.Class.derive(Entity, function (corpse) {
+        Entity.prototype.constructor.call(this, 'Explosion');
 
+        this.clouds = [];
         this.x = corpse.x;
         this.y = corpse.y;
 

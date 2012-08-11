@@ -1,73 +1,47 @@
 ﻿(function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Fighter = sphera.entities.Fighter;
+    var Missile = sphera.entities.Missile;
+
     var vector = sphera.math.vector;
     var geo = sphera.math.geometry;
     var circle = geo.fullCircle;
 
-    var max_speed = 20;
-    var max_angle = Math.PI / 100;
-    var range = 200;
-    var rechargeRate = 1 * 1000; // ms
-    var laser_cooldown = 500; // ms
+    var max_angle = Math.PI / 300;
+    var range = 350;
+    var reloadRate = 1 * 4000; // ms
 
     var choice = 1;
 
-    var Fighter = WinJS.Class.derive(Entity, function (type) {
+    var Bomber = WinJS.Class.derive(Fighter, function () {
+        Fighter.prototype.constructor.call(this, 'Bomber');
 
-        Entity.prototype.constructor.call(this, type || 'Fighter');
+        this.thrust = 0.3;
+        this.untilRecharge = reloadRate * Math.random() + 1000;
 
-        this.enemy = true;
-        this.orientation = 0;
-        this.thrust = 0;
-        this.laser = 0;
-        this.hp = 5;
-        this.shoudExplode = true;
-
-        this.cooldown = 0;
-        this.untilRecharge = rechargeRate;
-
-        this.target = null;
     }, {
-        setup: function () { this },
         render: function (ctx, ghost) {
             var self = this;
             var x = self.x;
             var y = self.y;
 
-            ctx.fillStyle = 'blue';
+            ctx.fillStyle = 'darkred';
+            ctx.strokeStyle = 'darkred';
 
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(this.orientation);
 
             ctx.beginPath();
-            ctx.moveTo(10, 0);
-            ctx.lineTo(-10, -5);
-            ctx.lineTo(-5, 0);
-            ctx.lineTo(-10, 5);
-            ctx.lineTo(10, 0);
+            ctx.moveTo(-20, -6);
+            ctx.lineTo(20, -10);
+            ctx.bezierCurveTo(6, 4, 6, -4, 20, 10);
+            ctx.lineTo(-20, 6);
+            ctx.bezierCurveTo(-7, 0, -7, 0, -20, -6);
             ctx.fill();
 
             ctx.restore();
-
-            if (this.cooldown > 0 && this.target) {
-                var fade = this.cooldown / laser_cooldown;
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = 'rgba(255,255,0,' + fade + ')';
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.lineTo(this.target.x, this.target.y);
-                ctx.stroke();
-            }
-
-            if (this.focus) {
-                ctx.beginPath();
-                ctx.fillStyle = 'rgba(255,0,0,0.2)';
-                ctx.arc(this.focus.x, this.focus.y, 2, 0, circle, false);
-                ctx.fill();
-            }
         },
 
         update: function (elapsed, entities) {
@@ -80,12 +54,8 @@
             }
 
             // update position every time
-            this.x += Math.cos(this.orientation);
-            this.y += Math.sin(this.orientation);
-
-            if (this.cooldown > 0) {
-                this.cooldown -= elapsed;
-            }
+            this.x += Math.cos(this.orientation) * this.thrust;
+            this.y += Math.sin(this.orientation) * this.thrust;
 
             if (this.untilRecharge > 0) {
                 this.untilRecharge -= elapsed;
@@ -141,14 +111,17 @@
                 if (this.untilRecharge <= 0 && this.target) {
                     if (to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
                         //attack target
-                        this.cooldown = laser_cooldown;
-                        this.untilRecharge = rechargeRate;
-                        this.target.hit(1);
+                        this.untilRecharge = reloadRate;
+                        this.fire(this.target, entities);
                     }
                 }
             }
-        }
+        },
 
+        fire: function (target, entities) {
+            var missile = new Missile(this, target);
+            entities.push(missile);
+        }
     });
 
     function acquireTarget(self, entities) {
@@ -174,5 +147,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sphera.entities', { Fighter: Fighter });
+    WinJS.Namespace.define('sphera.entities', { Bomber: Bomber });
 }());

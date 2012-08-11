@@ -122,17 +122,25 @@
             50: Generator,
             51: Turret
         };
+
         if (types[evt.keyCode]) {
             setContext(types[evt.keyCode]);
         } else {
-            wave();
+            switch (evt.char) {
+                case 'q':
+                    sendWaveOf(sphera.entities.Fighter);
+                    break;
+                case 'w':
+                    sendWaveOf(sphera.entities.Bomber);
+                    break;
+            }
         }
     }
 
-    function wave() {
+    function sendWaveOf(type) {
 
-        for (var i = 7; i > 0; i--) {
-            var f = new sphera.entities.Fighter();
+        for (var i = 3; i > 0; i--) {
+            var f = new type();
             f.x = -50 - (i * 25);
             f.y = -50 - (i * 25);
             entities.push(f);

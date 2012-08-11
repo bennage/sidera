@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var Entity = sphera.entities.Entity;
+
     var vector = sphera.math.vector;
     var geo = sphera.math.geometry;
 
@@ -13,7 +15,7 @@
     var max_angle = Math.PI / 30;
 
     var Turret = WinJS.Class.derive(sphera.entities.Entity, function () {
-        this.setup('Turret');
+        Entity.prototype.constructor.call(this, 'Turret');
 
         this.cooldown = 0;
         this.battery = 0;
