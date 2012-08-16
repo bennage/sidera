@@ -5,6 +5,7 @@
 
     var vector = sphera.math.vector;
     var geo = sphera.math.geometry;
+    var fullCircle = geo.fullCircle;
 
     var pulse_rate = 2000; //ms
     var output_rate = 10;
@@ -22,6 +23,7 @@
         this.untilPulse = 0;
         this.charge = 10;
         this.battery = 0;
+
     }, {
         render: function (ctx, ghost) {
             var self = this;
@@ -43,15 +45,23 @@
             ctx.arc(self.x, self.y, 8, 0, 2 * Math.PI, false);
             ctx.fill();
 
-            // health meter
-            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
+            if (ghost) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.arc(self.x, self.y, range, 0, fullCircle, false);
+                ctx.stroke();
+            } else {
 
-            self.wires.forEach(function (wire) {
-                wire.render(ctx, ghost);
-            });
+                // health meter
+                this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
+
+                self.wires.forEach(function (wire) {
+                    wire.render(ctx, ghost);
+                });
+            }
         },
         update: function (elapsed, entities) {
-            // this probably should not be on every update, it is expensive
+
             find_targets(this, entities);
 
             if (this.untilPulse <= 0) {

@@ -72,6 +72,7 @@
     <Content Include="sphera\entities\Miner.js" />
     <Content Include="sphera\entities\Turret.js" />
     <Content Include="sphera\entities\Wire.js" />
+    <Content Include="sphera\fps.js" />
     <Content Include="sphera\game.js" />
     <Content Include="sphera\levels.js" />
     <Content Include="sphera\math\geometry.js" />

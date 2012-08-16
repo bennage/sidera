@@ -151,6 +151,8 @@
         money = 10000;
         sphera.levels.next(entities, resolution);
         setContext(Miner);
+
+        entities.push(new sphera.FPS());
     }
 
     WinJS.Namespace.define('sphera.game', {

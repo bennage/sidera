@@ -7,43 +7,22 @@
 
     function beginLoop() {
         var frameId = 0;
+        var start = window.animationStartTime;
 
-        var last, elapsed;
-        var frames = 0,
-            ms = 0,
-            fps = 0;
+        function loop(timestamp) {
 
-        function loop(time) {
+            var elapsed = timestamp - start;
+
             frameId = window.requestAnimationFrame(loop);
 
-            elapsed = time - last;
-            if (elapsed < 0) elapsed = 0; // why is this here again?
-            last = time;
-
-            frames++;
-            ms += elapsed;
-            if (ms > 1000) {
-                fps = Math.round(frames * 1000 / ms);
-                ms = 0;
-                frames = 0;
-            }
-
-            game.update(elapsed, time);
-            game.draw(surface, elapsed, time);
+            game.update(elapsed, timestamp);
+            game.draw(surface, elapsed, timestamp);
             //surface.drawImage(buffer, 0, 0);
 
-            render_fps(surface);
+            start = window.animationStartTime;
         }
 
-        function render_fps(ctx) {
-            ctx.fillStyle = "white";
-            ctx.font = "18px sans-serif";
-            ctx.fillText(fps + ' fps', 300, 20);
-        }
-
-        last = new Date().getTime();
-        elapsed = 0;
-        loop(last);
+        loop(0);
     }
 
     WinJS.Namespace.define('sphera', {
