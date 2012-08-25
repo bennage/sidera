@@ -77,7 +77,8 @@
     <Content Include="sphera\levels.js" />
     <Content Include="sphera\math\geometry.js" />
     <Content Include="sphera\math\vector.js" />
-    <Content Include="sphera\start.js" />
+    <Content Include="sphera\bootstrap.js" />
+    <Content Include="sphera\start\screen.js" />
     <None Include="space_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -117,6 +117,12 @@
     }
 
     function handle_onkeypress(evt) {
+
+        // pressed escape
+        if (evt.keyCode === 27) {
+            this.transition(sphera.start.screen);
+        }
+
         var types = {
             49: Miner,
             50: Generator,

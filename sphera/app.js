@@ -14,7 +14,7 @@
                 // Restore application state here.
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
-                sphera.start();
+                sphera.bootstrap();
             }));
         }
     };
