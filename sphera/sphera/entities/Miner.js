@@ -65,7 +65,7 @@
             var used = Math.min(available, capacity);
             this.battery += used;
             return used;
-        },        
+        },
         find: find_targets
     }, {
         cost: 100,
@@ -89,32 +89,34 @@
         });
     }
 
-    function find_targets(self, entities, action) {
+    function find_targets(self, gameObjects, action) {
+        //TODO: convert to for loop
+        gameObjects.enviroment
+            .filter(function (entity) {
+                return !!entity.mine;
+            })
+            .forEach(function (entity) {
 
-        entities.filter(function (entity) {
-            return !!entity.mine;
-        }).forEach(function (entity) {
+                var v = vector(self, entity);
+                var d = v.distance();
+                if ((d - entity.radius) <= range) {
+                    var candidates = gameObjects.enviroment.concat(gameObjects.friendlies);
+                    var blocked = candidates.some(function (blocker) {
+                        if (blocker === self || blocker === entity) return false;
 
-            var v = vector(self, entity);
-            var d = v.distance();
-            if ((d - entity.radius) <= range) {
-
-                var blocked = entities.some(function (blocker) {
-                    if (blocker === self || blocker === entity) return false;
-
-                    var intersected = geo.lineIntersectsCircle([self, entity], blocker);
-                    var projected = geo.pointProjectsOntoSegment(self, entity, blocker)
-                    return (intersected && projected);
-                });
-                if (!blocked) {
-                    if (action) {
-                        action(entity);
-                    } else {
-                        self.targets.push(entity);
+                        var intersected = geo.lineIntersectsCircle([self, entity], blocker);
+                        var projected = geo.pointProjectsOntoSegment(self, entity, blocker)
+                        return (intersected && projected);
+                    });
+                    if (!blocked) {
+                        if (action) {
+                            action(entity);
+                        } else {
+                            self.targets.push(entity);
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     WinJS.Namespace.define('sphera.entities', { Miner: Miner });

@@ -34,7 +34,7 @@
             var to_target = vector(target, this);
             this.orientation = to_target.angle();
         },
-        update: function (elapsed, entities) {
+        update: function (elapsed, gameObjects) {
             this.x += Math.cos(this.orientation) * this.thrust;
             this.y += Math.sin(this.orientation) * this.thrust;
 

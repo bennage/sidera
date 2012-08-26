@@ -8,18 +8,11 @@
         Generator = sphera.entities.Generator;
 
     var resolution = { height: 900, width: 1200 },
-        entities = [],
         mode,
         money = 0,
         context = Miner,
         cursor,
         canPlace = false;
-
-    function render_background(ctx) {
-        ctx.beginPath();
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, resolution.width, resolution.height);
-    }
 
     function render_cursor(ctx) {
         if (!canPlace) return;
@@ -35,47 +28,130 @@
     function draw(ctx, elapsed) {
         var i, x;
 
-        ctx.clearRect(0, 0, resolution.width, resolution.height);
+        var width = ctx.canvas.width;
+        var height = ctx.canvas.height;
 
-        render_background(ctx);
+        ctx.clearRect(0, 0, width, height);
 
-        for (i = entities.length - 1; i >= 0; i--) {
-            x = entities[i];
-            if (!x.render) debugger;
-            x.render(ctx);
-        }
+        // draw background
+        ctx.beginPath();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, width, height);
+
+        // draw entities
+        drawSet(gameObjects.background, ctx);
+        drawSet(gameObjects.enviroment, ctx);
+        drawSet(gameObjects.friendlies, ctx);
+        drawSet(gameObjects.enemies, ctx);
+        drawSet(gameObjects.doodads, ctx);
+        drawSet(gameObjects.ui, ctx);
 
         render_cursor(ctx);
         render_status(ctx);
     }
 
-    function update(elapsed) {
-        var i, x;
-        var dead = [], index;
-
-        cursor.targets = [];
-        if (cursor.find) cursor.find(cursor, entities);
-
+    function drawSet(entities, ctx) {
+        var i,x;
         for (i = entities.length - 1; i >= 0; i--) {
             x = entities[i];
-            if (x.update) x.update(elapsed, entities);
+            if (!x.render) debugger;
+            x.render(ctx);
+        }
+    }
+
+    function updateSet(entities, elapsed) {
+        var entity;
+        var dead = entities.dead;
+        var index;
+
+        for (var i = entities.length - 1; i >= 0; i--) {
+            entity = entities[i];
+            if (entity.update) entity.update(elapsed, gameObjects);
 
             // collect the dead
-            if (x.dead) {
-                dead.push(x);
+            if (entity.dead) {
+                dead.push(entity);
             }
         }
 
         // bury the dead
-        for (i = dead.length - 1; i >= 0; i--) {
+        for (var i = dead.length - 1; i >= 0; i--) {
             index = entities.indexOf(dead[i]);
             entities.splice(index, 1);
 
             if (dead[i].shoudExplode) {
                 var explosion = new sphera.entities.Explosion(dead[i]);
-                entities.push(explosion);
+                gameObjects.doodads.push(explosion);
             }
         }
+        entities.dead = [];
+    }
+
+    function update(elapsed) {
+
+        cursor.targets = [];
+        if (cursor.find) cursor.find(cursor, gameObjects);
+
+        updateSet(gameObjects.background, elapsed);
+        updateSet(gameObjects.enviroment, elapsed);
+        updateSet(gameObjects.friendlies, elapsed);
+        updateSet(gameObjects.enemies, elapsed);
+        updateSet(gameObjects.doodads, elapsed);
+        updateSet(gameObjects.ui, elapsed);
+    }
+
+    function setContext(type) {
+        if (!type) return;
+
+        var x = (cursor) ? cursor.x : -100;
+        var y = (cursor) ? cursor.y : -100;
+
+        context = type;
+        cursor = new context();
+        cursor.x = x;
+        cursor.y = y;
+        mode = cursor.type;
+    }
+
+    function sendWaveOf(type) {
+
+        for (var i = 3; i > 0; i--) {
+            var f = new type();
+            f.x = -50 - (i * 25);
+            f.y = -50 - (i * 25);
+            gameObjects.enemies.push(f);
+        }
+    }
+
+    var gameObjects = buildGameObjectSets();
+
+    function buildGameObjectSets() {
+
+        function entityArray() {
+            var array = [];
+            array.dead = [];
+            return array;
+        }
+
+        return {
+            background: entityArray(),
+            enviroment: entityArray(),
+            enemies: entityArray(),
+            friendlies: entityArray(),
+            doodads: entityArray(),
+            ui: entityArray()
+        };
+    }
+
+    function start(options) {
+
+        gameObjects = buildGameObjectSets();
+
+        money = 10000;
+        sphera.levels.next(gameObjects, resolution);
+        setContext(Miner);
+
+        gameObjects.ui.push(new sphera.FPS());
     }
 
     function handle_click(evt) {
@@ -94,26 +170,13 @@
                 money += take;
             }
         });
-        entities.push(entity);
-    }
-
-    function setContext(type) {
-        if (!type) return;
-
-        var x = (cursor) ? cursor.x : -100;
-        var y = (cursor) ? cursor.y : -100;
-
-        context = type;
-        cursor = new context();
-        cursor.x = x;
-        cursor.y = y;
-        mode = cursor.type;
+        gameObjects.friendlies.push(entity);
     }
 
     function handle_mouseover(evt) {
         cursor.x = evt.offsetX;
         cursor.y = evt.offsetY;
-        canPlace = cursor.canPlace(entities);
+        canPlace = cursor.canPlace(gameObjects.friendlies);
     }
 
     function handle_onkeypress(evt) {
@@ -143,32 +206,13 @@
         }
     }
 
-    function sendWaveOf(type) {
-
-        for (var i = 3; i > 0; i--) {
-            var f = new type();
-            f.x = -50 - (i * 25);
-            f.y = -50 - (i * 25);
-            entities.push(f);
-        }
-    }
-
-    function start() {
-        money = 10000;
-        sphera.levels.next(entities, resolution);
-        setContext(Miner);
-
-        entities.push(new sphera.FPS());
-    }
-
     WinJS.Namespace.define('sphera.game', {
         draw: draw,
         update: update,
         start: start,
         mouseover: handle_mouseover,
         onkeypress: handle_onkeypress,
-        click: handle_click,
-        resolution: resolution
+        click: handle_click
     });
 
 }());

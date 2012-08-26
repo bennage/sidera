@@ -60,12 +60,12 @@
                 });
             }
         },
-        update: function (elapsed, entities) {
+        update: function (elapsed, gameObjects) {
 
-            find_targets(this, entities);
+            find_targets(this, gameObjects);
 
             if (this.untilPulse <= 0) {
-                pulse(this, entities);
+                pulse(this);
                 this.untilPulse = pulse_rate;
             } else {
                 this.untilPulse = this.untilPulse - elapsed;
@@ -76,7 +76,7 @@
         cost: 500
     });
 
-    function pulse(self, entities) {
+    function pulse(self) {
 
         // charge up
         self.battery += output_rate;
@@ -93,7 +93,9 @@
         self.battery = Math.min(self.battery + output_rate, max_battery);
     }
 
-    function find_targets(self, entities, action) {
+    function find_targets(self, gameObjects, action) {
+
+        var entities = gameObjects.friendlies;
 
         self.wires = [];
 

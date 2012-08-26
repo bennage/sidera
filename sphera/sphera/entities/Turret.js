@@ -67,7 +67,7 @@
                 ctx.stroke();
             }
         },
-        update: function (elapsed, entities) {
+        update: function (elapsed, gameObjects) {
 
             if (this.cooldown > 0) {
                 this.cooldown -= elapsed;
@@ -75,7 +75,7 @@
 
             if (this.cooldown > 0 || this.battery < laser_charge) return;
 
-            this.target = acquireTarget(this, entities);
+            this.target = acquireTarget(this, gameObjects);
 
             if (!this.target) return;
 
@@ -108,11 +108,13 @@
         cost: 20,
     });
 
-    function acquireTarget(self, entities) {
+    function acquireTarget(self, gameObjects) {
         var entity,
             current_distance,
             closest,
             last_distance = Number.POSITIVE_INFINITY;
+
+        var entities = gameObjects.enemies;
 
         for (var i = entities.length - 1; i >= 0; i--) {
 

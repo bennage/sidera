@@ -44,13 +44,13 @@
             ctx.restore();
         },
 
-        update: function (elapsed, entities) {
+        update: function (elapsed, gameObjects) {
 
             // let's only peform the acquisition every other time
             this.work = !this.work;
 
             if (this.work) {
-                this.target = acquireTarget(this, entities);
+                this.target = acquireTarget(this, gameObjects);
             }
 
             // update position every time
@@ -124,11 +124,13 @@
         }
     });
 
-    function acquireTarget(self, entities) {
+    function acquireTarget(self, gameObjects) {
         var entity,
             current_distance,
             closest,
             last_distance = Number.POSITIVE_INFINITY;
+
+        var entities = gameObjects.friendlies;
 
         for (var i = entities.length - 1; i >= 0; i--) {
 

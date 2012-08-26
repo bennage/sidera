@@ -10,6 +10,7 @@
         ctx.fillStyle = 'white';
         ctx.font = '18px sans-serif';
         ctx.fillText('welcome', 10, 20);
+        ctx.fillText('click to start', 10, 50);
     }
 
     function update() {
