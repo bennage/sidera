@@ -25,6 +25,7 @@
         this.battery = 0;
 
     }, {
+
         render: function (ctx, ghost) {
             var self = this;
 
@@ -55,14 +56,13 @@
                 // health meter
                 this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
 
-                self.wires.forEach(function (wire) {
-                    wire.render(ctx, ghost);
-                });
+                for (var i = self.wires.length - 1; i >= 0; i--) {
+                    self.wires[i].render(ctx, ghost);
+                }
             }
         },
-        update: function (elapsed, gameObjects) {
 
-            find_targets(this, gameObjects);
+        update: function (elapsed, gameObjects) {
 
             if (this.untilPulse <= 0) {
                 pulse(this);
@@ -71,7 +71,62 @@
                 this.untilPulse = this.untilPulse - elapsed;
             }
         },
-        find: find_targets
+
+        find: find_targets,
+
+        whenBuilding: function (building, gameObjects) {
+
+            var already_connected,
+                distance_to_entity,
+                distance_to_edge,
+                blocker,
+                blocked,
+                intersected,
+                projected;
+
+            // we don't care about unpowered entities
+            if (!building.powered) { return; }
+
+            // are we already connected to the entity?
+            already_connected = false;
+            for (var j = this.wires.length - 1; j >= 0; j--) {
+                if (this.wires[j].tail === building) {
+                    already_connected = true;
+                    break;
+                }
+            }
+
+            if (already_connected) { return; }
+
+            // is the entity within range?
+            distance_to_entity = vector(this, building).distance();
+            distance_to_edge = distance_to_entity - building.radius;
+
+            if (distance_to_edge > range) { return; }
+
+            var blockers = gameObjects.friendlies.concat(gameObjects.enviroment);
+
+            // is the entity blocked?
+            blocked = false;
+            for (var j = blockers.length - 1; j >= 0; j--) {
+                blocker = blockers[j];
+                if (blocker === this || blocker === building) { continue; };
+
+                // todo: these are very expensive
+                // let's find a way to call them less frequently
+                intersected = geo.lineIntersectsCircle([this, building], blocker);
+                projected = geo.pointProjectsOntoSegment(this, building, blocker)
+                blocked = (intersected && projected);
+
+                if (blocked) { break; }
+            }
+
+            // if we are not blocked, create a new wire
+            if (!blocked) {
+                this.wires.push(new sphera.entities.Wire(this, building));
+            }
+        }
+
     }, {
         cost: 500
     });
@@ -93,7 +148,7 @@
         self.battery = Math.min(self.battery + output_rate, max_battery);
     }
 
-    function find_targets(self, gameObjects, action) {
+    function find_targets(self, gameObjects) {
 
         var entities = gameObjects.friendlies;
 

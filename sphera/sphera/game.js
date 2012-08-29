@@ -14,6 +14,8 @@
         cursor,
         canPlace = false;
 
+    var newBuilding;
+
     function render_cursor(ctx) {
         if (!canPlace) return;
         cursor.render(ctx, true);
@@ -51,7 +53,7 @@
     }
 
     function drawSet(entities, ctx) {
-        var i,x;
+        var i, x;
         for (i = entities.length - 1; i >= 0; i--) {
             x = entities[i];
             if (!x.render) debugger;
@@ -98,6 +100,16 @@
         updateSet(gameObjects.enemies, elapsed);
         updateSet(gameObjects.doodads, elapsed);
         updateSet(gameObjects.ui, elapsed);
+
+        if (newBuilding) {
+            var entity;
+            for (var i = gameObjects.friendlies.length - 1; i >= 0; i--) {
+                entity = gameObjects.friendlies[i];
+                if (entity.whenBuilding) entity.whenBuilding(newBuilding, gameObjects);
+            }
+            newBuilding = null;
+        }
+
     }
 
     function setContext(type) {
@@ -171,6 +183,7 @@
             }
         });
         gameObjects.friendlies.push(entity);
+        newBuilding = entity;
     }
 
     function handle_mouseover(evt) {
