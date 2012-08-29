@@ -63,7 +63,7 @@
         return (delta >= 0);
     }
 
-    WinJS.Namespace.define('sphera.math.geometry', {
+    WinJS.Namespace.define('sidera.math.geometry', {
         pointProjectsOntoSegment: point_over_line,
         lineIntersectsCircle: intersect,
         lengthSquared: length_squared,

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
     var Asteroid = WinJS.Class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Asteroid');
@@ -32,5 +32,5 @@
         }
     });
 
-    WinJS.Namespace.define('sphera.entities', { Asteroid: Asteroid });
+    WinJS.Namespace.define('sidera.entities', { Asteroid: Asteroid });
 }());

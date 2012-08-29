@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
     var FPS = WinJS.Class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'FPS');
@@ -31,5 +31,5 @@
         }
     });
 
-    WinJS.Namespace.define('sphera', { FPS: FPS });
+    WinJS.Namespace.define('sidera', { FPS: FPS });
 }());

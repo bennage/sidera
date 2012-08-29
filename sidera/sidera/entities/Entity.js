@@ -57,5 +57,5 @@
         }
     });
 
-    WinJS.Namespace.define('sphera.entities', { Entity: Entity });
+    WinJS.Namespace.define('sidera.entities', { Entity: Entity });
 }());

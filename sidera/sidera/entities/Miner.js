@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
-    var vector = sphera.math.vector;
-    var geo = sphera.math.geometry;
+    var vector = sidera.math.vector;
+    var geo = sidera.math.geometry;
 
     var pulse_rate = 2500; //ms
     var mine_rate = 10;
@@ -119,5 +119,5 @@
             })
     }
 
-    WinJS.Namespace.define('sphera.entities', { Miner: Miner });
+    WinJS.Namespace.define('sidera.entities', { Miner: Miner });
 }());

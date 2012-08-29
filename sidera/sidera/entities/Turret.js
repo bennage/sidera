@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
-    var vector = sphera.math.vector;
-    var geo = sphera.math.geometry;
+    var vector = sidera.math.vector;
+    var geo = sidera.math.geometry;
 
     var range = 200;
     var laser_charge = 5;
@@ -14,7 +14,7 @@
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
-    var Turret = WinJS.Class.derive(sphera.entities.Entity, function () {
+    var Turret = WinJS.Class.derive(sidera.entities.Entity, function () {
         Entity.prototype.constructor.call(this, 'Turret');
 
         this.cooldown = 0;
@@ -133,5 +133,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sphera.entities', { Turret: Turret });
+    WinJS.Namespace.define('sidera.entities', { Turret: Turret });
 }());

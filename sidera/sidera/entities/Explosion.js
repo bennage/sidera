@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
-    var circle = sphera.math.geometry.fullCircle;
+    var circle = sidera.math.geometry.fullCircle;
 
     var Explosion = WinJS.Class.derive(Entity, function (corpse) {
         Entity.prototype.constructor.call(this, 'Explosion');
@@ -59,5 +59,5 @@
         }
     });
 
-    WinJS.Namespace.define('sphera.entities', { Explosion: Explosion });
+    WinJS.Namespace.define('sidera.entities', { Explosion: Explosion });
 }());

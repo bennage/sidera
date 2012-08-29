@@ -1,11 +1,11 @@
 ﻿(function () {
     'use strict';
 
-    var Fighter = sphera.entities.Fighter;
-    var Missile = sphera.entities.Missile;
+    var Fighter = sidera.entities.Fighter;
+    var Missile = sidera.entities.Missile;
 
-    var vector = sphera.math.vector;
-    var geo = sphera.math.geometry;
+    var vector = sidera.math.vector;
+    var geo = sidera.math.geometry;
     var circle = geo.fullCircle;
 
     var max_angle = Math.PI / 300;
@@ -149,5 +149,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sphera.entities', { Bomber: Bomber });
+    WinJS.Namespace.define('sidera.entities', { Bomber: Bomber });
 }());

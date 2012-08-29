@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var game = sphera.game;
+    var game = sidera.game;
     var ctx;
     var buffer, surface;
     var canvas;
@@ -52,7 +52,7 @@
         currentScreen.onkeypress(args);
     }
 
-    WinJS.Namespace.define('sphera', {
+    WinJS.Namespace.define('sidera', {
         bootstrap: function () {
 
             buffer = document.createElement('canvas');
@@ -71,8 +71,8 @@
             canvas.addEventListener("mousemove", handle_mousemove);
             window.addEventListener("keypress", handle_keypress);
 
-            transition(sphera.start.screen);
-            currentScreen = sphera.start.screen;
+            transition(sidera.start.screen);
+            currentScreen = sidera.start.screen;
 
             beginLoop();
         }

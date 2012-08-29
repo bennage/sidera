@@ -2,10 +2,10 @@
 
     'use strict';
 
-    var Entity = sphera.entities.Entity,
-        Miner = sphera.entities.Miner,
-        Turret = sphera.entities.Turret,
-        Generator = sphera.entities.Generator;
+    var Entity = sidera.entities.Entity,
+        Miner = sidera.entities.Miner,
+        Turret = sidera.entities.Turret,
+        Generator = sidera.entities.Generator;
 
     var resolution = { height: 900, width: 1200 },
         mode,
@@ -82,7 +82,7 @@
             entities.splice(index, 1);
 
             if (dead[i].shoudExplode) {
-                var explosion = new sphera.entities.Explosion(dead[i]);
+                var explosion = new sidera.entities.Explosion(dead[i]);
                 gameObjects.doodads.push(explosion);
             }
         }
@@ -160,10 +160,10 @@
         gameObjects = buildGameObjectSets();
 
         money = 10000;
-        sphera.levels.next(gameObjects, resolution);
+        sidera.levels.next(gameObjects, resolution);
         setContext(Miner);
 
-        gameObjects.ui.push(new sphera.FPS());
+        gameObjects.ui.push(new sidera.FPS());
     }
 
     function handle_click(evt) {
@@ -196,7 +196,7 @@
 
         // pressed escape
         if (evt.keyCode === 27) {
-            this.transition(sphera.start.screen);
+            this.transition(sidera.start.screen);
         }
 
         var types = {
@@ -210,16 +210,16 @@
         } else {
             switch (evt.char) {
                 case 'q':
-                    sendWaveOf(sphera.entities.Fighter);
+                    sendWaveOf(sidera.entities.Fighter);
                     break;
                 case 'w':
-                    sendWaveOf(sphera.entities.Bomber);
+                    sendWaveOf(sidera.entities.Bomber);
                     break;
             }
         }
     }
 
-    WinJS.Namespace.define('sphera.game', {
+    WinJS.Namespace.define('sidera.game', {
         draw: draw,
         update: update,
         start: start,

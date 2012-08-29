@@ -3,7 +3,7 @@
 
     'use strict';
 
-    var Asteroid = sphera.entities.Asteroid;
+    var Asteroid = sidera.entities.Asteroid;
 
     function next(objects, bounds) {
         var r = Math.random;
@@ -50,7 +50,7 @@
     //    }
     //}
 
-    WinJS.Namespace.define('sphera.levels', {
+    WinJS.Namespace.define('sidera.levels', {
         next: next
     });
 

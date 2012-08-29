@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "sphera", "sphera\sphera.jsproj", "{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "sidera", "sidera\sidera.jsproj", "{6F4822B7-750B-4C4D-ABB8-B1E52F036AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

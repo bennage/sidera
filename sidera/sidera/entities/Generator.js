@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
-    var vector = sphera.math.vector;
-    var geo = sphera.math.geometry;
+    var vector = sidera.math.vector;
+    var geo = sidera.math.geometry;
     var fullCircle = geo.fullCircle;
 
     var pulse_rate = 2000; //ms
@@ -123,7 +123,7 @@
 
             // if we are not blocked, create a new wire
             if (!blocked) {
-                this.wires.push(new sphera.entities.Wire(this, building));
+                this.wires.push(new sidera.entities.Wire(this, building));
             }
         }
 
@@ -204,7 +204,7 @@
 
             // if we are not blocked, create a new wire
             if (!blocked) {
-                self.wires.push(new sphera.entities.Wire(self, entity));
+                self.wires.push(new sidera.entities.Wire(self, entity));
             }
         }
     }
@@ -219,5 +219,5 @@
         return 'rgba(255,255,255,' + alpha + ')';
     }
 
-    WinJS.Namespace.define('sphera.entities', { Generator: Generator });
+    WinJS.Namespace.define('sidera.entities', { Generator: Generator });
 }());

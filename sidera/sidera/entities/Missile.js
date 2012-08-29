@@ -2,10 +2,10 @@
 (function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
+    var Entity = sidera.entities.Entity;
 
-    var vector = sphera.math.vector;
-    var geo = sphera.math.geometry;
+    var vector = sidera.math.vector;
+    var geo = sidera.math.geometry;
     var circle = geo.fullCircle;
 
     var Missile = WinJS.Class.derive(Entity, function (position, target) {
@@ -49,5 +49,5 @@
         }
     });
 
-    WinJS.Namespace.define('sphera.entities', { Missile: Missile });
+    WinJS.Namespace.define('sidera.entities', { Missile: Missile });
 }());

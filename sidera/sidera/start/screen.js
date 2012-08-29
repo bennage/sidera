@@ -18,10 +18,10 @@
     }
 
     function click() {
-        this.transition(sphera.game, { level: 1 });
+        this.transition(sidera.game, { level: 1 });
     }
 
-    WinJS.Namespace.define('sphera.start.screen', {
+    WinJS.Namespace.define('sidera.start.screen', {
         draw: draw,
         update: update,
         click: click

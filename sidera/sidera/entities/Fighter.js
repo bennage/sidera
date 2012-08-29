@@ -1,9 +1,9 @@
 ﻿(function () {
     'use strict';
 
-    var Entity = sphera.entities.Entity;
-    var vector = sphera.math.vector;
-    var geo = sphera.math.geometry;
+    var Entity = sidera.entities.Entity;
+    var vector = sidera.math.vector;
+    var geo = sidera.math.geometry;
     var circle = geo.fullCircle;
 
     var max_speed = 20;
@@ -176,5 +176,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sphera.entities', { Fighter: Fighter });
+    WinJS.Namespace.define('sidera.entities', { Fighter: Fighter });
 }());

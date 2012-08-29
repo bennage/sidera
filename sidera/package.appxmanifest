@@ -2,7 +2,7 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
   <Identity Name="6f4822b7-750b-4c4d-abb8-b1e52f036aec" Version="1.0.0.0" Publisher="CN=bennage" />
   <Properties>
-    <DisplayName>sphera</DisplayName>
+    <DisplayName>sidera</DisplayName>
     <PublisherDisplayName>Christopher Bennage</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="app.html">
-      <VisualElements DisplayName="sphera" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="a strategy defense game" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="sidera" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="a strategy defense game" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="images\splashscreen.png" />
       </VisualElements>
