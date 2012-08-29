@@ -53,6 +53,8 @@
     WinJS.Namespace.define('sidera', {
         bootstrap: function () {
 
+            sidera.resolution = resolution;
+
             canvas = document.querySelector('canvas#board');
             canvas.setAttribute('width', resolution.width);
             canvas.setAttribute('height', resolution.height);
