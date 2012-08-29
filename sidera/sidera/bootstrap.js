@@ -1,16 +1,14 @@
 (function () {
     'use strict';
 
-    var game = sidera.game;
-    var ctx;
-    var buffer, surface;
-    var canvas;
+    var canvas, // the visible canvas element
+        surface, // the 2d context of `canvas`
+        currentScreen; // the currently rendered screen for the game
 
-    var resolution = { height: 900, width: 1200 }
-
-    var currentScreen;
+    var resolution = { height: window.innerHeight, width: window.innerWidth };
 
     function beginLoop() {
+        // TODO: this works, but is not implemented to the standard for `animationStartTime`
         var frameId = 0;
         var start = window.animationStartTime;
 
@@ -55,17 +53,11 @@
     WinJS.Namespace.define('sidera', {
         bootstrap: function () {
 
-            buffer = document.createElement('canvas');
-            buffer.setAttribute('width', resolution.width);
-            buffer.setAttribute('height', resolution.height);
-
             canvas = document.querySelector('canvas#board');
             canvas.setAttribute('width', resolution.width);
             canvas.setAttribute('height', resolution.height);
 
             surface = canvas.getContext('2d');
-            ctx = buffer.getContext('2d');
-            //ctx.scale(2,2);
 
             canvas.addEventListener("click", handle_mouseclick);
             canvas.addEventListener("mousemove", handle_mousemove);
