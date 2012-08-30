@@ -112,7 +112,7 @@
                     if (to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
                         //attack target
                         this.untilRecharge = reloadRate;
-                        this.fire(this.target, entities);
+                        this.fire(this.target, gameObjects.enemies);
                     }
                 }
             }

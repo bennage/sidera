@@ -7,28 +7,30 @@
         Turret = sidera.entities.Turret,
         Generator = sidera.entities.Generator;
 
-    var resolution = { height: 900, width: 1200 },
-        mode,
-        money = 0,
-        context = Miner,
-        cursor,
-        canPlace = false;
-
     var newBuilding;
+    var gameObjects;
+    var status;
+    var cursor = new sidera.Cursor();
 
-    function render_cursor(ctx) {
-        if (!canPlace) return;
-        cursor.render(ctx, true);
-    }
+    function initializeGameObjectSets() {
 
-    function render_status(ctx) {
-        ctx.fillStyle = "white";
-        ctx.font = "18px sans-serif";
-        ctx.fillText('$' + money + ' >> ' + mode, 10, 20);
+        function entityArray() {
+            var array = [];
+            array.dead = [];
+            return array;
+        }
+
+        return {
+            background: entityArray(),
+            enviroment: entityArray(),
+            enemies: entityArray(),
+            friendlies: entityArray(),
+            doodads: entityArray(),
+            ui: entityArray()
+        };
     }
 
     function draw(ctx, elapsed) {
-        var i, x;
 
         var width = ctx.canvas.width;
         var height = ctx.canvas.height;
@@ -47,9 +49,6 @@
         drawSet(gameObjects.enemies, ctx);
         drawSet(gameObjects.doodads, ctx);
         drawSet(gameObjects.ui, ctx);
-
-        render_cursor(ctx);
-        render_status(ctx);
     }
 
     function drawSet(entities, ctx) {
@@ -91,8 +90,7 @@
 
     function update(elapsed) {
 
-        cursor.targets = [];
-        if (cursor.find) cursor.find(cursor, gameObjects);
+        status.mode = cursor.mode;
 
         updateSet(gameObjects.background, elapsed);
         updateSet(gameObjects.enviroment, elapsed);
@@ -112,19 +110,6 @@
 
     }
 
-    function setContext(type) {
-        if (!type) return;
-
-        var x = (cursor) ? cursor.x : -100;
-        var y = (cursor) ? cursor.y : -100;
-
-        context = type;
-        cursor = new context();
-        cursor.x = x;
-        cursor.y = y;
-        mode = cursor.type;
-    }
-
     function sendWaveOf(type) {
 
         for (var i = 3; i > 0; i--) {
@@ -135,61 +120,32 @@
         }
     }
 
-    var gameObjects = buildGameObjectSets();
-
-    function buildGameObjectSets() {
-
-        function entityArray() {
-            var array = [];
-            array.dead = [];
-            return array;
-        }
-
-        return {
-            background: entityArray(),
-            enviroment: entityArray(),
-            enemies: entityArray(),
-            friendlies: entityArray(),
-            doodads: entityArray(),
-            ui: entityArray()
-        };
-    }
-
     function start(options) {
 
-        gameObjects = buildGameObjectSets();
+        gameObjects = initializeGameObjectSets();
 
-        money = 10000;
-        sidera.levels.next(gameObjects, resolution);
-        setContext(Miner);
+        var level = sidera.levels.next(gameObjects);
+        cursor.setContext(Miner);
+
+        status = new sidera.Status(level);
 
         gameObjects.ui.push(new sidera.FPS());
+        gameObjects.ui.push(status);
+        gameObjects.ui.push(cursor);
     }
 
     function handle_click(evt) {
+        var entity = cursor.click(evt, sidera.levels.current, gameObjects);
 
-        if (!context.cost) throw new Error('no cost for context: ' + context);
-
-        if (money < context.cost) return;
-
-        money -= context.cost;
-
-        var entity = new context();
-        entity.hydrate({
-            x: evt.offsetX,
-            y: evt.offsetY,
-            onmining: function (take) {
-                money += take;
-            }
-        });
-        gameObjects.friendlies.push(entity);
-        newBuilding = entity;
+        if (entity) {
+            gameObjects.friendlies.push(entity);
+            newBuilding = entity;
+        }
     }
 
     function handle_mouseover(evt) {
         cursor.x = evt.offsetX;
         cursor.y = evt.offsetY;
-        canPlace = cursor.canPlace(gameObjects.friendlies);
     }
 
     function handle_onkeypress(evt) {
@@ -206,7 +162,7 @@
         };
 
         if (types[evt.keyCode]) {
-            setContext(types[evt.keyCode]);
+            cursor.setContext(types[evt.keyCode]);
         } else {
             switch (evt.char) {
                 case 'q':

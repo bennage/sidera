@@ -8,7 +8,6 @@
 
     var pulse_rate = 2500; //ms
     var mine_rate = 10;
-    var range = 100;
     var required_charge = 5;
     var max_battery = 15;
     var max_health = 5;
@@ -25,6 +24,7 @@
         this.shoudExplode = true;
 
         this.radius = 10;
+        this.range = 100;
     }, {
         render: function (ctx, ghost) {
             var self = this;
@@ -50,6 +50,7 @@
             // health meter
             this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
         },
+
         update: function (elapsed, entities) {
             if (this.untilPulse <= 0) {
                 pulse(this, entities);
@@ -60,13 +61,16 @@
                 this.untilPulse = this.untilPulse - elapsed;
             }
         },
+
         charge: function (available) {
             var capacity = max_battery - this.battery;
             var used = Math.min(available, capacity);
             this.battery += used;
             return used;
         },
+
         find: find_targets
+
     }, {
         cost: 100,
     });
@@ -99,7 +103,7 @@
 
                 var v = vector(self, entity);
                 var d = v.distance();
-                if ((d - entity.radius) <= range) {
+                if ((d - entity.radius) <= self.range) {
                     var candidates = gameObjects.enviroment.concat(gameObjects.friendlies);
                     var blocked = candidates.some(function (blocker) {
                         if (blocker === self || blocker === entity) return false;

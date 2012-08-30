@@ -9,7 +9,6 @@
 
     var pulse_rate = 2000; //ms
     var output_rate = 10;
-    var range = 100;
     var max_battery = 500;
     var max_health = 20;
 
@@ -23,18 +22,17 @@
         this.untilPulse = 0;
         this.charge = 10;
         this.battery = 0;
+        this.range = 100;
 
     }, {
 
         render: function (ctx, ghost) {
             var self = this;
 
-            ctx.strokeStyle = ghost ? 'rgba(0,0,255,0.8)' : 'rgba(255,255,0,1)';
-
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle = ghost ? 'rgba(0,0,255,0.8)' : 'blue';
-            ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI, false);
+            ctx.arc(self.x, self.y, self.radius, 0, fullCircle, false);
             ctx.moveTo(self.x, self.y - self.radius);
             ctx.lineTo(self.x, self.y + self.radius);
             ctx.moveTo(self.x - self.radius, self.y);
@@ -43,22 +41,14 @@
 
             ctx.beginPath();
             ctx.fillStyle = ghost ? 'rgba(0,0,255,0.8)' : fillByCharge(this);
-            ctx.arc(self.x, self.y, 8, 0, 2 * Math.PI, false);
+            ctx.arc(self.x, self.y, 8, 0, fullCircle, false);
             ctx.fill();
 
-            if (ghost) {
-                ctx.beginPath();
-                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-                ctx.arc(self.x, self.y, range, 0, fullCircle, false);
-                ctx.stroke();
-            } else {
+            // health meter
+            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
 
-                // health meter
-                this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
-
-                for (var i = self.wires.length - 1; i >= 0; i--) {
-                    self.wires[i].render(ctx, ghost);
-                }
+            for (var i = self.wires.length - 1; i >= 0; i--) {
+                self.wires[i].render(ctx, ghost);
             }
         },
 
@@ -75,56 +65,7 @@
         find: find_targets,
 
         whenBuilding: function (building, gameObjects) {
-
-            var already_connected,
-                distance_to_entity,
-                distance_to_edge,
-                blocker,
-                blocked,
-                intersected,
-                projected;
-
-            // we don't care about unpowered entities
-            if (!building.powered) { return; }
-
-            // are we already connected to the entity?
-            already_connected = false;
-            for (var j = this.wires.length - 1; j >= 0; j--) {
-                if (this.wires[j].tail === building) {
-                    already_connected = true;
-                    break;
-                }
-            }
-
-            if (already_connected) { return; }
-
-            // is the entity within range?
-            distance_to_entity = vector(this, building).distance();
-            distance_to_edge = distance_to_entity - building.radius;
-
-            if (distance_to_edge > range) { return; }
-
-            var blockers = gameObjects.friendlies.concat(gameObjects.enviroment);
-
-            // is the entity blocked?
-            blocked = false;
-            for (var j = blockers.length - 1; j >= 0; j--) {
-                blocker = blockers[j];
-                if (blocker === this || blocker === building) { continue; };
-
-                // todo: these are very expensive
-                // let's find a way to call them less frequently
-                intersected = geo.lineIntersectsCircle([this, building], blocker);
-                projected = geo.pointProjectsOntoSegment(this, building, blocker)
-                blocked = (intersected && projected);
-
-                if (blocked) { break; }
-            }
-
-            // if we are not blocked, create a new wire
-            if (!blocked) {
-                this.wires.push(new sidera.entities.Wire(this, building));
-            }
+            find_targets(this, gameObjects);
         }
 
     }, {
@@ -185,7 +126,7 @@
             distance_to_entity = vector(self, entity).distance();
             distance_to_edge = distance_to_entity - entity.radius;
 
-            if (distance_to_edge > range) { continue; }
+            if (distance_to_edge > self.range) { continue; }
 
             // is the entity blocked?
             blocked = false;

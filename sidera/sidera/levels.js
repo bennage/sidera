@@ -5,18 +5,25 @@
 
     var Asteroid = sidera.entities.Asteroid;
 
-    function next(objects, bounds) {
+    var state = {
+        money: 10000
+    };
+
+
+    function next(objects) {
         var r = Math.random;
         var asteroid_count = 15;
 
         while (asteroid_count > 0) {
             var a = new Asteroid();
-            a.x = parseInt(r() * bounds.width, 10);
-            a.y = parseInt(r() * bounds.height, 10);
+            a.x = parseInt(r() * sidera.resolution.width, 10);
+            a.y = parseInt(r() * sidera.resolution.height, 10);
             a.amount = parseInt(r() * 2000, 10) + 200;
             objects.enviroment.push(a);
             asteroid_count--;
         }
+
+        return state;
     }
 
     //function loadLevel(done) {
@@ -50,8 +57,10 @@
     //    }
     //}
 
+
     WinJS.Namespace.define('sidera.levels', {
-        next: next
+        next: next,
+        current: state
     });
 
 }());

@@ -72,6 +72,8 @@
     <Content Include="sidera\entities\Miner.js" />
     <Content Include="sidera\entities\Turret.js" />
     <Content Include="sidera\entities\Wire.js" />
+    <Content Include="sidera\cursor.js" />
+    <Content Include="sidera\status.js" />
     <Content Include="sidera\fps.js" />
     <Content Include="sidera\game.js" />
     <Content Include="sidera\levels.js" />

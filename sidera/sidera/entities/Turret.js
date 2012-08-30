@@ -6,7 +6,6 @@
     var vector = sidera.math.vector;
     var geo = sidera.math.geometry;
 
-    var range = 200;
     var laser_charge = 5;
     var laser_cooldown = 1 * 1000; // ms
 
@@ -27,6 +26,7 @@
         this.orientation = (Math.PI * 2) * Math.random(); // start with the turrent pointing a random direction
 
         this.radius = 5;
+        this.range = 200;
     }, {
         render: function (ctx, ghost) {
             var self = this;
@@ -92,7 +92,7 @@
 
             this.orientation = this.orientation % (2 * Math.PI);
 
-            if (to_target.distance() <= range && Math.abs(delta) <= max_angle) {
+            if (to_target.distance() <= this.range && Math.abs(delta) <= max_angle) {
                 this.cooldown = laser_cooldown;
                 this.battery -= laser_charge;
                 this.target.hit(1);
