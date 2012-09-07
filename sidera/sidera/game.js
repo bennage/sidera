@@ -55,7 +55,25 @@
         var i, x;
         for (i = entities.length - 1; i >= 0; i--) {
             x = entities[i];
-            if (!x.render) debugger;
+            if (x.sheet) {
+                var w = Math.floor(x.sheet.width * x.scale);
+                var h = Math.floor(x.sheet.height * x.scale);
+
+                ctx.save();
+
+                ctx.translate(x.x, x.y);
+
+                if (x.orientation) {
+                    ctx.rotate(x.orientation);
+                }
+
+                ctx.drawImage(x.sheet, -w/2, -h/2, w, h);
+
+                ctx.restore();
+
+            } else {
+                
+            }
             x.render(ctx);
         }
     }

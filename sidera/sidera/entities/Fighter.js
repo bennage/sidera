@@ -29,28 +29,13 @@
         this.untilRecharge = rechargeRate;
 
         this.target = null;
+
+        this.sheet = Fighter.sprite();
     }, {
         setup: function () { this },
         render: function (ctx, ghost) {
-            var self = this;
-            var x = self.x;
-            var y = self.y;
-
-            ctx.fillStyle = 'blue';
-
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(this.orientation);
-
-            ctx.beginPath();
-            ctx.moveTo(10, 0);
-            ctx.lineTo(-10, -5);
-            ctx.lineTo(-5, 0);
-            ctx.lineTo(-10, 5);
-            ctx.lineTo(10, 0);
-            ctx.fill();
-
-            ctx.restore();
+            var x = this.x;
+            var y = this.y;
 
             if (this.cooldown > 0 && this.target) {
                 var fade = this.cooldown / laser_cooldown;
@@ -61,15 +46,7 @@
                 ctx.lineTo(this.target.x, this.target.y);
                 ctx.stroke();
             }
-
-            if (this.focus) {
-                ctx.beginPath();
-                ctx.fillStyle = 'rgba(255,0,0,0.2)';
-                ctx.arc(this.focus.x, this.focus.y, 2, 0, circle, false);
-                ctx.fill();
-            }
         },
-
         update: function (elapsed, gameObjects) {
 
             // let's only peform the acquisition every other time
@@ -148,7 +125,25 @@
                 }
             }
         }
+    },
+    {
+        sprite: function () {
+            var canvas = document.createElement('canvas');
+            canvas.height = 10;
+            canvas.width = 20;
 
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'blue';
+            ctx.beginPath();
+            ctx.moveTo(20, 5);
+            ctx.lineTo(0, 0);
+            ctx.lineTo(5, 5);
+            ctx.lineTo(0, 10);
+            ctx.lineTo(20, 5);
+            ctx.fill();
+
+            return canvas;
+        }
     });
 
     function acquireTarget(self, gameObjects) {

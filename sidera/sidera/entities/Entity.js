@@ -3,6 +3,7 @@
 
     var Entity = WinJS.Class.define(function (type) {
         this.type = type;
+        this.scale = 1;
         this.x = 100;
         this.y = 100;
         this.radius = 0;

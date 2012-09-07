@@ -7,13 +7,10 @@
         Entity.prototype.constructor.call(this, 'Asteroid');
 
         this.amount = 0;
+        this.sheet = Asteroid.sprite();
 
     }, {
         render: function (ctx) {
-            ctx.beginPath();
-            ctx.fillStyle = 'brown';
-            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-            ctx.fill();
         },
         mine: function (amount, success) {
             if (this.amount > 0) {
@@ -29,6 +26,27 @@
         },
         update: function () {
             this.radius = Math.sqrt(this.amount / Math.PI);
+            this.scale = this.radius/100;
+        }
+    }, {
+        sprite: function () {
+            var max_height = 100;
+            var max_width = 100;
+
+            var x = max_width / 2;
+            var y = max_height / 2;
+
+            var canvas = document.createElement('canvas');
+            canvas.height = max_height;
+            canvas.width = max_width;
+
+            var ctx = canvas.getContext('2d');
+            ctx.beginPath();
+            ctx.fillStyle = 'brown';
+            ctx.arc(x, y, 50, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            return canvas;
         }
     });
 
