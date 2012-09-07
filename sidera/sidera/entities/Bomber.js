@@ -19,29 +19,10 @@
 
         this.thrust = 0.3;
         this.untilRecharge = reloadRate * Math.random() + 1000;
+        this.sheet = Bomber.sprite();
 
     }, {
         render: function (ctx, ghost) {
-            var self = this;
-            var x = self.x;
-            var y = self.y;
-
-            ctx.fillStyle = 'darkred';
-            ctx.strokeStyle = 'darkred';
-
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(this.orientation);
-
-            ctx.beginPath();
-            ctx.moveTo(-20, -6);
-            ctx.lineTo(20, -10);
-            ctx.bezierCurveTo(6, 4, 6, -4, 20, 10);
-            ctx.lineTo(-20, 6);
-            ctx.bezierCurveTo(-7, 0, -7, 0, -20, -6);
-            ctx.fill();
-
-            ctx.restore();
         },
 
         update: function (elapsed, gameObjects) {
@@ -121,6 +102,28 @@
         fire: function (target, entities) {
             var missile = new Missile(this, target);
             entities.push(missile);
+        }
+    },
+    {
+        sprite: function () {
+            var canvas = document.createElement('canvas');
+            canvas.height = 20;
+            canvas.width = 40;
+
+            var ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = 'darkred';
+            ctx.strokeStyle = 'darkred';
+
+            ctx.beginPath();
+            ctx.moveTo(0, 4);
+            ctx.lineTo(40, 0);
+            ctx.bezierCurveTo(26, 14, 26, 6, 40, 20);
+            ctx.lineTo(0, 16);
+            ctx.bezierCurveTo(13, 10, 13, 10, 0, 4);
+            ctx.fill();
+
+            return canvas;
         }
     });
 
