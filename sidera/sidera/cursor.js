@@ -19,7 +19,7 @@
             if (e.range && this.overValidPlacement) {
                 ctx.beginPath();
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
                 ctx.fillStyle = 'rgba(255,255,255,0.2)';
                 ctx.arc(e.x, e.y, e.range, 0, fullCircle, false);
                 ctx.stroke();
@@ -27,12 +27,26 @@
             }
 
             if (!this.overValidPlacement) {
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = 'rgba(255,0,0,0.9)';
                 ctx.arc(e.x, e.y, e.radius + 3, 0, fullCircle, false);
                 ctx.fill();
             }
 
-            e.render(ctx);
+            var w = Math.floor(e.sheet.width * e.scale);
+            var h = Math.floor(e.sheet.height * e.scale);
+
+            ctx.save();
+
+            ctx.translate(e.x, e.y);
+
+            if (e.orientation) {
+                ctx.rotate(e.orientation);
+            }
+
+            ctx.drawImage(e.sheet, -w / 2, -h / 2, w, h);
+
+            ctx.restore();
+
 
         },
 
