@@ -15,6 +15,8 @@
     var Miner = WinJS.Class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Miner');
 
+        this.sheet = Miner.sprite();
+
         this.untilPulse = 0;
         this.battery = 0;
         this.targets = [];
@@ -26,23 +28,18 @@
         this.radius = 10;
         this.range = 100;
     }, {
-        render: function (ctx, ghost) {
-            var self = this;
+        render: function (ctx) {
 
-            ctx.strokeStyle = ghost ? 'rgba(255,255,255,0.2)' : strokeByPulse(this);
+            ctx.strokeStyle = strokeByPulse(this);
             ctx.lineWidth = 1;
 
-            self.targets.forEach(function (target) {
+            //todo: no forEach!
+            this.targets.forEach(function (target) {
                 ctx.beginPath();
                 ctx.moveTo(self.x, self.y);
                 ctx.lineTo(target.x, target.y);
                 ctx.stroke();
             });
-
-            ctx.beginPath();
-            ctx.fillStyle = ghost ? 'rgba(255,255,255,0.2)' : 'gray';
-            ctx.arc(self.x, self.y, 10, 0, 2 * Math.PI, false);
-            ctx.fill();
 
             // battery meter
             this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 });
@@ -73,6 +70,20 @@
 
     }, {
         cost: 100,
+        sprite: function () {
+            var canvas = document.createElement('canvas');
+            canvas.height = 20;
+            canvas.width = 20;
+
+            var ctx = canvas.getContext('2d');
+
+            ctx.beginPath();
+            ctx.fillStyle = 'gray';
+            ctx.arc(10, 10, 10, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            return canvas;
+        }
     });
 
     function strokeByPulse(self) {

@@ -16,6 +16,8 @@
     var Turret = WinJS.Class.derive(sidera.entities.Entity, function () {
         Entity.prototype.constructor.call(this, 'Turret');
 
+        this.sheet = Turret.sprite();
+
         this.cooldown = 0;
         this.battery = 0;
 
@@ -28,34 +30,13 @@
         this.radius = 5;
         this.range = 200;
     }, {
-        render: function (ctx, ghost) {
-            var self = this;
-
-            ctx.beginPath();
-            ctx.fillStyle = ghost ? 'rgba(0,255,0,0.2)' : 'green';
-            ctx.arc(self.x, self.y, 10, 0, 2 * Math.PI, false);
-            ctx.fill();
+        render: function (ctx) {
 
             // battery meter
             this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 });
 
             // health meter
             this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
-
-            // cannon
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = 'rgba(0,64,0,1)';
-
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.orientation);
-
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(10, 0);
-            ctx.stroke();
-
-            ctx.restore();
 
             if (this.cooldown > 0 && this.target) {
                 var fade = this.cooldown / laser_cooldown;
@@ -106,6 +87,29 @@
         }
     }, {
         cost: 20,
+        sprite: function () {
+            var canvas = document.createElement('canvas');
+            canvas.height = 20;
+            canvas.width = 20;
+
+            var ctx = canvas.getContext('2d');
+
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.arc(10, 10, 10, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            // cannon
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = 'rgba(0,64,0,1)';
+
+            ctx.beginPath();
+            ctx.moveTo(10, 10);
+            ctx.lineTo(20, 10);
+            ctx.stroke();
+
+            return canvas;
+        }
     });
 
     function acquireTarget(self, gameObjects) {

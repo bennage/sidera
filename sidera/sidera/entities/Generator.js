@@ -15,6 +15,8 @@
     var Generator = WinJS.Class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Generator');
 
+        this.sheet = Generator.sprite();
+
         this.radius = 20;
         this.wires = [];
         this.hp = max_health;
@@ -26,29 +28,19 @@
 
     }, {
 
-        render: function (ctx, ghost) {
-            var self = this;
+        render: function (ctx) {
 
             ctx.beginPath();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = ghost ? 'rgba(0,0,255,0.8)' : 'blue';
-            ctx.arc(self.x, self.y, self.radius, 0, fullCircle, false);
-            ctx.moveTo(self.x, self.y - self.radius);
-            ctx.lineTo(self.x, self.y + self.radius);
-            ctx.moveTo(self.x - self.radius, self.y);
-            ctx.lineTo(self.x + self.radius, self.y);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.fillStyle = ghost ? 'rgba(0,0,255,0.8)' : fillByCharge(this);
-            ctx.arc(self.x, self.y, 8, 0, fullCircle, false);
+            ctx.fillStyle = fillByCharge(this);
+            ctx.arc(this.x, this.y, 8, 0, fullCircle, false);
             ctx.fill();
 
             // health meter
             this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
 
-            for (var i = self.wires.length - 1; i >= 0; i--) {
-                self.wires[i].render(ctx, ghost);
+            // power transfers
+            for (var i = this.wires.length - 1; i >= 0; i--) {
+                this.wires[i].render(ctx);
             }
         },
 
@@ -69,7 +61,26 @@
         }
 
     }, {
-        cost: 500
+        cost: 500,
+        sprite: function () {
+            var canvas = document.createElement('canvas');
+            canvas.height = 40;
+            canvas.width = 40;
+
+            var ctx = canvas.getContext('2d');
+
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'blue';
+            ctx.arc(20, 20, 20, 0, fullCircle, false);
+            ctx.moveTo(20, 0);
+            ctx.lineTo(20, 40);
+            ctx.moveTo(0, 20);
+            ctx.lineTo(40, 20);
+            ctx.stroke();
+
+            return canvas;
+        }
     });
 
     function pulse(self) {
