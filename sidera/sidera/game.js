@@ -12,6 +12,12 @@
     var status;
     var cursor = new sidera.Cursor();
 
+    var camera = {
+        x: 0,
+        y: 0,
+        z: 1
+    };
+
     function initializeGameObjectSets() {
 
         function entityArray() {
@@ -52,29 +58,41 @@
     }
 
     function drawSet(entities, ctx) {
-        var i, x;
+        var centerX = Math.round(sidera.resolution.width / 2);
+        var centerY = Math.round(sidera.resolution.height / 2);
+
+        var i, entity;
+        var sprite;
         for (i = entities.length - 1; i >= 0; i--) {
-            x = entities[i];
-            if (x.sheet) {
-                var w = Math.floor(x.sheet.width * x.scale);
-                var h = Math.floor(x.sheet.height * x.scale);
+            entity = entities[i];
+            sprite = entity.sheet;
+
+            if (sprite) {
+                var scale = 1 / camera.z;
+
+                var w = Math.floor(sprite.width * entity.scale * scale);
+                var h = Math.floor(sprite.height * entity.scale * scale);
+
+                var _x = entity.x + camera.x;
+                var _y = entity.y + camera.y;
+
+                _x = ((_x - centerX) * scale) + centerX;
+                _y = ((_y - centerY) * scale) + centerY;
 
                 ctx.save();
 
-                ctx.translate(x.x, x.y);
+                ctx.translate(_x, _y);
 
-                if (x.orientation) {
-                    ctx.rotate(x.orientation);
+                if (entity.orientation) {
+                    ctx.rotate(entity.orientation);
                 }
 
-                ctx.drawImage(x.sheet, -w/2, -h/2, w, h);
+                ctx.drawImage(sprite, -w / 2, -h / 2, w, h);
 
                 ctx.restore();
 
-            } else {
-                
             }
-            x.render(ctx);
+            entity.render(ctx);
         }
     }
 
@@ -153,7 +171,11 @@
     }
 
     function handle_click(evt) {
-        var entity = cursor.click(evt, sidera.levels.current, gameObjects);
+        var coords = {
+            offsetX: evt.offsetX - camera.x,
+            offsetY: evt.offsetY - camera.y
+        }
+        var entity = cursor.click(coords, sidera.levels.current, gameObjects);
 
         if (entity) {
             gameObjects.friendlies.push(entity);
@@ -186,8 +208,28 @@
                 case 'q':
                     sendWaveOf(sidera.entities.Fighter);
                     break;
-                case 'w':
+                case 'e':
                     sendWaveOf(sidera.entities.Bomber);
+                    break;
+                case 'w':
+                    camera.y -= 5;
+                    break;
+                case 's':
+                    camera.y += 5;
+                    break;
+                case 'a':
+                    camera.x -= 5;
+                    break;
+                case 'd':
+                    camera.x += 5;
+                    break;
+                case 'z':
+                    camera.z -= 0.1;
+                    camera.z = Math.max(camera.z, 1);
+                    break;
+                case 'c':
+                    camera.z += 0.1;
+                    camera.z = Math.min(camera.z, 4);
                     break;
             }
         }

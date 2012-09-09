@@ -74,7 +74,7 @@
             this.find = this._entity.find;
         },
 
-        click: function (args, level, gameObjects) {
+        click: function (coords, level, gameObjects) {
 
             if (!this.context.cost) throw new Error('no cost for context: ' + this.context);
 
@@ -85,8 +85,8 @@
             var entity = new this.context();
 
             entity.hydrate({
-                x: args.offsetX,
-                y: args.offsetY,
+                x: coords.offsetX,
+                y: coords.offsetY,
                 onmining: function (take) {
                     level.money += take;
                 }
