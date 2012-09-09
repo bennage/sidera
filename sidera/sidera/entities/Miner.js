@@ -47,10 +47,10 @@
             });
 
             // battery meter
-            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 });
+            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 }, scale);
 
             // health meter
-            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
+            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 }, scale);
         },
 
         update: function (elapsed, entities) {

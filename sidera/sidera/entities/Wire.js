@@ -6,14 +6,19 @@
         this.tail = tail;
         this.pumping = 0;
     }, {
-        render: function (ctx, ghost) {
+        render: function (ctx, scale) {
             var self = this;
 
-            ctx.strokeStyle = 'rgba(255,0,0,1)';
-            ctx.lineWidth = 1 + (3 * self.pumping);
+            var tail = {
+                x: (this.tail.x - this.head.x) * scale,
+                y: (this.tail.y - this.head.y) * scale
+            };
 
-            ctx.moveTo(self.head.x, self.head.y);
-            ctx.lineTo(self.tail.x, self.tail.y);
+            ctx.strokeStyle = 'rgba(255,0,0,1)';
+            ctx.lineWidth = (1 + (3 * self.pumping)) * scale;
+
+            ctx.moveTo(0, 0);
+            ctx.lineTo(tail.x, tail.y);
             ctx.stroke();
         },
         update: function (elapsed, entities) {

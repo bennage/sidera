@@ -28,19 +28,19 @@
 
     }, {
 
-        render: function (ctx) {
+        render: function (ctx, scale) {
 
             ctx.beginPath();
             ctx.fillStyle = fillByCharge(this);
-            ctx.arc(this.x, this.y, 8, 0, fullCircle, false);
+            ctx.arc(0, 0, 8, 0, fullCircle, false);
             ctx.fill();
 
             // health meter
-            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
+            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 }, scale);
 
             // power transfers
             for (var i = this.wires.length - 1; i >= 0; i--) {
-                this.wires[i].render(ctx);
+                this.wires[i].render(ctx, scale);
             }
         },
 

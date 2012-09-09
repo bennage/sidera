@@ -30,21 +30,27 @@
         this.radius = 5;
         this.range = 200;
     }, {
-        render: function (ctx) {
+        render: function (ctx, scale) {
 
             // battery meter
-            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 });
+            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 }, scale);
 
             // health meter
-            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 });
+            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 }, scale);
 
             if (this.cooldown > 0 && this.target) {
                 var fade = this.cooldown / laser_cooldown;
-                ctx.lineWidth = 1;
+                var coords = {
+                    x: (this.target.x - this.x) * scale,
+                    y: (this.target.y - this.y) * scale
+                };
+
+                ctx.lineWidth = 1 * scale;
                 ctx.strokeStyle = 'rgba(255,0,255,' + fade + ')';
+
                 ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.target.x, this.target.y);
+                ctx.moveTo(0, 0);
+                ctx.lineTo(coords.x, coords.y);
                 ctx.stroke();
             }
         },

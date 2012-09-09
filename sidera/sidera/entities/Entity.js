@@ -34,14 +34,14 @@
             ctx.fillText(this.type, this.x, this.y);
         },
 
-        renderMeter: function (ctx, percent, color, offset) {
-            var height = 12;
-            var width = 4;
+        renderMeter: function (ctx, percent, color, offset, scale) {
+            var height = 12 * scale;
+            var width = 4 * scale;
             var amount = percent * height;
-            var x = offset.x;
-            var y = offset.y;
+            var x = offset.x * scale;
+            var y = offset.y * scale;
 
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1 * scale;
             ctx.beginPath();
             ctx.fillStyle = color;
             ctx.strokeStyle = color;
