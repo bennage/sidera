@@ -28,16 +28,21 @@
         this.radius = 10;
         this.range = 100;
     }, {
-        render: function (ctx) {
+        render: function (ctx, scale) {
 
             ctx.strokeStyle = strokeByPulse(this);
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1 * scale;;
 
             //todo: no forEach!
+            var self = this;
             this.targets.forEach(function (target) {
+                var coords = {
+                    x: (target.x - self.x) * scale,
+                    y: (target.y - self.y) * scale
+                };
                 ctx.beginPath();
-                ctx.moveTo(self.x, self.y);
-                ctx.lineTo(target.x, target.y);
+                ctx.moveTo(0, 0);
+                ctx.lineTo(coords.x, coords.y);
                 ctx.stroke();
             });
 

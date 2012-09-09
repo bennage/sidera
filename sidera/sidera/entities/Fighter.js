@@ -32,18 +32,22 @@
 
         this.sheet = Fighter.sprite();
     }, {
-        setup: function () { this },
-        render: function (ctx, ghost) {
-            var x = this.x;
-            var y = this.y;
-
+        render: function (ctx, scale) {
             if (this.cooldown > 0 && this.target) {
+
                 var fade = this.cooldown / laser_cooldown;
-                ctx.lineWidth = 1;
+
+                var coords = {
+                    x: (this.target.x - this.x) * scale,
+                    y: (this.target.y - this.y) * scale
+                };
+
+                ctx.lineWidth = 1 * scale;
                 ctx.strokeStyle = 'rgba(255,255,0,' + fade + ')';
+
                 ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.lineTo(this.target.x, this.target.y);
+                ctx.moveTo(0, 0);
+                ctx.lineTo(coords.x, coords.y);
                 ctx.stroke();
             }
         },

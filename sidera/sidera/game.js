@@ -58,8 +58,23 @@
     }
 
     function drawSet(entities, ctx) {
+        //todo: move this calculations somewhere else
         var centerX = Math.round(sidera.resolution.width / 2);
         var centerY = Math.round(sidera.resolution.height / 2);
+        var scale = 1 / camera.z;
+
+        function t(coords) {
+            var _x = coords.x + camera.x;
+            var _y = coords.y + camera.y;
+
+            _x = ((_x - centerX) * scale) + centerX;
+            _y = ((_y - centerY) * scale) + centerY;
+
+            return {
+                x: _x,
+                y: _y
+            };
+        }
 
         var i, entity;
         var sprite;
@@ -68,20 +83,16 @@
             sprite = entity.sheet;
 
             if (sprite) {
-                var scale = 1 / camera.z;
 
                 var w = Math.floor(sprite.width * entity.scale * scale);
                 var h = Math.floor(sprite.height * entity.scale * scale);
 
-                var _x = entity.x + camera.x;
-                var _y = entity.y + camera.y;
-
-                _x = ((_x - centerX) * scale) + centerX;
-                _y = ((_y - centerY) * scale) + centerY;
+                var coords = t(entity);
 
                 ctx.save();
 
-                ctx.translate(_x, _y);
+                ctx.translate(coords.x, coords.y);
+                entity.render(ctx, scale);
 
                 if (entity.orientation) {
                     ctx.rotate(entity.orientation);
@@ -91,8 +102,9 @@
 
                 ctx.restore();
 
+            } else {
+                entity.render(ctx);
             }
-            entity.render(ctx);
         }
     }
 

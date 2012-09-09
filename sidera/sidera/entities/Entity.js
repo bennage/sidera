@@ -38,8 +38,8 @@
             var height = 12;
             var width = 4;
             var amount = percent * height;
-            var x = this.x + offset.x;
-            var y = this.y - offset.y;
+            var x = offset.x;
+            var y = offset.y;
 
             ctx.lineWidth = 1;
             ctx.beginPath();
