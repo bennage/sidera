@@ -22,7 +22,7 @@
         this.sheet = Bomber.sprite();
 
     }, {
-        render: function (ctx, ghost) {
+        render: function (ctx) {
         },
 
         update: function (elapsed, gameObjects) {

@@ -11,12 +11,7 @@
     var gameObjects;
     var status;
     var cursor = new sidera.Cursor();
-
-    var camera = {
-        x: 0,
-        y: 0,
-        z: 1
-    };
+    var camera;
 
     function initializeGameObjectSets() {
 
@@ -54,56 +49,43 @@
         drawSet(gameObjects.friendlies, ctx);
         drawSet(gameObjects.enemies, ctx);
         drawSet(gameObjects.doodads, ctx);
-        drawSet(gameObjects.ui, ctx);
+        drawSet(gameObjects.ui, ctx, false);
     }
 
-    function drawSet(entities, ctx) {
+    function drawSet(entities, ctx, scales) {
+        if (scales === undefined) scales = true;
+
         //todo: move this calculations somewhere else
-        var centerX = Math.round(sidera.resolution.width / 2);
-        var centerY = Math.round(sidera.resolution.height / 2);
-        var scale = 1 / camera.z;
-
-        function t(coords) {
-            var _x = coords.x + camera.x;
-            var _y = coords.y + camera.y;
-
-            _x = ((_x - centerX) * scale) + centerX;
-            _y = ((_y - centerY) * scale) + centerY;
-
-            return {
-                x: _x,
-                y: _y
-            };
-        }
+        var scale = camera.scale();
 
         var i, entity;
         var sprite;
         for (i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
             sprite = entity.sheet;
+           
 
-            if (sprite) {
-
-                var w = Math.floor(sprite.width * entity.scale * scale);
-                var h = Math.floor(sprite.height * entity.scale * scale);
-
-                var coords = t(entity);
+            if (scales) {
+                var coords = camera.project(entity);
 
                 ctx.save();
 
                 ctx.translate(coords.x, coords.y);
-                entity.render(ctx, scale);
+            }
 
+            entity.render(ctx, scale);
+
+            if (scales) {
                 if (entity.orientation) {
                     ctx.rotate(entity.orientation);
                 }
 
-                ctx.drawImage(sprite, -w / 2, -h / 2, w, h);
-
+                if (sprite) {
+                    var w = Math.floor(sprite.width * entity.scale * scale);
+                    var h = Math.floor(sprite.height * entity.scale * scale);
+                    ctx.drawImage(sprite, -w / 2, -h / 2, w, h);
+                }
                 ctx.restore();
-
-            } else {
-                entity.render(ctx);
             }
         }
     }
@@ -170,6 +152,7 @@
 
     function start(options) {
 
+        camera = new sidera.Camera(sidera.resolution);
         gameObjects = initializeGameObjectSets();
 
         var level = sidera.levels.next(gameObjects);

@@ -3,7 +3,7 @@
 
     var Entity = sidera.entities.Entity;
 
-    var circle = sidera.math.geometry.fullCircle;
+    var fullCircle = sidera.math.geometry.fullCircle;
 
     var Explosion = WinJS.Class.derive(Entity, function (corpse) {
         Entity.prototype.constructor.call(this, 'Explosion');
@@ -24,7 +24,7 @@
         }
 
     }, {
-        render: function (ctx) {
+        render: function (ctx, scale) {
             var count = this.clouds.length;
             var puff;
             for (var i = 0; i < count; i++) {
@@ -33,7 +33,7 @@
 
                 ctx.beginPath();
                 ctx.fillStyle = 'rgba(255,255,0,' + puff.life / 1000 + ')';
-                ctx.arc(this.x + puff.x, this.y + puff.y, puff.r, 0, circle, false);
+                ctx.arc(puff.x * scale, puff.y * scale, puff.r * scale, 0, fullCircle, false);
                 ctx.fill();
             }
         },

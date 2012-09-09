@@ -11,6 +11,7 @@
     var Missile = WinJS.Class.derive(Entity, function (position, target) {
         Entity.prototype.constructor.call(this, 'Missile');
 
+        this.sheet = Missile.sprite();
         this.x = position.x;
         this.y = position.y;
 
@@ -25,10 +26,6 @@
 
     }, {
         render: function (ctx) {
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(255,255,0,1)';
-            ctx.arc(this.x, this.y, 2, 0, circle, false);
-            ctx.fill();
         },
         orient: function (target) {
             var to_target = vector(target, this);
@@ -46,6 +43,21 @@
                 this.target.hit(20);
                 this.dead = true;
             }
+        }
+    }, {
+        sprite: function () {
+
+            var canvas = document.createElement('canvas');
+            canvas.height = 4;
+            canvas.width = 4;
+
+            var ctx = canvas.getContext('2d');
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255,255,0,1)';
+            ctx.arc(2, 2, 2, 0, circle, false);
+            ctx.fill();
+
+            return canvas;
         }
     });
 
