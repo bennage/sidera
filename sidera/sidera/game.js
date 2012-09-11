@@ -12,6 +12,7 @@
     var status;
     var cursor = new sidera.Cursor();
     var camera;
+    var isGameOver = false;
 
     function initializeGameObjectSets() {
 
@@ -50,6 +51,18 @@
         drawSet(gameObjects.enemies, ctx);
         drawSet(gameObjects.doodads, ctx);
         drawSet(gameObjects.ui, ctx, false);
+
+        if (isGameOver) {
+            var centerText = function (ctx, text, y) {
+                var measurement = ctx.measureText(text);
+                var x = (ctx.canvas.width - measurement.width) / 2;
+                ctx.fillText(text, x, y);
+            }
+
+            ctx.fillStyle = 'white';
+            ctx.font = '48px monospace';
+            centerText(ctx, 'game over', 300);
+        }
     }
 
     function drawSet(entities, ctx, scales) {
@@ -137,6 +150,10 @@
             newBuilding = null;
         }
 
+        if (gameObjects.friendlies.length === 0 && status.state.money < 9999) {
+            isGameOver = true;
+        }
+
     }
 
     function sendWaveOf(type) {
@@ -150,6 +167,8 @@
     }
 
     function start(options) {
+
+        isGameOver = false;
 
         camera = new sidera.Camera(sidera.resolution);
         gameObjects = initializeGameObjectSets();
