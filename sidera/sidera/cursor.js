@@ -27,6 +27,7 @@
             }
 
             if (!this.overValidPlacement) {
+                ctx.beginPath();
                 ctx.fillStyle = 'rgba(255,0,0,0.9)';
                 ctx.arc(e.x, e.y, e.radius + 3, 0, fullCircle, false);
                 ctx.fill();
