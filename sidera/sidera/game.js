@@ -63,7 +63,6 @@
         for (i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
             sprite = entity.sheet;
-           
 
             if (scales) {
                 var coords = camera.project(entity);
@@ -160,6 +159,7 @@
 
         status = new sidera.Status(level);
 
+        gameObjects.ui.push(new sidera.MiniMap(gameObjects, camera));
         gameObjects.ui.push(new sidera.FPS());
         gameObjects.ui.push(status);
         gameObjects.ui.push(cursor);
