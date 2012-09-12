@@ -25,10 +25,12 @@
         this.colors['enemies'] = 'red';
 
         this.x = 20;
-        this.y = 200;
+        this.y = 420;
+        this.on = false;
     }, {
-
         render: function (ctx) {
+            if (!this.on) { return; }
+
             var self = this;
 
             this.renderMap(this.map);
@@ -39,7 +41,6 @@
             ctx.strokeStyle = 'rgb(255,255,255)';
             ctx.stroke();
         },
-
         renderMap: function (ctx) {
             var self = this;
 
@@ -68,7 +69,6 @@
         },
 
         update: function (elapsed) {
-
         }
     });
 

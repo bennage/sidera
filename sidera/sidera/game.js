@@ -12,6 +12,7 @@
     var status;
     var cursor = new sidera.Cursor();
     var camera;
+    var minimap;
     var isGameOver = false;
 
     function initializeGameObjectSets() {
@@ -177,8 +178,8 @@
         cursor.setContext(Miner);
 
         status = new sidera.Status(level);
-
-        gameObjects.ui.push(new sidera.MiniMap(gameObjects, camera));
+        minimap = new sidera.MiniMap(gameObjects, camera);
+        gameObjects.ui.push(minimap);
         gameObjects.ui.push(new sidera.FPS());
         gameObjects.ui.push(status);
         gameObjects.ui.push(cursor);
@@ -244,6 +245,9 @@
                 case 'c':
                     camera.z += 0.1;
                     camera.z = Math.min(camera.z, 4);
+                    break;
+                case 'm':
+                    minimap.on = !minimap.on;
                     break;
             }
         }
