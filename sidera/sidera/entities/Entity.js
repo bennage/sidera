@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var Entity = WinJS.Class.define(function (type) {
+    var Entity = sidera.framework.class.define(function (type) {
         this.type = type;
         this.scale = 1;
         this.x = 100;
@@ -58,5 +58,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera.entities', { Entity: Entity });
+    sidera.framework.namespace.define('sidera.entities', { Entity: Entity });
 }());

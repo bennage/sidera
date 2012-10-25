@@ -3,7 +3,7 @@
 
     var Entity = sidera.entities.Entity;
 
-    var MiniMap = WinJS.Class.derive(Entity, function (gameObjects, camera) {
+    var MiniMap = sidera.framework.class.derive(Entity, function (gameObjects, camera) {
         Entity.prototype.constructor.call(this, 'MiniMap');
 
         this.scale = 200 / 800;
@@ -72,5 +72,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera', { MiniMap: MiniMap });
+    sidera.framework.namespace.define('sidera', { MiniMap: MiniMap });
 }());

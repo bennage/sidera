@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    WinJS.Namespace.define('sidera.math', {
+    sidera.framework.namespace.define('sidera.math', {
         vector: function vector(a, b) {
 
             if (b === undefined) b = {

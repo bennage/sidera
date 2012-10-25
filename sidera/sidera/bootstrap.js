@@ -1,58 +1,61 @@
-(function () {
+(function() {
     'use strict';
 
     var canvas, // the visible canvas element
-        surface, // the 2d context of `canvas`
-        currentScreen; // the currently rendered screen for the game
+    surface, // the 2d context of `canvas`
+    currentScreen; // the currently rendered screen for the game
 
     //var resolution = { height: window.innerHeight, width: window.innerWidth };
-    var resolution = { height: 600, width: 800 };
+    var resolution = {
+        height: 600,
+        width: 800
+    };
 
     function beginLoop() {
-        // TODO: this works, but is not implemented to the standard for `animationStartTime`
         var frameId = 0;
-        var start = window.animationStartTime;
+        var lastFrame = Date.now();
 
-        function loop(timestamp) {
+        function loop() {
+            var thisFrame = Date.now();
 
-            var elapsed = timestamp - start;
+            var elapsed = thisFrame - lastFrame;
 
             frameId = window.requestAnimationFrame(loop);
 
-            currentScreen.update(elapsed, timestamp);
-            currentScreen.draw(surface, elapsed, timestamp);
+            currentScreen.update(elapsed, thisFrame);
+            currentScreen.draw(surface, elapsed, thisFrame);
 
-            start = window.animationStartTime;
+            lastFrame = thisFrame;
         }
 
-        loop(0);
+        loop();
     }
 
     function transition(screen, options) {
 
         currentScreen = screen;
 
-        if (currentScreen.start) currentScreen.start(options);
+        if(currentScreen.start) currentScreen.start(options);
         currentScreen.transition = transition;
     }
 
     function handle_mouseclick(args) {
-        if (!currentScreen || !currentScreen.click) return;
+        if(!currentScreen || !currentScreen.click) return;
         currentScreen.click(args);
     }
 
     function handle_mousemove(args) {
-        if (!currentScreen || !currentScreen.mouseover) return;
+        if(!currentScreen || !currentScreen.mouseover) return;
         currentScreen.mouseover(args);
     }
 
     function handle_keypress(args) {
-        if (!currentScreen || !currentScreen.onkeypress) return;
+        if(!currentScreen || !currentScreen.onkeypress) return;
         currentScreen.onkeypress(args);
     }
 
-    WinJS.Namespace.define('sidera', {
-        bootstrap: function () {
+    sidera.framework.namespace.define('sidera', {
+        bootstrap: function() {
 
             sidera.resolution = resolution;
 

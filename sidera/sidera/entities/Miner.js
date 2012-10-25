@@ -12,7 +12,7 @@
     var max_battery = 15;
     var max_health = 5;
 
-    var Miner = WinJS.Class.derive(Entity, function () {
+    var Miner = sidera.framework.class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Miner');
 
         this.sheet = Miner.sprite();
@@ -139,5 +139,5 @@
             })
     }
 
-    WinJS.Namespace.define('sidera.entities', { Miner: Miner });
+    sidera.framework.namespace.define('sidera.entities', { Miner: Miner });
 }());

@@ -14,7 +14,7 @@
 
     var choice = 1;
 
-    var Bomber = WinJS.Class.derive(Fighter, function () {
+    var Bomber = sidera.framework.class.derive(Fighter, function () {
         Fighter.prototype.constructor.call(this, 'Bomber');
 
         this.thrust = 0.3;
@@ -152,5 +152,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sidera.entities', { Bomber: Bomber });
+    sidera.framework.namespace.define('sidera.entities', { Bomber: Bomber });
 }());

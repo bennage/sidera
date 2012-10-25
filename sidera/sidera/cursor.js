@@ -4,7 +4,7 @@
     var Entity = sidera.entities.Entity;
     var fullCircle = sidera.math.geometry.fullCircle;
 
-    var Cursor = WinJS.Class.derive(Entity, function () {
+    var Cursor = sidera.framework.class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Cursor');
     }, {
         _entity: null,
@@ -97,5 +97,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera', { Cursor: Cursor });
+    sidera.framework.namespace.define('sidera', { Cursor: Cursor });
 }());

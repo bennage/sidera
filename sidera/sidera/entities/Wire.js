@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var Wire = WinJS.Class.define(function (head, tail) {
+    var Wire = sidera.framework.class.define(function (head, tail) {
         this.head = head;
         this.tail = tail;
         this.pumping = 0;
@@ -26,7 +26,7 @@
         }
     });
 
-    WinJS.Namespace.define('sidera.entities', {
+    sidera.framework.namespace.define('sidera.entities', {
         Wire: Wire
     });
 

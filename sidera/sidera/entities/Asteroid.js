@@ -3,7 +3,7 @@
 
     var Entity = sidera.entities.Entity;
 
-    var Asteroid = WinJS.Class.derive(Entity, function () {
+    var Asteroid = sidera.framework.class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Asteroid');
 
         this.amount = 0;
@@ -50,5 +50,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera.entities', { Asteroid: Asteroid });
+    sidera.framework.namespace.define('sidera.entities', { Asteroid: Asteroid });
 }());

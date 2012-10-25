@@ -3,7 +3,7 @@
 
     var Entity = sidera.entities.Entity;
 
-    var FPS = WinJS.Class.derive(Entity, function () {
+    var FPS = sidera.framework.class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'FPS');
 
         this.x = 300;
@@ -31,5 +31,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera', { FPS: FPS });
+    sidera.framework.namespace.define('sidera', { FPS: FPS });
 }());

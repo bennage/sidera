@@ -35,7 +35,7 @@
         this.transition(sidera.game, { level: 1 });
     }
 
-    WinJS.Namespace.define('sidera.start.screen', {
+    sidera.framework.namespace.define('sidera.start.screen', {
         draw: draw,
         update: update,
         click: click

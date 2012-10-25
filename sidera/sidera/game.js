@@ -253,7 +253,7 @@
         }
     }
 
-    WinJS.Namespace.define('sidera.game', {
+    sidera.framework.namespace.define('sidera.game', {
         draw: draw,
         update: update,
         start: start,

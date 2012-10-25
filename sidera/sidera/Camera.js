@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Camera = WinJS.Class.define(function (resolution) {
+    var Camera = sidera.framework.class.define(function (resolution) {
         this.centerX = Math.round(resolution.width / 2);
         this.centerY = Math.round(resolution.height / 2);
     },
@@ -28,7 +28,7 @@
     });
 
 
-    WinJS.Namespace.define('sidera',
+    sidera.framework.namespace.define('sidera',
         {
             Camera: Camera
         });

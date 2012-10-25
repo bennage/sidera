@@ -14,7 +14,7 @@
 
     var choice = 1;
 
-    var Fighter = WinJS.Class.derive(Entity, function (type) {
+    var Fighter = sidera.framework.class.derive(Entity, function (type) {
 
         Entity.prototype.constructor.call(this, type || 'Fighter');
 
@@ -175,5 +175,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sidera.entities', { Fighter: Fighter });
+    sidera.framework.namespace.define('sidera.entities', { Fighter: Fighter });
 }());

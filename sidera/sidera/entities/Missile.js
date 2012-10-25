@@ -8,7 +8,7 @@
     var geo = sidera.math.geometry;
     var circle = geo.fullCircle;
 
-    var Missile = WinJS.Class.derive(Entity, function (position, target) {
+    var Missile = sidera.framework.class.derive(Entity, function (position, target) {
         Entity.prototype.constructor.call(this, 'Missile');
 
         this.sheet = Missile.sprite();
@@ -61,5 +61,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera.entities', { Missile: Missile });
+    sidera.framework.namespace.define('sidera.entities', { Missile: Missile });
 }());

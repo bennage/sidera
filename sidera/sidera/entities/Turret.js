@@ -13,7 +13,7 @@
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
-    var Turret = WinJS.Class.derive(sidera.entities.Entity, function () {
+    var Turret = sidera.framework.class.derive(sidera.entities.Entity, function () {
         Entity.prototype.constructor.call(this, 'Turret');
 
         this.sheet = Turret.sprite();
@@ -143,5 +143,5 @@
         return closest;
     }
 
-    WinJS.Namespace.define('sidera.entities', { Turret: Turret });
+    sidera.framework.namespace.define('sidera.entities', { Turret: Turret });
 }());

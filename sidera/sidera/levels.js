@@ -58,7 +58,7 @@
     //}
 
 
-    WinJS.Namespace.define('sidera.levels', {
+    sidera.framework.namespace.define('sidera.levels', {
         next: next,
         current: state
     });

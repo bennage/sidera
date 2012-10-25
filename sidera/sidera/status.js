@@ -3,7 +3,7 @@
 
     var Entity = sidera.entities.Entity;
 
-    var Status = WinJS.Class.derive(Entity, function (state) {
+    var Status = sidera.framework.class.derive(Entity, function (state) {
         Entity.prototype.constructor.call(this, 'Status');
 
         this.x = 10;
@@ -22,5 +22,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera', { Status: Status });
+    sidera.framework.namespace.define('sidera', { Status: Status });
 }());

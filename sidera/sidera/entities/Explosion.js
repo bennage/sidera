@@ -5,7 +5,7 @@
 
     var fullCircle = sidera.math.geometry.fullCircle;
 
-    var Explosion = WinJS.Class.derive(Entity, function (corpse) {
+    var Explosion = sidera.framework.class.derive(Entity, function (corpse) {
         Entity.prototype.constructor.call(this, 'Explosion');
 
         this.clouds = [];
@@ -59,5 +59,5 @@
         }
     });
 
-    WinJS.Namespace.define('sidera.entities', { Explosion: Explosion });
+    sidera.framework.namespace.define('sidera.entities', { Explosion: Explosion });
 }());

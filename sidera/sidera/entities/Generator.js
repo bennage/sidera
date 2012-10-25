@@ -12,7 +12,7 @@
     var max_battery = 500;
     var max_health = 20;
 
-    var Generator = WinJS.Class.derive(Entity, function () {
+    var Generator = sidera.framework.class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Generator');
 
         this.sheet = Generator.sprite();
@@ -171,5 +171,5 @@
         return 'rgba(255,255,255,' + alpha + ')';
     }
 
-    WinJS.Namespace.define('sidera.entities', { Generator: Generator });
+    sidera.framework.namespace.define('sidera.entities', { Generator: Generator });
 }());
