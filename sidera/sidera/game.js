@@ -204,9 +204,10 @@
     }
 
     function handle_onkeypress(evt) {
+        var keyCode = evt.keyCode;
 
         // pressed escape
-        if (evt.keyCode === 27) {
+        if (keyCode === 27) {
             this.transition(sidera.start.screen);
         }
 
@@ -216,37 +217,39 @@
             51: Turret
         };
 
-        if (types[evt.keyCode]) {
-            cursor.setContext(types[evt.keyCode]);
+        console.log(keyCode);
+
+        if (types[keyCode]) {
+            cursor.setContext(types[keyCode]);
         } else {
-            switch (evt.char) {
-                case 'q':
+            switch (keyCode) {
+                case 113: //q
                     sendWaveOf(sidera.entities.Fighter);
                     break;
-                case 'e':
+                case 101: //e
                     sendWaveOf(sidera.entities.Bomber);
                     break;
-                case 'w':
+                case 119: //w
                     camera.y -= 5;
                     break;
-                case 's':
+                case 115: //s
                     camera.y += 5;
                     break;
-                case 'a':
+                case 97: //a
                     camera.x -= 5;
                     break;
-                case 'd':
+                case 100: //d
                     camera.x += 5;
                     break;
-                case 'z':
+                case 122: //z
                     camera.z -= 0.1;
                     camera.z = Math.max(camera.z, 1);
                     break;
-                case 'c':
+                case 99: //c
                     camera.z += 0.1;
                     camera.z = Math.min(camera.z, 4);
                     break;
-                case 'm':
+                case 109: //m
                     minimap.on = !minimap.on;
                     break;
             }

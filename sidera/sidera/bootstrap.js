@@ -65,9 +65,9 @@
 
             surface = canvas.getContext('2d');
 
-            canvas.addEventListener("click", handle_mouseclick);
-            canvas.addEventListener("mousemove", handle_mousemove);
-            window.addEventListener("keypress", handle_keypress);
+            canvas.addEventListener('click', handle_mouseclick);
+            canvas.addEventListener('mousemove', handle_mousemove);
+            window.addEventListener('keypress', handle_keypress);
 
             transition(sidera.start.screen);
             currentScreen = sidera.start.screen;
