@@ -1,4 +1,4 @@
-(function () {
+(function() {
 
     'use strict';
 
@@ -53,12 +53,14 @@
         drawSet(gameObjects.doodads, ctx);
         drawSet(gameObjects.ui, ctx, false);
 
-        if (isGameOver) {
-            var centerText = function (ctx, text, y) {
-                var measurement = ctx.measureText(text);
-                var x = (ctx.canvas.width - measurement.width) / 2;
-                ctx.fillText(text, x, y);
-            }
+        cursor.render(ctx, camera);
+
+        if(isGameOver) {
+            var centerText = function(ctx, text, y) {
+                    var measurement = ctx.measureText(text);
+                    var x = (ctx.canvas.width - measurement.width) / 2;
+                    ctx.fillText(text, x, y);
+                }
 
             ctx.fillStyle = 'white';
             ctx.font = '48px monospace';
@@ -67,18 +69,18 @@
     }
 
     function drawSet(entities, ctx, scales) {
-        if (scales === undefined) scales = true;
+        if(scales === undefined) scales = true;
 
         //todo: move this calculations somewhere else
         var scale = camera.scale();
 
         var i, entity;
         var sprite;
-        for (i = entities.length - 1; i >= 0; i--) {
+        for(i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
             sprite = entity.sheet;
 
-            if (scales) {
+            if(scales) {
                 var coords = camera.project(entity);
 
                 ctx.save();
@@ -86,14 +88,14 @@
                 ctx.translate(coords.x, coords.y);
             }
 
-            entity.render(ctx, scale);
+            entity.render(ctx, scale, camera.project);
 
-            if (scales) {
-                if (entity.orientation) {
+            if(scales) {
+                if(entity.orientation) {
                     ctx.rotate(entity.orientation);
                 }
 
-                if (sprite) {
+                if(sprite) {
                     var w = Math.floor(sprite.width * entity.scale * scale);
                     var h = Math.floor(sprite.height * entity.scale * scale);
                     ctx.drawImage(sprite, -w / 2, -h / 2, w, h);
@@ -108,22 +110,22 @@
         var dead = entities.dead;
         var index;
 
-        for (var i = entities.length - 1; i >= 0; i--) {
+        for(var i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
-            if (entity.update) entity.update(elapsed, gameObjects);
+            if(entity.update) entity.update(elapsed, gameObjects);
 
             // collect the dead
-            if (entity.dead) {
+            if(entity.dead) {
                 dead.push(entity);
             }
         }
 
         // bury the dead
-        for (var i = dead.length - 1; i >= 0; i--) {
+        for(var i = dead.length - 1; i >= 0; i--) {
             index = entities.indexOf(dead[i]);
             entities.splice(index, 1);
 
-            if (dead[i].shoudExplode) {
+            if(dead[i].shoudExplode) {
                 var explosion = new sidera.entities.Explosion(dead[i]);
                 gameObjects.doodads.push(explosion);
             }
@@ -142,16 +144,19 @@
         updateSet(gameObjects.doodads, elapsed);
         updateSet(gameObjects.ui, elapsed);
 
-        if (newBuilding) {
+        cursor.update(elapsed, gameObjects);
+
+
+        if(newBuilding) {
             var entity;
-            for (var i = gameObjects.friendlies.length - 1; i >= 0; i--) {
+            for(var i = gameObjects.friendlies.length - 1; i >= 0; i--) {
                 entity = gameObjects.friendlies[i];
-                if (entity.whenBuilding) entity.whenBuilding(newBuilding, gameObjects);
+                if(entity.whenBuilding) entity.whenBuilding(newBuilding, gameObjects);
             }
             newBuilding = null;
         }
 
-        if (gameObjects.friendlies.length === 0 && status.state.money < 9999) {
+        if(gameObjects.friendlies.length === 0 && status.state.money < 9999) {
             isGameOver = true;
         }
 
@@ -159,7 +164,7 @@
 
     function sendWaveOf(type) {
 
-        for (var i = 3; i > 0; i--) {
+        for(var i = 3; i > 0; i--) {
             var f = new type();
             f.x = -50 - (i * 25);
             f.y = -50 - (i * 25);
@@ -182,7 +187,7 @@
         gameObjects.ui.push(minimap);
         gameObjects.ui.push(new sidera.FPS());
         gameObjects.ui.push(status);
-        gameObjects.ui.push(cursor);
+        // gameObjects.ui.push(cursor);
     }
 
     function handle_click(evt) {
@@ -192,7 +197,7 @@
         }
         var entity = cursor.click(coords, sidera.levels.current, gameObjects);
 
-        if (entity) {
+        if(entity) {
             gameObjects.friendlies.push(entity);
             newBuilding = entity;
         }
@@ -207,7 +212,7 @@
         var keyCode = evt.keyCode;
 
         // pressed escape
-        if (keyCode === 27) {
+        if(keyCode === 27) {
             this.transition(sidera.start.screen);
         }
 
@@ -219,39 +224,48 @@
 
         console.log(keyCode);
 
-        if (types[keyCode]) {
+        if(types[keyCode]) {
             cursor.setContext(types[keyCode]);
         } else {
-            switch (keyCode) {
-                case 113: //q
-                    sendWaveOf(sidera.entities.Fighter);
-                    break;
-                case 101: //e
-                    sendWaveOf(sidera.entities.Bomber);
-                    break;
-                case 119: //w
-                    camera.y -= 5;
-                    break;
-                case 115: //s
-                    camera.y += 5;
-                    break;
-                case 97: //a
-                    camera.x -= 5;
-                    break;
-                case 100: //d
-                    camera.x += 5;
-                    break;
-                case 122: //z
-                    camera.z -= 0.1;
-                    camera.z = Math.max(camera.z, 1);
-                    break;
-                case 99: //c
-                    camera.z += 0.1;
-                    camera.z = Math.min(camera.z, 4);
-                    break;
-                case 109: //m
-                    minimap.on = !minimap.on;
-                    break;
+            switch(keyCode) {
+            case 113:
+                //q
+                sendWaveOf(sidera.entities.Fighter);
+                break;
+            case 101:
+                //e
+                sendWaveOf(sidera.entities.Bomber);
+                break;
+            case 119:
+                //w
+                camera.y -= 5;
+                break;
+            case 115:
+                //s
+                camera.y += 5;
+                break;
+            case 97:
+                //a
+                camera.x -= 5;
+                break;
+            case 100:
+                //d
+                camera.x += 5;
+                break;
+            case 122:
+                //z
+                camera.z -= 0.1;
+                camera.z = Math.max(camera.z, 1);
+                break;
+            case 99:
+                //c
+                camera.z += 0.1;
+                camera.z = Math.min(camera.z, 4);
+                break;
+            case 109:
+                //m
+                minimap.on = !minimap.on;
+                break;
             }
         }
     }

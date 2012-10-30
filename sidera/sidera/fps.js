@@ -34,4 +34,5 @@
     sidera.framework.namespace.define('sidera', {
         FPS: FPS
     });
+
 }());

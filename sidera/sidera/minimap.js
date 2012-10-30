@@ -1,9 +1,9 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var Entity = sidera.entities.Entity;
 
-    var MiniMap = sidera.framework.class.derive(Entity, function (gameObjects, camera) {
+    var MiniMap = sidera.framework.class.derive(Entity, function(gameObjects, camera) {
         Entity.prototype.constructor.call(this, 'MiniMap');
 
         this.scale = 200 / 800;
@@ -28,8 +28,10 @@
         this.y = 420;
         this.on = false;
     }, {
-        render: function (ctx) {
-            if (!this.on) { return; }
+        render: function(ctx) {
+            if(!this.on) {
+                return;
+            }
 
             var self = this;
 
@@ -40,8 +42,9 @@
             ctx.rect(this.x, this.y, this.w, this.h);
             ctx.strokeStyle = 'rgb(255,255,255)';
             ctx.stroke();
+
         },
-        renderMap: function (ctx) {
+        renderMap: function(ctx) {
             var self = this;
 
             ctx.beginPath();
@@ -49,13 +52,13 @@
             ctx.rect(0, 0, this.w, this.h);
             ctx.fill();
 
-            Object.keys(this.colors).forEach(function (key) {
+            Object.keys(this.colors).forEach(function(key) {
                 var entities = self.gameObjects[key];
                 ctx.fillStyle = self.colors[key];
 
                 var i, entity;
                 var x, y, r;
-                for (i = entities.length - 1; i >= 0; i--) {
+                for(i = entities.length - 1; i >= 0; i--) {
                     entity = entities[i];
                     x = Math.round(entity.x * self.scale);
                     y = Math.round(entity.y * self.scale);
@@ -66,11 +69,21 @@
                     ctx.fill();
                 }
             });
+
+            // camera position and view
+            ctx.save();
+            ctx.translate(this.camera.x, this.camera.y);
+            ctx.beginPath();
+            ctx.rect(0, 0, 10, 10);
+            ctx.strokeStyle = 'rgb(0,255,255)';
+            ctx.stroke();
+            ctx.restore();
         },
 
-        update: function (elapsed) {
-        }
+        update: function(elapsed) {}
     });
 
-    sidera.framework.namespace.define('sidera', { MiniMap: MiniMap });
+    sidera.framework.namespace.define('sidera', {
+        MiniMap: MiniMap
+    });
 }());
