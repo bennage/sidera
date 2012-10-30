@@ -10,7 +10,7 @@
         y: 0,
         z: 1,
         scale: function () {
-            return 1 / this.z;
+            return this.z;
         },
         project: function (coords) {
             var _x = coords.x + this.x;
