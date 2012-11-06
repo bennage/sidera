@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var Entity = sidera.entities.Entity;
@@ -11,10 +11,9 @@
     var range = 200;
     var rechargeRate = 1 * 1000; // ms
     var laser_cooldown = 500; // ms
-
     var choice = 1;
 
-    var Fighter = sidera.framework.class.derive(Entity, function (type) {
+    var Fighter = sidera.framework.class.derive(Entity, function(type) {
 
         Entity.prototype.constructor.call(this, type || 'Fighter');
 
@@ -30,10 +29,18 @@
 
         this.target = null;
 
-        this.sheet = Fighter.sprite();
+        this.sprites = sidera.assets['fighter.png'];
     }, {
-        render: function (ctx, scale) {
-            if (this.cooldown > 0 && this.target) {
+        render: function(ctx, scale) {
+
+            var size = 16 * scale;
+
+            ctx.save();
+            ctx.rotate(this.orientation);
+            ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
+            ctx.restore();
+
+            if(this.cooldown > 0 && this.target) {
 
                 var fade = this.cooldown / laser_cooldown;
 
@@ -51,12 +58,12 @@
                 ctx.stroke();
             }
         },
-        update: function (elapsed, gameObjects) {
+        update: function(elapsed, gameObjects) {
 
             // let's only peform the acquisition every other time
             this.work = !this.work;
 
-            if (this.work) {
+            if(this.work) {
                 this.target = acquireTarget(this, gameObjects);
             }
 
@@ -64,27 +71,29 @@
             this.x += Math.cos(this.orientation);
             this.y += Math.sin(this.orientation);
 
-            if (this.cooldown > 0) {
+            if(this.cooldown > 0) {
                 this.cooldown -= elapsed;
             }
 
-            if (this.untilRecharge > 0) {
+            if(this.untilRecharge > 0) {
                 this.untilRecharge -= elapsed;
             }
 
-            if (this.orientation > circle) {
+            if(this.orientation > circle) {
                 this.orientation = this.orientation % circle;
             }
 
-            if (!this.target) { return; }
+            if(!this.target) {
+                return;
+            }
 
             var to_target = vector(this.target, this);
 
             // we're too close, turn away
-            if (to_target.distance() < 70) {
+            if(to_target.distance() < 70) {
 
                 // where should we turn to?
-                if (!this.focus) {
+                if(!this.focus) {
 
                     var current_angle = to_target.angle();
                     var new_angle = current_angle + (circle / 4 * choice); // or minus
@@ -100,7 +109,7 @@
                 var target_angle = vector(this.focus, this).angle();
 
                 var delta = this.orientation - target_angle;
-                if (Math.abs(delta) > Math.PI) {
+                if(Math.abs(delta) > Math.PI) {
                     delta = (-circle) + Math.abs(delta);
                 }
                 var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
@@ -108,10 +117,10 @@
                 this.orientation -= (sign * adjust);
             }
 
-            if ((to_target.distance() > 120 && this.focus) || !this.focus) {
+            if((to_target.distance() > 120 && this.focus) || !this.focus) {
                 this.focus = null;
                 var delta = this.orientation - to_target.angle();
-                if (Math.abs(delta) > Math.PI) {
+                if(Math.abs(delta) > Math.PI) {
                     delta = (-circle) + Math.abs(delta);
                 }
                 var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
@@ -119,8 +128,8 @@
                 this.orientation -= (sign * adjust);
 
                 // fire laser
-                if (this.untilRecharge <= 0 && this.target) {
-                    if (to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
+                if(this.untilRecharge <= 0 && this.target) {
+                    if(to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
                         //attack target
                         this.cooldown = laser_cooldown;
                         this.untilRecharge = rechargeRate;
@@ -129,9 +138,8 @@
                 }
             }
         }
-    },
-    {
-        sprite: function () {
+    }, {
+        sprite: function() {
             var canvas = document.createElement('canvas');
             canvas.height = 10;
             canvas.width = 20;
@@ -151,21 +159,18 @@
     });
 
     function acquireTarget(self, gameObjects) {
-        var entity,
-            current_distance,
-            closest,
-            last_distance = Number.POSITIVE_INFINITY;
+        var entity, current_distance, closest, last_distance = Number.POSITIVE_INFINITY;
 
         var entities = gameObjects.friendlies;
 
-        for (var i = entities.length - 1; i >= 0; i--) {
+        for(var i = entities.length - 1; i >= 0; i--) {
 
             entity = entities[i];
-            if ((entity !== self) && !entity.enemy && entity.hp) {
+            if((entity !== self) && !entity.enemy && entity.hp) {
 
                 current_distance = geo.lengthSquared(self, entity);
 
-                if (current_distance < last_distance) {
+                if(current_distance < last_distance) {
                     last_distance = current_distance;
                     closest = entity;
                 }
@@ -175,5 +180,7 @@
         return closest;
     }
 
-    sidera.framework.namespace.define('sidera.entities', { Fighter: Fighter });
+    sidera.framework.namespace.define('sidera.entities', {
+        Fighter: Fighter
+    });
 }());

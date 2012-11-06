@@ -4,7 +4,6 @@
     var canvas, // the visible canvas element
     surface, // the 2d context of `canvas`
     currentScreen; // the currently rendered screen for the game
-
     //var resolution = { height: window.innerHeight, width: window.innerWidth };
     var resolution = {
         height: 600,
@@ -69,10 +68,19 @@
             canvas.addEventListener('mousemove', handle_mousemove);
             window.addEventListener('keypress', handle_keypress);
 
-            transition(sidera.start.screen);
-            currentScreen = sidera.start.screen;
 
-            beginLoop();
+            sidera.assets.files = ['rocks.png', 'fighter.png'];
+            sidera.assets.load(function() {
+
+                transition(sidera.start.screen);
+                currentScreen = sidera.start.screen;
+                beginLoop();
+
+            }, function() {
+                debugger;
+            }, function(percent) {
+                console.log('loaded ' + (percent * 100) + '%');
+            });
         }
     });
 
