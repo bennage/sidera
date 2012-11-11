@@ -38,8 +38,8 @@
                 ctx.fill();
             }
 
-            var w = Math.floor(e.sheet.width * e.scale);
-            var h = Math.floor(e.sheet.height * e.scale);
+            var w = Math.floor(e.sprites.width * e.scale);
+            var h = Math.floor(e.sprites.height * e.scale);
 
             ctx.save();
 
@@ -49,7 +49,7 @@
                 ctx.rotate(e.orientation);
             }
 
-            ctx.drawImage(e.sheet, -w / 2, -h / 2, w, h);
+            ctx.drawImage(e.sprites, -w / 2, -h / 2, w, h);
 
             ctx.restore();
 

@@ -69,7 +69,7 @@
             window.addEventListener('keypress', handle_keypress);
 
 
-            sidera.assets.files = ['rocks.png', 'fighter.png'];
+            sidera.assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
             sidera.assets.load(function() {
 
                 transition(sidera.start.screen);

@@ -15,7 +15,7 @@
     var Miner = sidera.framework.class.derive(Entity, function () {
         Entity.prototype.constructor.call(this, 'Miner');
 
-        this.sheet = Miner.sprite();
+        this.sprites = sidera.assets['miner.png'];
 
         this.untilPulse = 0;
         this.battery = 0;
@@ -30,8 +30,17 @@
     }, {
         render: function (ctx, scale) {
 
+
+            var size = 24 * scale;
+
+            ctx.save();
+            ctx.rotate(this.orientation);
+            ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
+            ctx.restore();
+
+
             ctx.strokeStyle = strokeByPulse(this);
-            ctx.lineWidth = 1 * scale;;
+            ctx.lineWidth = 1 * scale;
 
             //todo: no forEach!
             var self = this;
