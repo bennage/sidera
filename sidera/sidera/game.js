@@ -15,6 +15,12 @@
     var minimap;
     var isGameOver = false;
 
+    var map = {
+        columns: 30,
+        rows: 30,
+        cellSize: 30
+    };
+
     function initializeGameObjectSets() {
 
         function entityArray() {
@@ -47,6 +53,9 @@
 
         // draw entities
         drawSet(gameObjects.background, ctx);
+
+        drawGrid(ctx, camera);
+
         drawSet(gameObjects.enviroment, ctx);
         drawSet(gameObjects.friendlies, ctx);
         drawSet(gameObjects.enemies, ctx);
@@ -65,6 +74,37 @@
             ctx.fillStyle = 'white';
             ctx.font = '48px monospace';
             centerText(ctx, 'game over', 300);
+        }
+
+
+    }
+
+    function drawGrid(ctx, camera) {
+        var cellSize = map.cellSize * camera.scale();
+        var width = map.columns * cellSize;
+        var height = map.rows * cellSize;
+
+        var offsetX = camera.bounds.left;
+        var offsetY = camera.bounds.top;
+
+        ctx.strokeStyle = 'hsl(120,50%,10%)';
+        ctx.lineWidth = 1;
+
+        // horizontal
+        for(var r = 0; r <= map.rows; r++) {
+
+            ctx.beginPath();
+            ctx.moveTo(offsetX, r * cellSize + offsetY);
+            ctx.lineTo(offsetX + width, r * cellSize + offsetY);
+            ctx.stroke();
+        }
+
+        // vertical
+        for(var c = 0; c <= map.columns; c++) {
+            ctx.beginPath();
+            ctx.moveTo(c * cellSize + offsetX, offsetY);
+            ctx.lineTo(c * cellSize + offsetX, offsetY + height);
+            ctx.stroke();
         }
     }
 
@@ -145,7 +185,7 @@
         updateSet(gameObjects.ui, elapsed);
 
         cursor.update(elapsed, gameObjects);
-
+        camera.update();
 
         if(newBuilding) {
             var entity;

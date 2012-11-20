@@ -1,10 +1,10 @@
 (function() {
     'use strict';
 
-    var canvas, // the visible canvas element
+    var canvas, // the visible canvas element    
     surface, // the 2d context of `canvas`
     currentScreen; // the currently rendered screen for the game
-    //var resolution = { height: window.innerHeight, width: window.innerWidth };
+    // var resolution = { height: window.innerHeight, width: window.innerWidth };
     var resolution = {
         height: 600,
         width: 800
