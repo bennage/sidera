@@ -1,7 +1,6 @@
 ﻿(function() {
     'use strict';
 
-
     var Camera = sidera.framework.class.define(function(resolution) {
 
         this.resolution = resolution;
@@ -13,6 +12,7 @@
         // x,y start off in the middle of the screen's area
         this.x = Math.round(resolution.width / 2);
         this.y = Math.round(resolution.height / 2);
+        
         // assume a magnification of 1
         this.z = 1;
 

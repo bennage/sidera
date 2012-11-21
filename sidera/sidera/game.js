@@ -159,6 +159,11 @@
             isGameOver = true;
         }
 
+        if(sidera.keyboard.isKeyPressed(27)) {
+            // pressed escape
+            this.transition(sidera.start.screen);
+        }
+
         handleInput();
 
     }
@@ -211,31 +216,20 @@
         cursor.y = evt.offsetY;
     }
 
-    var commands = {
-        81: function() {
+    function handleInput() {
+
+        //TODO: this whole bit needs to go
+        var keyboard = sidera.keyboard;
+
+        if(keyboard.isKeyPressed(81)) {
             //q
             sendWaveOf(sidera.entities.Fighter);
-        },
+        }
 
-        69: function() {
+        if(keyboard.isKeyPressed(69)) {
             //e
             sendWaveOf(sidera.entities.Bomber);
         }
-    };
-
-    function handleInput() {
-        var keyboard = sidera.keyboard;
-
-        if(keyboard.isKeyPressed(27)) {
-            // pressed escape
-            this.transition(sidera.start.screen);
-        }
-
-        Object.keys(commands).forEach(function(key) {
-            if(keyboard.isKeyPressed(key)) {
-                commands[key]();
-            }
-        });
 
         var types = {
             49: Miner,
@@ -243,9 +237,12 @@
             51: Turret
         };
 
-        // if(types[keyCode]) {
-        //     cursor.setContext(types[keyCode]);
-        // }
+        Object.keys(types).forEach(function(key) {
+
+            if(keyboard.isKeyPressed(key)) {
+                cursor.setContext(types[key]);
+            }
+        });
 
     }
 
