@@ -1,7 +1,6 @@
 ﻿(function() {
     'use strict';
 
-    var keyboard = sidera.keyboard;
 
     var Camera = sidera.framework.class.define(function(resolution) {
 
@@ -17,11 +16,8 @@
         // assume a magnification of 1
         this.z = 1;
 
-        var self = this;
-        Object.keys(this.commands).forEach(function(key) {
-            self.commands[key] = self.commands[key].bind(self);
-        });
-        
+        sidera.keyboard.mixinKeyCheck(this);
+
     }, {
 
         commands: {
@@ -76,12 +72,7 @@
         },
 
         update: function() {
-            var self = this;
-            Object.keys(this.commands).forEach(function(key) {
-                if(keyboard.isKeyPressed(key)) {
-                    self.commands[key]();
-                }
-            });
+            this.checkCommands();
         }
     }, {
         speed: 5,

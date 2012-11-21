@@ -27,7 +27,18 @@
         this.x = 20;
         this.y = 420;
         this.on = false;
+        this.lastToggle = new Date();
     }, {
+        commands: {
+            77: function() {
+                //m
+                var now = new Date();
+                if(now - this.lastToggle > 500) {
+                    this.on = !this.on;
+                    this.lastToggle = now;
+                }
+            }
+        },
         render: function(ctx) {
             if(!this.on) {
                 return;
@@ -80,7 +91,9 @@
             ctx.restore();
         },
 
-        update: function(elapsed) {}
+        update: function(elapsed) {
+            this.checkCommands();
+        }
     });
 
     sidera.framework.namespace.define('sidera', {

@@ -220,10 +220,6 @@
         69: function() {
             //e
             sendWaveOf(sidera.entities.Bomber);
-        },
-        77: function() {
-            //m
-            minimap.on = !minimap.on;
         }
     };
 
@@ -253,33 +249,11 @@
 
     }
 
-    // function handle_onkeypress(evt) {
-    //     var keyCode = evt.keyCode;
-    //     // pressed escape
-    //     if(keyCode === 27) {
-    //         this.transition(sidera.start.screen);
-    //     }
-    //     var types = {
-    //         49: Miner,
-    //         50: Generator,
-    //         51: Turret
-    //     };
-    //     console.log(keyCode);
-    //     Object.keys(commands).forEach(function(key) {
-    //         if(key == keyCode) {
-    //             commands[key]();
-    //         }
-    //     });
-    //     if(types[keyCode]) {
-    //         cursor.setContext(types[keyCode]);
-    //     }
-    // }
     sidera.framework.namespace.define('sidera.game', {
         draw: draw,
         update: update,
         start: start,
         mouseover: handle_mouseover,
-        // onkeypress: handle_onkeypress,
         click: handle_click
     });
 
