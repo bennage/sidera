@@ -11,7 +11,7 @@
         this.sprites = sidera.assets['rocks.png'];
 
     }, {
-        render: function(ctx) {
+        render: function(ctx, camera) {
 
             this.frame += 0.1;
             if(this.frame > 60) this.frame %= 60;
@@ -21,9 +21,18 @@
             var y0 = Math.floor(frame / 8) * 128;;
             var x1 = 128;
             var y1 = 128;
-            var size = 128 * this.scale;
-            ctx.drawImage(this.sprites, x0, y0, x1, y1, -size/2, -size/2, size, size);
+            var size = 128 * this.scale * camera.scale();
+
+            var coords = camera.project(this);
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
+            ctx.drawImage(this.sprites, x0, y0, x1, y1, -size / 2, -size / 2, size, size);
+            ctx.fillStyle = "white";
+            ctx.font = "8px sans-serif";
+            ctx.fillText(this.x + ',' + this.y, this.x, this.y);
+            ctx.restore();
         },
+
         mine: function(amount, success) {
             if(this.amount > 0) {
                 var took = Math.min(this.amount, amount);

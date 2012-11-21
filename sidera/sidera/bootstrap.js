@@ -48,11 +48,6 @@
         currentScreen.mouseover(args);
     }
 
-    function handle_keypress(args) {
-        if(!currentScreen || !currentScreen.onkeypress) return;
-        currentScreen.onkeypress(args);
-    }
-
     sidera.framework.namespace.define('sidera', {
         bootstrap: function() {
 
@@ -66,8 +61,8 @@
 
             canvas.addEventListener('click', handle_mouseclick);
             canvas.addEventListener('mousemove', handle_mousemove);
-            window.addEventListener('keypress', handle_keypress);
 
+            sidera.keyboard.listen();
 
             sidera.assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
             sidera.assets.load(function() {

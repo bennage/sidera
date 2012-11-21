@@ -1,5 +1,5 @@
 ﻿/// <reference path="Asteroid.js" />
-(function () {
+(function() {
 
     'use strict';
 
@@ -12,16 +12,34 @@
 
     function next(objects) {
         var r = Math.random;
-        var asteroid_count = 15;
+        var asteroid_count = 35;
 
-        while (asteroid_count > 0) {
+        while(asteroid_count > 0) {
             var a = new Asteroid();
-            a.x = parseInt(r() * sidera.resolution.width, 10);
-            a.y = parseInt(r() * sidera.resolution.height, 10);
+            a.x = parseInt(r() * sidera.entities.MapGrid.columns, 10);
+            a.y = parseInt(r() * sidera.entities.MapGrid.rows, 10);
             a.amount = parseInt(r() * 2000, 10) + 200;
             objects.enviroment.push(a);
             asteroid_count--;
         }
+
+        var a = new Asteroid();
+        a.x = 0;
+        a.y = 0;
+        a.amount = 1000;
+        objects.enviroment.push(a);
+
+        var a = new Asteroid();
+        a.x = 1;
+        a.y = 1;
+        a.amount = 1000;
+        objects.enviroment.push(a);
+
+        var a = new Asteroid();
+        a.x = 2;
+        a.y = 2;
+        a.amount = 1000;
+        objects.enviroment.push(a);
 
         return state;
     }
@@ -31,7 +49,6 @@
     //    var request = new XMLHttpRequest();
     //    request.open('GET', '/level.json', false);
     //    request.send(null);
-
     //    if (request.status === 200) {
     //        var responseText = JSON.stringify({
     //            'things': [{
@@ -56,7 +73,6 @@
     //        });
     //    }
     //}
-
 
     sidera.framework.namespace.define('sidera.levels', {
         next: next,

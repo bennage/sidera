@@ -18,22 +18,29 @@
         // bounds represent the area of the virtual screen being drawn
         this.bounds = {};
 
+        // computer the initial bounds
         this.update();
     }, {
+
         scale: function() {
             return this.z;
         },
-        project: function(coords) {
-            var _x = coords.x + this.x;
-            var _y = coords.y + this.y;
-            var scale = this.scale();
 
-            _x = ((_x - this.centerX) * scale) + this.centerX;
-            _y = ((_y - this.centerY) * scale) + this.centerY;
+        project: function(coords) {
+            var cellSize = sidera.entities.MapGrid.cellSize;
+
+            var _x = (coords.x * cellSize);
+            var _y = (coords.y * cellSize);
+
+            var dX = (_x - this.x) * this.z;
+            var dY = (_y - this.y) * this.z;
+
+            var pX = this.x + dX;
+            var pY = this.y + dY;
 
             return {
-                x: _x,
-                y: _y
+                x: pX,
+                y: pY
             };
         },
 
@@ -46,7 +53,6 @@
             this.bounds.right = (this.x + distanceToEdgeX);
             this.bounds.top = (this.y - distanceToEdgeY);
             this.bounds.bottom = (this.y + distanceToEdgeY);
-
         }
     });
 

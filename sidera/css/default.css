@@ -3,6 +3,11 @@
 	margin: 0;
 }
 
+#board {
+	margin: 0 auto;
+	display: block;
+}
+
 @media screen and (-ms-view-state: fullscreen-landscape) {
 }
 

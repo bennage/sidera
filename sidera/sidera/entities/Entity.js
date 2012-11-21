@@ -4,8 +4,8 @@
     var Entity = sidera.framework.class.define(function (type) {
         this.type = type;
         this.scale = 1;
-        this.x = 100;
-        this.y = 100;
+        this.x = 0;
+        this.y = 0;
         this.radius = 0;
         this.shoudExplode = false;
     }, {
