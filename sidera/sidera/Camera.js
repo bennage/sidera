@@ -1,6 +1,8 @@
 ﻿(function() {
     'use strict';
 
+    var keyboard = sidera.keyboard;
+
     var Camera = sidera.framework.class.define(function(resolution) {
 
         this.resolution = resolution;
@@ -15,12 +17,41 @@
         // assume a magnification of 1
         this.z = 1;
 
-        // bounds represent the area of the virtual screen being drawn
-        this.bounds = {};
-
-        // computer the initial bounds
-        this.update();
+        var self = this;
+        Object.keys(this.commands).forEach(function(key) {
+            self.commands[key] = self.commands[key].bind(self);
+        });
+        
     }, {
+
+        commands: {
+            87: function() {
+                //w
+                this.y -= Camera.speed;
+            },
+            83: function() {
+                //s
+                this.y += Camera.speed;
+            },
+            65: function() {
+                //a
+                this.x -= Camera.speed;
+            },
+            68: function() {
+                //d
+                this.x += Camera.speed;
+            },
+            90: function() {
+                //z
+                this.z -= Camera.zoomSpeed;
+                this.z = Math.max(this.z, Camera.minZoom);
+            },
+            67: function() {
+                //c
+                this.z += Camera.zoomSpeed;
+                this.z = Math.min(this.z, Camera.maxZoom);
+            }
+        },
 
         scale: function() {
             return this.z;
@@ -45,15 +76,18 @@
         },
 
         update: function() {
-
-            var distanceToEdgeX = this.centerX * this.z;
-            var distanceToEdgeY = this.centerY * this.z;
-
-            this.bounds.left = (this.x - distanceToEdgeX);
-            this.bounds.right = (this.x + distanceToEdgeX);
-            this.bounds.top = (this.y - distanceToEdgeY);
-            this.bounds.bottom = (this.y + distanceToEdgeY);
+            var self = this;
+            Object.keys(this.commands).forEach(function(key) {
+                if(keyboard.isKeyPressed(key)) {
+                    self.commands[key]();
+                }
+            });
         }
+    }, {
+        speed: 5,
+        zoomSpeed: 0.1,
+        minZoom: 0.5,
+        maxZoom: 4
     });
 
     sidera.framework.namespace.define('sidera', {

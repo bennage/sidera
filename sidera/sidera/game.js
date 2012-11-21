@@ -221,32 +221,6 @@
             //e
             sendWaveOf(sidera.entities.Bomber);
         },
-        87: function() {
-            //w
-            camera.y -= 5;
-        },
-        83: function() {
-            //s
-            camera.y += 5;
-        },
-        65: function() {
-            //a
-            camera.x -= 5;
-        },
-        68: function() {
-            //d
-            camera.x += 5;
-        },
-        90: function() {
-            //z
-            camera.z -= 0.1;
-            camera.z = Math.max(camera.z, 0.5);
-        },
-        67: function() {
-            //c
-            camera.z += 0.1;
-            camera.z = Math.min(camera.z, 4);
-        },
         77: function() {
             //m
             minimap.on = !minimap.on;

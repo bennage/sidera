@@ -13,28 +13,21 @@
 	}, {
 		update: function() {},
 		render: function(ctx, camera) {
-			var cellSize = MapGrid.cellSize * camera.scale();
-			var width = MapGrid.columns * cellSize;
-			var height = MapGrid.rows * cellSize;
 
-			var offsetX = camera.bounds.left;
-			var offsetY = camera.bounds.top;
+			var start, end;
+			var r, c;
 
 			ctx.strokeStyle = 'hsl(120,50%,10%)';
 			ctx.lineWidth = 1;
 
-			var extentY, extentX;
+			// horizontal lines
+			for(r = 0; r <= MapGrid.rows; r++) {
 
-			// horizontal
-			for(var r = 0; r <= MapGrid.rows; r++) {
-
-				extentY = r * cellSize + offsetY;
-
-				var start = camera.project({
+				start = camera.project({
 					x: 0,
 					y: r
 				});
-				var end = camera.project({
+				end = camera.project({
 					x: MapGrid.columns,
 					y: r
 				});
@@ -45,16 +38,14 @@
 				ctx.stroke();
 			}
 
-			// vertical
-			for(var c = 0; c <= MapGrid.columns; c++) {
+			// vertical lines
+			for(c = 0; c <= MapGrid.columns; c++) {
 
-				extentX = c * cellSize + offsetX;
-
-				var start = camera.project({
+				start = camera.project({
 					x: c,
 					y: 0
 				});
-				var end = camera.project({
+				end = camera.project({
 					x: c,
 					y: MapGrid.rows
 				});
@@ -65,6 +56,7 @@
 				ctx.stroke();
 			}
 		}
+
 	}, {
 		columns: 30,
 		rows: 30,
@@ -74,6 +66,5 @@
 	sidera.framework.namespace.define('sidera.entities', {
 		MapGrid: MapGrid
 	});
-
 
 }());
