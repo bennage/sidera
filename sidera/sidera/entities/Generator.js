@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     var Entity = sidera.entities.Entity;
@@ -12,12 +12,12 @@
     var max_battery = 500;
     var max_health = 20;
 
-    var Generator = sidera.framework.class.derive(Entity, function () {
+    var Generator = sidera.framework.class.derive(Entity, function() {
         Entity.prototype.constructor.call(this, 'Generator');
 
-        this.sheet = Generator.sprite();
+        this.sprites = Generator.sprite();
 
-        this.radius = 20;
+        this.radius = 1;
         this.wires = [];
         this.hp = max_health;
         this.shoudExplode = true;
@@ -28,27 +28,49 @@
 
     }, {
 
-        render: function (ctx, scale) {
+        render: function(ctx, camera) {
+
+            var coords = camera.project(this);
+            var size = 128;
+            var scale = camera.scale();
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
 
             ctx.beginPath();
+
+            var w = Math.floor(this.sprites.width * scale);
+            var h = Math.floor(this.sprites.height * scale);
+            ctx.drawImage(this.sprites, -w / 2, -h / 2, w, h);
+
             ctx.fillStyle = fillByCharge(this);
             ctx.arc(0, 0, 8, 0, fullCircle, false);
             ctx.fill();
 
+
             // health meter
-            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 }, scale);
+            this.renderMeter(ctx, (this.hp / max_health), 'green', {
+                x: -16,
+                y: 10
+            }, scale);
 
             // power transfers
-            for (var i = this.wires.length - 1; i >= 0; i--) {
+            for(var i = this.wires.length - 1; i >= 0; i--) {
                 this.wires[i].render(ctx, scale);
             }
+            ctx.fillStyle = "white";
+            ctx.font = "8px sans-serif";
+            ctx.fillText(this.x + ',' + this.y, this.x, this.y);
+
+            ctx.restore();
         },
 
-        update: function (elapsed, gameObjects) {
+        update: function(elapsed, gameObjects) {
 
-            if (this.untilPulse <= 0) {
+            if(this.untilPulse <= 0) {
                 pulse(this);
                 this.untilPulse = pulse_rate;
+
+                find_targets(this, gameObjects);
             } else {
                 this.untilPulse = this.untilPulse - elapsed;
             }
@@ -56,13 +78,13 @@
 
         find: find_targets,
 
-        whenBuilding: function (building, gameObjects) {
+        whenBuilding: function(building, gameObjects) {
             find_targets(this, gameObjects);
         }
 
     }, {
         cost: 500,
-        sprite: function () {
+        sprite: function() {
             var canvas = document.createElement('canvas');
             canvas.height = 40;
             canvas.width = 40;
@@ -91,7 +113,7 @@
         // flow to targets
         var spread = self.wires.length || 1;
         var pressure = self.battery / spread;
-        self.wires.forEach(function (wire) {
+        self.wires.forEach(function(wire) {
             var used = wire.tail.charge(pressure);
             self.battery -= used;
         });
@@ -106,44 +128,45 @@
 
         self.wires = [];
 
-        var entity,
-            already_connected,
-            distance_to_entity,
-            distance_to_edge,
-            blocker,
-            blocked,
-            intersected,
-            projected;
+        var entity, already_connected, distance_to_entity, distance_to_edge, blocker, blocked, intersected, projected;
 
-        for (var i = entities.length - 1; i >= 0; i--) {
+        for(var i = entities.length - 1; i >= 0; i--) {
 
             entity = entities[i];
 
             // we don't care about unpowered entities
-            if (!entity.powered) { continue; }
+            if(!entity.powered) {
+                continue;
+            }
 
             // are we already connected to the entity?
             already_connected = false;
-            for (var j = self.wires.length - 1; j >= 0; j--) {
-                if (self.wires[j].tail === entity) {
+            for(var j = self.wires.length - 1; j >= 0; j--) {
+                if(self.wires[j].tail === entity) {
                     already_connected = true;
                     break;
                 }
             }
 
-            if (already_connected) { continue; }
+            if(already_connected) {
+                continue;
+            }
 
             // is the entity within range?
             distance_to_entity = vector(self, entity).distance();
             distance_to_edge = distance_to_entity - entity.radius;
 
-            if (distance_to_edge > self.range) { continue; }
+            if(distance_to_edge > self.range) {
+                continue;
+            }
 
             // is the entity blocked?
             blocked = false;
-            for (var j = entities.length - 1; j >= 0; j--) {
+            for(var j = entities.length - 1; j >= 0; j--) {
                 blocker = entities[j];
-                if (blocker === self || blocker === entity) { continue; };
+                if(blocker === self || blocker === entity) {
+                    continue;
+                };
 
                 // todo: these are very expensive
                 // let's find a way to call them less frequently
@@ -151,11 +174,13 @@
                 projected = geo.pointProjectsOntoSegment(self, entity, blocker)
                 blocked = (intersected && projected);
 
-                if (blocked) { break; }
+                // if(blocked) {
+                //     break;
+                // }
             }
 
             // if we are not blocked, create a new wire
-            if (!blocked) {
+            if(!blocked) {
                 self.wires.push(new sidera.entities.Wire(self, entity));
             }
         }
@@ -171,5 +196,7 @@
         return 'rgba(255,255,255,' + alpha + ')';
     }
 
-    sidera.framework.namespace.define('sidera.entities', { Generator: Generator });
+    sidera.framework.namespace.define('sidera.entities', {
+        Generator: Generator
+    });
 }());

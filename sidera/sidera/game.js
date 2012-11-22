@@ -10,9 +10,8 @@
     var newBuilding;
     var gameObjects;
     var status;
-    var cursor = new sidera.Cursor();
+    var cursor;
     var camera;
-    var minimap;
     var isGameOver = false;
 
     function initializeGameObjectSets() {
@@ -31,6 +30,26 @@
             doodads: entityArray(),
             ui: entityArray()
         };
+    }
+
+    function start(options) {
+
+        isGameOver = false;
+        cursor = new sidera.Cursor();
+        camera = new sidera.Camera(sidera.resolution);
+        gameObjects = initializeGameObjectSets();
+
+        gameObjects.background.push(new sidera.entities.MapGrid());
+
+        var level = sidera.levels.next(gameObjects);
+        cursor.setContext(Miner);
+
+        status = new sidera.Status(level);
+        var minimap = new sidera.MiniMap(gameObjects, camera);
+        gameObjects.ui.push(minimap);
+        gameObjects.ui.push(new sidera.FPS());
+        gameObjects.ui.push(status);
+        // gameObjects.ui.push(cursor);
     }
 
     function draw(ctx, elapsed) {
@@ -52,7 +71,7 @@
         drawSet(gameObjects.friendlies, ctx);
         drawSet(gameObjects.enemies, ctx);
         drawSet(gameObjects.doodads, ctx);
-        drawSet(gameObjects.ui, ctx, false);
+        drawSet(gameObjects.ui, ctx);
 
         cursor.render(ctx, camera);
 
@@ -67,40 +86,14 @@
             ctx.font = '48px monospace';
             centerText(ctx, 'game over', 300);
         }
-
-
     }
 
-    function drawSet(entities, ctx, scales) {
-        if(scales === undefined) scales = true;
-
-        //todo: move this calculations somewhere else
-        var scale = camera.scale();
-
+    function drawSet(entities, ctx) {
         var i, entity;
         var sprite;
         for(i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
-            sprite = entity.sheet;
-
-            // if(scales) {
-            //     var coords = camera.project(entity);
-            //     ctx.save();
-            //     ctx.translate(coords.x, coords.y);
-            // }
             entity.render(ctx, camera);
-
-            // if(scales) {
-            //     if(entity.orientation) {
-            //         ctx.rotate(entity.orientation);
-            //     }
-            //     if(sprite) {
-            //         var w = Math.floor(sprite.width * entity.scale * scale);
-            //         var h = Math.floor(sprite.height * entity.scale * scale);
-            //         ctx.drawImage(sprite, -w / 2, -h / 2, w, h);
-            //     }
-            //     ctx.restore();
-            // }
         }
     }
 
@@ -178,30 +171,13 @@
         }
     }
 
-    function start(options) {
-
-        isGameOver = false;
-
-        camera = new sidera.Camera(sidera.resolution);
-        gameObjects = initializeGameObjectSets();
-
-        gameObjects.background.push(new sidera.entities.MapGrid());
-
-        var level = sidera.levels.next(gameObjects);
-        cursor.setContext(Miner);
-
-        status = new sidera.Status(level);
-        minimap = new sidera.MiniMap(gameObjects, camera);
-        gameObjects.ui.push(minimap);
-        gameObjects.ui.push(new sidera.FPS());
-        gameObjects.ui.push(status);
-        // gameObjects.ui.push(cursor);
-    }
-
     function handle_click(evt) {
+        var cellSize = sidera.entities.MapGrid.cellSize;
+
+        //TODO: only works at 1:1 zoom
         var coords = {
-            offsetX: evt.offsetX - camera.x,
-            offsetY: evt.offsetY - camera.y
+            offsetX: Math.round((evt.offsetX - 0) / cellSize),
+            offsetY: Math.round((evt.offsetY - 0) / cellSize)
         }
         var entity = cursor.click(coords, sidera.levels.current, gameObjects);
 

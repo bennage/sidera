@@ -77,7 +77,7 @@
             this._entity = new type();
             this.mode = this._entity.type;
 
-            this.find = this._entity.find;
+            this.find = (this._entity.find) ? this._entity.find.bind(this._entity) : function() {};
         },
 
         click: function(coords, level, gameObjects) {

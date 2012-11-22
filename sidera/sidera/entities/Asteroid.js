@@ -13,6 +13,7 @@
     }, {
         render: function(ctx, camera) {
 
+            //TODO
             this.frame += 0.1;
             if(this.frame > 60) this.frame %= 60;
 
@@ -50,26 +51,6 @@
         update: function() {
             this.radius = Math.sqrt(this.amount / Math.PI);
             this.scale = this.radius / 100;
-        }
-    }, {
-        sprite: function(entity) {
-            var max_height = 100;
-            var max_width = 100;
-
-            var x = max_width / 2;
-            var y = max_height / 2;
-
-            var canvas = document.createElement('canvas');
-            canvas.height = max_height;
-            canvas.width = max_width;
-
-            var ctx = canvas.getContext('2d');
-            ctx.beginPath();
-            ctx.fillStyle = 'brown';
-            ctx.arc(x, y, 50, 0, 2 * Math.PI, false);
-            ctx.fill();
-
-            return canvas;
         }
     });
 
