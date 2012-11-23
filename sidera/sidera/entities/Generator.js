@@ -32,15 +32,15 @@
 
             var coords = camera.project(this);
             var scale = camera.scale();
+            var size = 32 * scale;
+            var offset = -16 * scale;
 
             ctx.save();
             ctx.translate(coords.x, coords.y);
 
             ctx.beginPath();
 
-            var w = Math.floor(this.sprites.width * scale);
-            var h = Math.floor(this.sprites.height * scale);
-            ctx.drawImage(this.sprites, -w / 2, -h / 2, w, h);
+            ctx.drawImage(this.sprites, 0, 0, 128, 128, offset, offset, size, size);
 
             ctx.fillStyle = fillByCharge(this);
             ctx.arc(0, 0, 8 * scale, 0, fullCircle, false);
@@ -80,19 +80,19 @@
         cost: 500,
         sprite: function() {
             var canvas = document.createElement('canvas');
-            canvas.height = 40;
-            canvas.width = 40;
+            canvas.height = 128;
+            canvas.width = 128;
 
             var ctx = canvas.getContext('2d');
 
             ctx.beginPath();
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 6;
             ctx.strokeStyle = 'blue';
-            ctx.arc(20, 20, 20, 0, fullCircle, false);
-            ctx.moveTo(20, 0);
-            ctx.lineTo(20, 40);
-            ctx.moveTo(0, 20);
-            ctx.lineTo(40, 20);
+            ctx.arc(64, 64, 60, 0, fullCircle, false);
+            ctx.moveTo(64, 4);
+            ctx.lineTo(64, 124);
+            ctx.moveTo(4, 64);
+            ctx.lineTo(124, 64);
             ctx.stroke();
 
             return canvas;

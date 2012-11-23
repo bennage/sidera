@@ -11,11 +11,6 @@
 
             var scale = camera.scale();
             
-            // var coords = {
-            //     x: (this.tail.x - this.head.x),
-            //     y: (this.tail.y - this.head.y)
-            // };
-
             var tail = camera.project(this.tail);
             var head = camera.project(this.head);
             var coords = {
