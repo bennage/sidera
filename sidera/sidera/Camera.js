@@ -82,6 +82,22 @@
             };
         },
 
+        toWorldSpace: function(screenCoords) {
+            var cellSize = sidera.entities.MapGrid.cellSize;
+            var scale = this.scale();
+
+            var _x = (screenCoords.x - this.centerX) / scale / cellSize;
+            var _y = (screenCoords.y - this.centerY) / scale / cellSize;
+
+            var _x1 = _x + this.x;
+            var _y1 = _y + this.y;
+
+            return {
+                x: _x1,
+                y: _y1
+            };
+        },
+
         update: function() {
             this.updateViewPort();
             this.checkCommands();

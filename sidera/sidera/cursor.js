@@ -91,8 +91,8 @@
             var entity = new this.context();
 
             entity.hydrate({
-                x: coords.offsetX,
-                y: coords.offsetY,
+                x: coords.x,
+                y: coords.y,
                 onmining: function(take) {
                     level.money += take;
                 }

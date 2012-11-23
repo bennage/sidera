@@ -172,14 +172,15 @@
     }
 
     function handle_click(evt) {
-        var cellSize = sidera.entities.MapGrid.cellSize;
 
-        //TODO: only works at 1:1 zoom
-        var coords = {
-            offsetX: Math.round((evt.offsetX - 0) / cellSize),
-            offsetY: Math.round((evt.offsetY - 0) / cellSize)
-        }
-        var entity = cursor.click(coords, sidera.levels.current, gameObjects);
+        var screenCoords = {
+            x: evt.offsetX,
+            y: evt.offsetY
+        };
+        var worldCoords = camera.toWorldSpace(screenCoords);
+        worldCoords.x = Math.round(worldCoords.x);
+        worldCoords.y = Math.round(worldCoords.y);
+        var entity = cursor.click(worldCoords, sidera.levels.current, gameObjects);
 
         if(entity) {
             gameObjects.friendlies.push(entity);
