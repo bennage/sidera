@@ -49,7 +49,6 @@
         gameObjects.ui.push(minimap);
         gameObjects.ui.push(new sidera.FPS());
         gameObjects.ui.push(status);
-        // gameObjects.ui.push(cursor);
     }
 
     function draw(ctx, elapsed) {
@@ -220,7 +219,6 @@
                 cursor.setContext(types[key]);
             }
         });
-
     }
 
     sidera.framework.namespace.define('sidera.game', {

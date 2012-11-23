@@ -18,7 +18,7 @@
         this.sprites = sidera.assets['miner.png'];
 
         this.untilPulse = 0;
-        this.battery = 50;
+        this.battery = 0;
         this.targets = [];
 
         this.powered = true;

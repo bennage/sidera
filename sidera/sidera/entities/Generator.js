@@ -24,15 +24,15 @@
         this.untilPulse = 0;
         this.charge = 10;
         this.battery = 0;
-        this.range = 100;
+        this.range = 4;
 
     }, {
 
         render: function(ctx, camera) {
 
             var coords = camera.project(this);
-            var size = 128;
             var scale = camera.scale();
+
             ctx.save();
             ctx.translate(coords.x, coords.y);
 
@@ -43,9 +43,8 @@
             ctx.drawImage(this.sprites, -w / 2, -h / 2, w, h);
 
             ctx.fillStyle = fillByCharge(this);
-            ctx.arc(0, 0, 8, 0, fullCircle, false);
+            ctx.arc(0, 0, 8 * scale, 0, fullCircle, false);
             ctx.fill();
-
 
             // health meter
             this.renderMeter(ctx, (this.hp / max_health), 'green', {
@@ -55,11 +54,8 @@
 
             // power transfers
             for(var i = this.wires.length - 1; i >= 0; i--) {
-                this.wires[i].render(ctx, scale);
+                this.wires[i].render(ctx, camera);
             }
-            ctx.fillStyle = "white";
-            ctx.font = "8px sans-serif";
-            ctx.fillText(this.x + ',' + this.y, this.x, this.y);
 
             ctx.restore();
         },
@@ -75,8 +71,6 @@
                 this.untilPulse = this.untilPulse - elapsed;
             }
         },
-
-        find: find_targets,
 
         whenBuilding: function(building, gameObjects) {
             find_targets(this, gameObjects);
