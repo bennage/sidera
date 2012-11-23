@@ -22,7 +22,7 @@
             var y0 = Math.floor(frame / 8) * 128;
             var x1 = 128;
             var y1 = 128;
-            var size = 128 * this.scale * camera.scale();
+            var size = 128 * this.size * camera.scale;
 
             var coords = camera.project(this);
             ctx.save();
@@ -49,8 +49,8 @@
             }
         },
         update: function() {
-            this.radius = Math.sqrt(this.amount / Math.PI);
-            this.scale = this.radius / 100;
+            this.radius = this.amount / 1000;
+            this.size = this.radius/10;
         }
     });
 

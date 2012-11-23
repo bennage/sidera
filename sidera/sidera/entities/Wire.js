@@ -9,7 +9,7 @@
         render: function (ctx, camera) {
             var self = this;
 
-            var scale = camera.scale();
+            var scale = camera.scale;
             
             var tail = camera.project(this.tail);
             var head = camera.project(this.head);

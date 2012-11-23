@@ -31,7 +31,7 @@
     }, {
         render: function(ctx, camera) {
 
-            var scale = camera.scale();
+            var scale = camera.scale;
             var size = 24 * scale;
 
             var coords = camera.project(this);

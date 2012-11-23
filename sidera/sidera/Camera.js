@@ -45,12 +45,12 @@
             },
             90: function() {
                 //z
-                this.viewport.height *= Camera.zoomSpeed;
+                this.viewport.height /= Camera.zoomSpeed;
                 // this.z = Math.max(this.z, Camera.minZoom);
             },
             67: function() {
                 //c
-                this.viewport.height /= Camera.zoomSpeed;
+                this.viewport.height *= Camera.zoomSpeed;
                 // this.z = Math.min(this.z, Camera.maxZoom);
             }
         },
@@ -60,14 +60,10 @@
             this.viewport.width = this.viewport.height * this.viewport.aspectRatio;
         },
 
-        scale: function() {
-            return this.viewport.height / this.screen.height;
-        },
-
         project: function(objectToRender) {
             var cellSize = sidera.entities.MapGrid.cellSize;
 
-            var scale = this.scale();
+            var scale = this.scale;
             var camera = this;
 
             var _x = objectToRender.x - camera.x;
@@ -84,7 +80,7 @@
 
         toWorldSpace: function(screenCoords) {
             var cellSize = sidera.entities.MapGrid.cellSize;
-            var scale = this.scale();
+            var scale = this.scale;
 
             var _x = (screenCoords.x - this.centerX) / scale / cellSize;
             var _y = (screenCoords.y - this.centerY) / scale / cellSize;
@@ -100,11 +96,12 @@
 
         update: function() {
             this.updateViewPort();
+            this.scale = this.screen.height / this.viewport.height;
             this.checkCommands();
         }
     }, {
         speed: 0.1,
-        zoomSpeed: 0.9,
+        zoomSpeed: 0.95,
         // minZoom: 0.5,
         // maxZoom: 4
     });

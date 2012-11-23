@@ -6,9 +6,9 @@
     var MiniMap = sidera.framework.class.derive(Entity, function(gameObjects, camera) {
         Entity.prototype.constructor.call(this, 'MiniMap');
 
-        this.scale = 200 / 800;
-        this.w = this.scale * 800;
-        this.h = this.scale * 600;
+        this.cellSize = 5;
+        this.w = this.cellSize * sidera.entities.MapGrid.columns;
+        this.h = this.cellSize * sidera.entities.MapGrid.rows;
 
         var canvas = document.createElement('canvas');
         canvas.height = this.h;
@@ -71,9 +71,9 @@
                 var x, y, r;
                 for(i = entities.length - 1; i >= 0; i--) {
                     entity = entities[i];
-                    x = Math.round(entity.x * self.scale);
-                    y = Math.round(entity.y * self.scale);
-                    r = Math.round(entity.radius * self.scale) || 1;
+                    x = Math.round(entity.x * self.cellSize);
+                    y = Math.round(entity.y * self.cellSize);
+                    r = Math.round(entity.radius) || 1;
 
                     ctx.beginPath();
                     ctx.arc(x, y, r, 0, 2 * Math.PI, false);
@@ -82,10 +82,11 @@
             });
 
             // camera position and view
+            var cellSize = sidera.entities.MapGrid.cellSize;
             ctx.save();
             ctx.translate(this.camera.x, this.camera.y);
             ctx.beginPath();
-            ctx.rect(0, 0, 10, 10);
+            ctx.rect(0, 0, this.camera.viewport.width/cellSize, this.camera.viewport.height/cellSize);
             ctx.strokeStyle = 'rgb(0,255,255)';
             ctx.stroke();
             ctx.restore();

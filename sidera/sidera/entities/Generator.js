@@ -31,7 +31,7 @@
         render: function(ctx, camera) {
 
             var coords = camera.project(this);
-            var scale = camera.scale();
+            var scale = camera.scale;
             var size = 32 * scale;
             var offset = -16 * scale;
 

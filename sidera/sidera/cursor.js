@@ -18,7 +18,7 @@
                 return;
             }
 
-            var scale = camera.scale();
+            var scale = camera.scale;
             var _e = camera.project(e);
 
             if(e.range && this.overValidPlacement) {
