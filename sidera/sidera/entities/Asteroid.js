@@ -19,7 +19,7 @@
 
             var frame = Math.floor(this.frame);
             var x0 = (frame % 8) * 128;
-            var y0 = Math.floor(frame / 8) * 128;;
+            var y0 = Math.floor(frame / 8) * 128;
             var x1 = 128;
             var y1 = 128;
             var size = 128 * this.scale * camera.scale();
