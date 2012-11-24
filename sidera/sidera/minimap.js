@@ -81,13 +81,22 @@
                 }
             });
 
+            // TODO: this is off 
             // camera position and view
             var cellSize = sidera.entities.MapGrid.cellSize;
+            var viewport = this.camera.viewport;
+
+            var w = viewport.width / this.camera.scale / this.cellSize;
+            var h = viewport.height / this.camera.scale / this.cellSize;
+
+            var cx = this.camera.x * this.cellSize;
+            var cy = this.camera.y * this.cellSize;
+
             ctx.save();
-            ctx.translate(this.camera.x, this.camera.y);
+            ctx.translate(cx, cy);
             ctx.beginPath();
-            ctx.rect(0, 0, this.camera.viewport.width/cellSize, this.camera.viewport.height/cellSize);
-            ctx.strokeStyle = 'rgb(0,255,255)';
+            ctx.rect(-w / 2, -h / 2, w, h);
+            ctx.strokeStyle = 'rgba(0,255,255,0.3)';
             ctx.stroke();
             ctx.restore();
         },

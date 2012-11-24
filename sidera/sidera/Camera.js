@@ -4,6 +4,7 @@
     var Camera = sidera.framework.class.define(function(resolution) {
 
         var map = sidera.entities.MapGrid;
+        var aspectRatio = resolution.width / resolution.height;
 
         this.screen = resolution;
 
@@ -17,7 +18,7 @@
         this.viewport = {
             width: map.columns * map.cellSize,
             height: map.rows * map.cellSize,
-            aspectRatio: 16 / 9
+            aspectRatio: aspectRatio
         };
 
         this.updateViewPort();
