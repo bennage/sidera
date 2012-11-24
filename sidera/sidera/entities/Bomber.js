@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var Fighter = sidera.entities.Fighter;
@@ -9,56 +9,68 @@
     var circle = geo.fullCircle;
 
     var max_angle = Math.PI / 300;
-    var range = 350;
+    var speed = 0.007;
+    var range = 6;
     var reloadRate = 1 * 4000; // ms
-
     var choice = 1;
 
-    var Bomber = sidera.framework.class.derive(Fighter, function () {
+    var Bomber = sidera.framework.class.derive(Fighter, function() {
         Fighter.prototype.constructor.call(this, 'Bomber');
 
-        this.thrust = 0.3;
         this.untilRecharge = reloadRate * Math.random() + 1000;
-        this.sheet = Bomber.sprite();
+        this.sprites = Bomber.sprite();
 
     }, {
-        render: function (ctx) {
+        render: function(ctx, camera) {
+            var coords = camera.project(this);
+            var scale = camera.scale;
+
+            var ws = 40 * scale * 0.6; // 0.6 is an arbitrary scaled to make it "look" right
+            var hs = 20 * scale * 0.6;
+
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
+            ctx.rotate(this.orientation);
+            ctx.drawImage(this.sprites, 0, 0, 40, 20, -ws / 2, -hs / 2, ws, hs);
+            ctx.restore();
         },
 
-        update: function (elapsed, gameObjects) {
+        update: function(elapsed, gameObjects) {
 
             // let's only peform the acquisition every other time
             this.work = !this.work;
 
-            if (this.work) {
+            if(this.work) {
                 this.target = acquireTarget(this, gameObjects);
             }
 
             // update position every time
-            this.x += Math.cos(this.orientation) * this.thrust;
-            this.y += Math.sin(this.orientation) * this.thrust;
+            this.x += Math.cos(this.orientation) * speed;
+            this.y += Math.sin(this.orientation) * speed;
 
-            if (this.untilRecharge > 0) {
+            if(this.untilRecharge > 0) {
                 this.untilRecharge -= elapsed;
             }
 
-            if (this.orientation > circle) {
+            if(this.orientation > circle) {
                 this.orientation = this.orientation % circle;
             }
 
-            if (!this.target) { return; }
+            if(!this.target) {
+                return;
+            }
 
             var to_target = vector(this.target, this);
 
             // we're too close, turn away
-            if (to_target.distance() < 70) {
+            if(to_target.distance() < 1) {
 
                 // where should we turn to?
-                if (!this.focus) {
+                if(!this.focus) {
 
                     var current_angle = to_target.angle();
                     var new_angle = current_angle + (circle / 4 * choice); // or minus
-                    var some_distance = 120;
+                    var some_distance = 2;
                     choice *= -1;
 
                     this.focus = {
@@ -70,7 +82,7 @@
                 var target_angle = vector(this.focus, this).angle();
 
                 var delta = this.orientation - target_angle;
-                if (Math.abs(delta) > Math.PI) {
+                if(Math.abs(delta) > Math.PI) {
                     delta = (-circle) + Math.abs(delta);
                 }
                 var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
@@ -78,20 +90,20 @@
                 this.orientation -= (sign * adjust);
             }
 
-            if ((to_target.distance() > 120 && this.focus) || !this.focus) {
+            if((to_target.distance() > 2 && this.focus) || !this.focus) {
                 this.focus = null;
                 var delta = this.orientation - to_target.angle();
-                if (Math.abs(delta) > Math.PI) {
+                if(Math.abs(delta) > Math.PI) {
                     delta = (-circle) + Math.abs(delta);
                 }
                 var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
                 var adjust = Math.min(max_angle, Math.abs(delta));
                 this.orientation -= (sign * adjust);
 
-                // fire laser
-                if (this.untilRecharge <= 0 && this.target) {
-                    if (to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
-                        //attack target
+                // fire missle
+                if(this.untilRecharge <= 0 && this.target) {
+                    if(to_target.distance() <= range && (Math.abs(delta) < (Math.PI / 180))) {
+                        // attack target
                         this.untilRecharge = reloadRate;
                         this.fire(this.target, gameObjects.enemies);
                     }
@@ -99,19 +111,18 @@
             }
         },
 
-        fire: function (target, entities) {
+        fire: function(target, entities) {
             var missile = new Missile(this, target);
             entities.push(missile);
         }
-    },
-    {
-        sprite: function () {
+    }, {
+        sprite: function() {
             var canvas = document.createElement('canvas');
             canvas.height = 20;
             canvas.width = 40;
 
             var ctx = canvas.getContext('2d');
-            
+
             ctx.fillStyle = 'darkred';
             ctx.strokeStyle = 'darkred';
 
@@ -128,21 +139,18 @@
     });
 
     function acquireTarget(self, gameObjects) {
-        var entity,
-            current_distance,
-            closest,
-            last_distance = Number.POSITIVE_INFINITY;
+        var entity, current_distance, closest, last_distance = Number.POSITIVE_INFINITY;
 
         var entities = gameObjects.friendlies;
 
-        for (var i = entities.length - 1; i >= 0; i--) {
+        for(var i = entities.length - 1; i >= 0; i--) {
 
             entity = entities[i];
-            if ((entity !== self) && !entity.enemy && entity.hp) {
+            if((entity !== self) && !entity.enemy && entity.hp) {
 
                 current_distance = geo.lengthSquared(self, entity);
 
-                if (current_distance < last_distance) {
+                if(current_distance < last_distance) {
                     last_distance = current_distance;
                     closest = entity;
                 }
@@ -152,5 +160,7 @@
         return closest;
     }
 
-    sidera.framework.namespace.define('sidera.entities', { Bomber: Bomber });
+    sidera.framework.namespace.define('sidera.entities', {
+        Bomber: Bomber
+    });
 }());

@@ -19,7 +19,6 @@
 
         this.enemy = true;
         this.orientation = 0;
-        this.thrust = 0;
         this.laser = 0;
         this.hp = 5;
         this.shoudExplode = true;
@@ -39,10 +38,6 @@
 
             ctx.save();
             ctx.translate(coords.x, coords.y);
-            ctx.save();
-            ctx.rotate(this.orientation);
-            ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
-            ctx.restore();
 
             if(this.cooldown > 0 && this.target) {
 
@@ -63,8 +58,10 @@
                 ctx.lineTo(p.x, p.y);
                 ctx.stroke();
             }
-            ctx.restore();
 
+            ctx.rotate(this.orientation);
+            ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
+            ctx.restore();
         },
         update: function(elapsed, gameObjects) {
 

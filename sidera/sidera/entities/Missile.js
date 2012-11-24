@@ -1,5 +1,4 @@
-
-(function () {
+(function() {
     'use strict';
 
     var Entity = sidera.entities.Entity;
@@ -8,44 +7,59 @@
     var geo = sidera.math.geometry;
     var circle = geo.fullCircle;
 
-    var Missile = sidera.framework.class.derive(Entity, function (position, target) {
+    var Missile = sidera.framework.class.derive(Entity, function(position, target) {
         Entity.prototype.constructor.call(this, 'Missile');
 
-        this.sheet = Missile.sprite();
         this.x = position.x;
         this.y = position.y;
 
         this.target = target;
 
         this.orientation = 0;
-        this.thrust = 1.5;
+        this.thrust = 0.017;
         this.hp = 1;
         this.shoudExplode = true;
         this.enemy = true;
         this.orient(target);
 
+        this.sprites = Missile.sprite();
+
     }, {
-        render: function (ctx) {
+        render: function(ctx, camera) {
+            var coords = camera.project(this);
+            var size = 4 * camera.scale;
+            var scale = camera.scale;
+
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
+            ctx.rotate(this.orientation);
+            ctx.drawImage(this.sprites, 0, 0, 4, 4, -size / 2, -size / 2, size, size);
+            ctx.restore();
         },
-        orient: function (target) {
+        orient: function(target) {
             var to_target = vector(target, this);
             this.orientation = to_target.angle();
         },
-        update: function (elapsed, gameObjects) {
+        update: function(elapsed, gameObjects) {
             this.x += Math.cos(this.orientation) * this.thrust;
             this.y += Math.sin(this.orientation) * this.thrust;
 
-            if (!this.target) { return; }
-            if (this.target.dead) { this.target = null; return; }
+            if(!this.target) {
+                return;
+            }
+            if(this.target.dead) {
+                this.target = null;
+                return;
+            }
 
             var to_target = vector(this.target, this);
-            if (to_target.distance() - this.target.radius < 0) {
+            if(to_target.distance() - this.target.radius < 0) {
                 this.target.hit(20);
                 this.dead = true;
             }
         }
     }, {
-        sprite: function () {
+        sprite: function() {
 
             var canvas = document.createElement('canvas');
             canvas.height = 4;
@@ -61,5 +75,7 @@
         }
     });
 
-    sidera.framework.namespace.define('sidera.entities', { Missile: Missile });
+    sidera.framework.namespace.define('sidera.entities', {
+        Missile: Missile
+    });
 }());

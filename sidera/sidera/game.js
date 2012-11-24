@@ -161,7 +161,11 @@
     }
 
     function sendWaveOf(type) {
-
+        var now = new Date();
+        if(sendWaveOf.lastTime && (now - sendWaveOf.lastTime < 500)) {
+            return;
+        }
+        sendWaveOf.lastTime = now;
         for(var i = 3; i > 0; i--) {
             var f = new type();
             f.x = -1 - (i * 1.1);
@@ -201,9 +205,9 @@
             //q
             sendWaveOf(sidera.entities.Fighter);
         }
-
         if(keyboard.isKeyPressed(69)) {
             //e
+console.log('Bomber');
             sendWaveOf(sidera.entities.Bomber);
         }
 
