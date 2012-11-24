@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     var Entity = sidera.entities.Entity;
@@ -8,15 +8,14 @@
 
     var laser_charge = 5;
     var laser_cooldown = 1 * 1000; // ms
-
     var max_battery = 25;
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
-    var Turret = sidera.framework.class.derive(sidera.entities.Entity, function () {
+    var Turret = sidera.framework.class.derive(sidera.entities.Entity, function() {
         Entity.prototype.constructor.call(this, 'Turret');
 
-        this.sheet = Turret.sprite();
+        this.sprites = Turret.sprite();
 
         this.cooldown = 0;
         this.battery = 0;
@@ -26,51 +25,72 @@
         this.shoudExplode = true;
 
         this.orientation = (Math.PI * 2) * Math.random(); // start with the turrent pointing a random direction
-
-        this.radius = 5;
-        this.range = 200;
+        this.radius = 1;
+        this.range = 4;
     }, {
-        render: function (ctx, scale) {
+        render: function(ctx, camera) {
 
-            // battery meter
-            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', { x: 12, y: 10 }, scale);
+            var coords = camera.project(this);
+            var size = 10 * camera.scale;
+            var scale = camera.scale;
 
-            // health meter
-            this.renderMeter(ctx, (this.hp / max_health), 'green', { x: -16, y: 10 }, scale);
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
 
-            if (this.cooldown > 0 && this.target) {
+            if(this.cooldown > 0 && this.target) {
+
                 var fade = this.cooldown / laser_cooldown;
-                var coords = {
-                    x: (this.target.x - this.x) * scale,
-                    y: (this.target.y - this.y) * scale
+
+                var t = camera.project(this.target);
+
+                var p = {
+                    x: (t.x - coords.x),
+                    y: (t.y - coords.y)
                 };
 
                 ctx.lineWidth = 1 * scale;
-                ctx.strokeStyle = 'rgba(255,0,255,' + fade + ')';
+                ctx.strokeStyle = 'rgba(255,255,0,' + fade + ')';
 
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
-                ctx.lineTo(coords.x, coords.y);
+                ctx.lineTo(p.x, p.y);
                 ctx.stroke();
             }
-        },
-        update: function (elapsed, gameObjects) {
 
-            if (this.cooldown > 0) {
+            // battery meter
+            this.renderMeter(ctx, (this.battery / max_battery), 'yellow', {
+                x: 12,
+                y: 10
+            }, scale);
+
+            // health meter
+            this.renderMeter(ctx, (this.hp / max_health), 'green', {
+                x: -16,
+                y: 10
+            }, scale);
+
+            ctx.rotate(this.orientation);
+            ctx.drawImage(this.sprites, 0, 0, 20, 20, -size / 2, -size / 2, size, size);
+
+            ctx.restore();
+        },
+        update: function(elapsed, gameObjects) {
+
+            if(this.cooldown > 0) {
                 this.cooldown -= elapsed;
             }
 
-            if (this.cooldown > 0 || this.battery < laser_charge) return;
+            if(this.cooldown > 0 || this.battery < laser_charge) return;
 
             this.target = acquireTarget(this, gameObjects);
 
-            if (!this.target) return;
+            if(!this.target) return;
 
             var to_target = vector(this.target, this);
 
             // track the target
             var delta = this.orientation - to_target.angle();
-            if (Math.abs(delta) > Math.PI) {
+            if(Math.abs(delta) > Math.PI) {
                 delta = (-2 * Math.PI) + Math.abs(delta);
             }
             var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
@@ -79,13 +99,13 @@
 
             this.orientation = this.orientation % (2 * Math.PI);
 
-            if (to_target.distance() <= this.range && Math.abs(delta) <= max_angle) {
+            if(to_target.distance() <= this.range && Math.abs(delta) <= max_angle) {
                 this.cooldown = laser_cooldown;
                 this.battery -= laser_charge;
                 this.target.hit(1);
             }
         },
-        charge: function (available) {
+        charge: function(available) {
             var capacity = max_battery - this.battery;
             var used = Math.min(available, capacity);
             this.battery += used;
@@ -93,7 +113,7 @@
         }
     }, {
         cost: 20,
-        sprite: function () {
+        sprite: function() {
             var canvas = document.createElement('canvas');
             canvas.height = 20;
             canvas.width = 20;
@@ -119,21 +139,18 @@
     });
 
     function acquireTarget(self, gameObjects) {
-        var entity,
-            current_distance,
-            closest,
-            last_distance = Number.POSITIVE_INFINITY;
+        var entity, current_distance, closest, last_distance = Number.POSITIVE_INFINITY;
 
         var entities = gameObjects.enemies;
 
-        for (var i = entities.length - 1; i >= 0; i--) {
+        for(var i = entities.length - 1; i >= 0; i--) {
 
             entity = entities[i];
-            if (entity.enemy) {
+            if(entity.enemy) {
 
                 current_distance = geo.lengthSquared(self, entity);
 
-                if (current_distance < last_distance) {
+                if(current_distance < last_distance) {
                     last_distance = current_distance;
                     closest = entity;
                 }
@@ -143,5 +160,7 @@
         return closest;
     }
 
-    sidera.framework.namespace.define('sidera.entities', { Turret: Turret });
+    sidera.framework.namespace.define('sidera.entities', {
+        Turret: Turret
+    });
 }());
