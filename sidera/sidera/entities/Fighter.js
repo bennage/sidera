@@ -6,9 +6,9 @@
     var geo = sidera.math.geometry;
     var circle = geo.fullCircle;
 
-    var max_speed = 20;
     var max_angle = Math.PI / 100;
-    var range = 200;
+    var speed = 0.017;
+    var range = 4;
     var rechargeRate = 1 * 1000; // ms
     var laser_cooldown = 500; // ms
     var choice = 1;
@@ -31,10 +31,14 @@
 
         this.sprites = sidera.assets['fighter.png'];
     }, {
-        render: function(ctx, scale) {
+        render: function(ctx, camera) {
 
-            var size = 16 * scale;
+            var coords = camera.project(this);
+            var size = 16 * camera.scale;
+            var scale = camera.scale;
 
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
             ctx.save();
             ctx.rotate(this.orientation);
             ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
@@ -44,9 +48,11 @@
 
                 var fade = this.cooldown / laser_cooldown;
 
-                var coords = {
-                    x: (this.target.x - this.x) * scale,
-                    y: (this.target.y - this.y) * scale
+                var t = camera.project(this.target);
+
+                var p = {
+                    x: (t.x - coords.x),
+                    y: (t.y - coords.y)
                 };
 
                 ctx.lineWidth = 1 * scale;
@@ -54,9 +60,11 @@
 
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
-                ctx.lineTo(coords.x, coords.y);
+                ctx.lineTo(p.x, p.y);
                 ctx.stroke();
             }
+            ctx.restore();
+
         },
         update: function(elapsed, gameObjects) {
 
@@ -68,8 +76,8 @@
             }
 
             // update position every time
-            this.x += Math.cos(this.orientation);
-            this.y += Math.sin(this.orientation);
+            this.x += Math.cos(this.orientation) * speed;
+            this.y += Math.sin(this.orientation) * speed;
 
             if(this.cooldown > 0) {
                 this.cooldown -= elapsed;
@@ -90,14 +98,14 @@
             var to_target = vector(this.target, this);
 
             // we're too close, turn away
-            if(to_target.distance() < 70) {
+            if(to_target.distance() < 1) {
 
                 // where should we turn to?
                 if(!this.focus) {
 
                     var current_angle = to_target.angle();
                     var new_angle = current_angle + (circle / 4 * choice); // or minus
-                    var some_distance = 120;
+                    var some_distance = 2;
                     choice *= -1;
 
                     this.focus = {
@@ -117,7 +125,7 @@
                 this.orientation -= (sign * adjust);
             }
 
-            if((to_target.distance() > 120 && this.focus) || !this.focus) {
+            if((to_target.distance() > 2 && this.focus) || !this.focus) {
                 this.focus = null;
                 var delta = this.orientation - to_target.angle();
                 if(Math.abs(delta) > Math.PI) {

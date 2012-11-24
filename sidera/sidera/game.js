@@ -164,8 +164,8 @@
 
         for(var i = 3; i > 0; i--) {
             var f = new type();
-            f.x = -50 - (i * 25);
-            f.y = -50 - (i * 25);
+            f.x = -1 - (i * 1.1);
+            f.y = -1 - (i * 1.1);
             gameObjects.enemies.push(f);
         }
     }
