@@ -17,7 +17,7 @@
         while(asteroid_count > 0) {
             var a = new Asteroid();
             a.x = parseInt(r() * sidera.entities.MapGrid.columns, 10);
-            a.y = parseInt(r() * sidera.entities.MapGrid.rows, 10);
+            a.y = parseInt(r() * sidera.entities.MapGrid.columns, 10);
             a.amount = parseInt(r() * 2000, 10) + 200;
             objects.enviroment.push(a);
             asteroid_count--;
@@ -26,19 +26,19 @@
         var a = new Asteroid();
         a.x = 0;
         a.y = 0;
-        a.amount = 1000;
+        a.amount = 2000;
         objects.enviroment.push(a);
 
         var a = new Asteroid();
         a.x = 1;
         a.y = 1;
-        a.amount = 1000;
+        a.amount = 2000;
         objects.enviroment.push(a);
 
         var a = new Asteroid();
-        a.x = 2;
-        a.y = 2;
-        a.amount = 1000;
+        a.x = sidera.entities.MapGrid.columns;
+        a.y = sidera.entities.MapGrid.columns;
+        a.amount = 2000;
         objects.enviroment.push(a);
 
         return state;

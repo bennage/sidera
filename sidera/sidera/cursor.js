@@ -19,9 +19,20 @@
             }
 
             var scale = camera.scale;
-            var pe = camera.project(e);
+            var cellSize = sidera.entities.MapGrid.cellSize *scale;
+            var offset = cellSize / 2;
+            var wc = camera.toWorldSpace(this);
+            wc.x = Math.round(wc.x);
+            wc.y = Math.round(wc.y);
+            var pe = camera.project(wc);
+            ctx.save();
+            ctx.translate(pe.x, pe.y);
+            ctx.beginPath()
+            ctx.rect(-offset, -offset, cellSize, cellSize);
+            ctx.fillStyle = 'rgba(0,255,0,0.5)';
+            ctx.fill();
+            ctx.restore();
 
-            // toWorldSpace
             // var _e = camera.project(e);
             // if(e.range && this.overValidPlacement) {
             //     ctx.beginPath();
@@ -47,7 +58,6 @@
             // }
             // ctx.drawImage(e.sprites, -w / 2, -h / 2, w, h);
             // ctx.restore();
-
         },
 
         update: function(elapsed, gameObjects) {

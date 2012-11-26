@@ -4,6 +4,8 @@
 
 	var Entity = sidera.entities.Entity;
 
+	var padding = 0.5;
+
 	var MapGrid = sidera.framework.class.derive(Entity, function() {
 		Entity.prototype.constructor.call(this, 'MapGrid');
 
@@ -21,15 +23,15 @@
 			ctx.lineWidth = 1;
 
 			// horizontal lines
-			for(r = 0; r <= MapGrid.rows; r++) {
+			for(r = -1; r <= MapGrid.rows; r++) {
 
 				start = camera.project({
-					x: 0,
-					y: r
+					x: -padding,
+					y: r + padding
 				});
 				end = camera.project({
-					x: MapGrid.columns,
-					y: r
+					x: MapGrid.columns + padding,
+					y: r + padding
 				});
 
 				ctx.beginPath();
@@ -39,15 +41,15 @@
 			}
 
 			// vertical lines
-			for(c = 0; c <= MapGrid.columns; c++) {
+			for(c = -1; c <= MapGrid.columns; c++) {
 
 				start = camera.project({
-					x: c,
-					y: 0
+					x: c + padding,
+					y: -padding
 				});
 				end = camera.project({
-					x: c,
-					y: MapGrid.rows
+					x: c + padding,
+					y: MapGrid.rows + padding
 				});
 
 				ctx.beginPath();
