@@ -35,8 +35,8 @@
     function start(options) {
 
         isGameOver = false;
-        cursor = new sidera.Cursor();
         camera = new sidera.Camera(sidera.resolution);
+        cursor = new sidera.Cursor(camera);
         gameObjects = initializeGameObjectSets();
 
         gameObjects.background.push(new sidera.entities.MapGrid());

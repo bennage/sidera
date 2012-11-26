@@ -4,12 +4,17 @@
     var Entity = sidera.entities.Entity;
     var fullCircle = sidera.math.geometry.fullCircle;
 
-    var Cursor = sidera.framework.class.derive(Entity, function() {
+    var Cursor = sidera.framework.class.derive(Entity, function(camera) {
         Entity.prototype.constructor.call(this, 'Cursor');
+        this.camera = camera;
     }, {
         _entity: null,
         mode: 'nothing',
         overValidPlacement: true,
+        worldSpace: {
+            x: -1,
+            y: -1
+        },
 
         render: function(ctx, camera) {
             var e = this._entity;
@@ -19,17 +24,15 @@
             }
 
             var scale = camera.scale;
-            var cellSize = sidera.entities.MapGrid.cellSize *scale;
+            var cellSize = sidera.entities.MapGrid.cellSize * scale;
             var offset = cellSize / 2;
-            var wc = camera.toWorldSpace(this);
-            wc.x = Math.round(wc.x);
-            wc.y = Math.round(wc.y);
-            var pe = camera.project(wc);
+
+            var pe = camera.project(this.worldSpace);
             ctx.save();
             ctx.translate(pe.x, pe.y);
             ctx.beginPath()
             ctx.rect(-offset, -offset, cellSize, cellSize);
-            ctx.fillStyle = 'rgba(0,255,0,0.5)';
+            ctx.fillStyle = (!this.overValidPlacement) ? 'rgba(255,0,0,0.5)' : 'rgba(0,255,0,0.5)';
             ctx.fill();
             ctx.restore();
 
@@ -66,15 +69,15 @@
 
             if(!this._entity) return;
 
-            this._entity.x = this.x = mouse.x;
-            this._entity.y = this.y = mouse.y;
+            this.worldSpace = this.camera.toWorldSpace(mouse);
+            this.worldSpace.x = Math.round(this.worldSpace.x);
+            this.worldSpace.y = Math.round(this.worldSpace.y);
 
-            if(this._entity.find) {
-                this._entity.find(this._entity, gameObjects);
-            }
+            this._entity.x = this.x = this.worldSpace.x;
+            this._entity.y = this.y = this.worldSpace.y;
 
-            this.overValidPlacement = this.canPlace(gameObjects.friendlies.concat(gameObjects.enviroment));
-
+            var blockers = gameObjects.friendlies.concat(gameObjects.enviroment);
+            this.overValidPlacement = this.canPlace(blockers);
         },
 
         setContext: function(type) {
