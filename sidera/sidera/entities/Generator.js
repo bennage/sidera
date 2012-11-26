@@ -17,7 +17,7 @@
 
         this.sprites = Generator.sprite();
 
-        this.radius = 1;
+        this.radius = 2;
         this.wires = [];
         this.hp = max_health;
         this.shoudExplode = true;

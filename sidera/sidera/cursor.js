@@ -27,40 +27,35 @@
             var cellSize = sidera.entities.MapGrid.cellSize * scale;
             var offset = cellSize / 2;
 
-            var pe = camera.project(this.worldSpace);
+            // center on the cell in focus
+            var coords = camera.project(this.worldSpace);
             ctx.save();
-            ctx.translate(pe.x, pe.y);
-            ctx.beginPath()
-            ctx.rect(-offset, -offset, cellSize, cellSize);
-            ctx.fillStyle = (!this.overValidPlacement) ? 'rgba(255,0,0,0.5)' : 'rgba(0,255,0,0.5)';
-            ctx.fill();
-            ctx.restore();
+            ctx.translate(coords.x, coords.y);
 
-            // var _e = camera.project(e);
-            // if(e.range && this.overValidPlacement) {
-            //     ctx.beginPath();
-            //     ctx.lineWidth = 1;
-            //     ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-            //     ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            //     ctx.arc(_e.x, _e.y, e.range * scale, 0, fullCircle, false);
-            //     ctx.stroke();
-            //     ctx.fill();
-            // }
-            // if(!this.overValidPlacement) {
-            //     ctx.beginPath();
-            //     ctx.fillStyle = 'rgba(255,0,0,0.9)';
-            //     ctx.arc(e.x, e.y, e.radius + 3, 0, fullCircle, false);
-            //     ctx.fill();
-            // }
-            // var w = Math.floor(e.sprites.width * e.scale);
-            // var h = Math.floor(e.sprites.height * e.scale);
-            // ctx.save();
-            // ctx.translate(e.x, e.y);
-            // if(e.orientation) {
-            //     ctx.rotate(e.orientation);
-            // }
-            // ctx.drawImage(e.sprites, -w / 2, -h / 2, w, h);
-            // ctx.restore();
+            // render red highlight if the placement is invalid
+            if(!this.overValidPlacement) {
+                ctx.beginPath()
+                ctx.rect(-offset, -offset, cellSize, cellSize);
+                ctx.fillStyle = 'rgba(255,0,0,0.3)';
+                ctx.fill();
+            }
+
+            // render the range of the entity (if applicable)
+            if(e.range && this.overValidPlacement) {
+                ctx.beginPath();
+                ctx.lineWidth = 1;
+                ctx.arc(0, 0, e.range * cellSize, 0, fullCircle, false);
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                ctx.fill();
+            }
+
+            // render the actual sprite of the entity
+            ctx.globalAlpha = 0.3
+            ctx.drawImage(e.sprites, -offset, -offset, cellSize, cellSize);
+
+            ctx.restore();
         },
 
         update: function(elapsed, gameObjects) {
