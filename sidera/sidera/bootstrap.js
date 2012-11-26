@@ -38,16 +38,6 @@
         currentScreen.transition = transition;
     }
 
-    function handle_mouseclick(args) {
-        if(!currentScreen || !currentScreen.click) return;
-        currentScreen.click(args);
-    }
-
-    function handle_mousemove(args) {
-        if(!currentScreen || !currentScreen.mouseover) return;
-        currentScreen.mouseover(args);
-    }
-
     sidera.framework.namespace.define('sidera', {
         bootstrap: function() {
 
@@ -59,10 +49,8 @@
 
             surface = canvas.getContext('2d');
 
-            canvas.addEventListener('click', handle_mouseclick);
-            canvas.addEventListener('mousemove', handle_mousemove);
-
-            sidera.keyboard.listen();
+            sidera.keyboard.listen(window);
+            sidera.mouse.listen(canvas);
 
             sidera.assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
             sidera.assets.load(function() {

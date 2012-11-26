@@ -10,13 +10,19 @@
 		keys[args.keyCode] = false;
 	}
 
-	function listen() {
-		window.addEventListener('keydown', handle_keydown);
-		window.addEventListener('keyup', handle_keyup);
+	function listen(target) {
+		target.addEventListener('keydown', handle_keydown);
+		target.addEventListener('keyup', handle_keyup);
 	}
 
 	function isKeyPressed(keyCode) {
 		return keys[keyCode];
+	}
+
+	function isAnyKeyPressed() {
+		return Object.keys(keys).some(function(key) {
+			return keys[key];
+		});
 	}
 
 	var keys = {};
@@ -47,6 +53,7 @@
 
 	sidera.framework.namespace.define('sidera.keyboard', {
 		isKeyPressed: isKeyPressed,
+		isAnyKeyPressed: isAnyKeyPressed,
 		listen: listen,
 		mixinKeyCheck: mixinKeyCheck
 	});

@@ -19,48 +19,45 @@
             }
 
             var scale = camera.scale;
-            var _e = camera.project(e);
+            var pe = camera.project(e);
 
-            if(e.range && this.overValidPlacement) {
-                ctx.beginPath();
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-                ctx.fillStyle = 'rgba(255,255,255,0.2)';
-                ctx.arc(_e.x, _e.y, e.range * scale, 0, fullCircle, false);
-                ctx.stroke();
-                ctx.fill();
-            }
-
-            if(!this.overValidPlacement) {
-                ctx.beginPath();
-                ctx.fillStyle = 'rgba(255,0,0,0.9)';
-                ctx.arc(e.x, e.y, e.radius + 3, 0, fullCircle, false);
-                ctx.fill();
-            }
-
-            var w = Math.floor(e.sprites.width * e.scale);
-            var h = Math.floor(e.sprites.height * e.scale);
-
-            ctx.save();
-
-            ctx.translate(e.x, e.y);
-
-            if(e.orientation) {
-                ctx.rotate(e.orientation);
-            }
-
-            ctx.drawImage(e.sprites, -w / 2, -h / 2, w, h);
-
-            ctx.restore();
-
+            // toWorldSpace
+            // var _e = camera.project(e);
+            // if(e.range && this.overValidPlacement) {
+            //     ctx.beginPath();
+            //     ctx.lineWidth = 1;
+            //     ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            //     ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            //     ctx.arc(_e.x, _e.y, e.range * scale, 0, fullCircle, false);
+            //     ctx.stroke();
+            //     ctx.fill();
+            // }
+            // if(!this.overValidPlacement) {
+            //     ctx.beginPath();
+            //     ctx.fillStyle = 'rgba(255,0,0,0.9)';
+            //     ctx.arc(e.x, e.y, e.radius + 3, 0, fullCircle, false);
+            //     ctx.fill();
+            // }
+            // var w = Math.floor(e.sprites.width * e.scale);
+            // var h = Math.floor(e.sprites.height * e.scale);
+            // ctx.save();
+            // ctx.translate(e.x, e.y);
+            // if(e.orientation) {
+            //     ctx.rotate(e.orientation);
+            // }
+            // ctx.drawImage(e.sprites, -w / 2, -h / 2, w, h);
+            // ctx.restore();
 
         },
 
         update: function(elapsed, gameObjects) {
+
+            var mouse = sidera.mouse.getState();
+
             if(!this._entity) return;
 
-            this._entity.x = this.x;
-            this._entity.y = this.y;
+            this._entity.x = this.x = mouse.x;
+            this._entity.y = this.y = mouse.y;
 
             if(this._entity.find) {
                 this._entity.find(this._entity, gameObjects);

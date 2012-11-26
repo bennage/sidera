@@ -1,9 +1,14 @@
-(function () {
+(function() {
 
     'use strict';
 
     var hue = 0;
     var direction = 1;
+    var transitioning = false;
+
+    function start() {
+        transitioning = false;
+    }
 
     function centerText(ctx, text, y) {
         var measurement = ctx.measureText(text);
@@ -27,18 +32,23 @@
 
     function update() {
         hue += 1 * direction;
-        if (hue > 255) direction = -1;
-        if (hue < 1) direction = 1;
-    }
+        if(hue > 255) direction = -1;
+        if(hue < 1) direction = 1;
 
-    function click() {
-        this.transition(sidera.game, { level: 1 });
+        var mouse = sidera.mouse.getState();
+        var anyKeyPressed = sidera.keyboard.isAnyKeyPressed();
+        if((mouse.buttonPressed || anyKeyPressed) && !transitioning) {
+            transitioning = true;
+            this.transition(sidera.game, {
+                level: 1
+            });
+        }
     }
 
     sidera.framework.namespace.define('sidera.start.screen', {
+        start: start,
         draw: draw,
-        update: update,
-        click: click
+        update: update
     });
 
 }());

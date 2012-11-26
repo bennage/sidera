@@ -157,7 +157,10 @@
         }
 
         handleInput();
-
+        var mouseState = sidera.mouse.getState();
+        if(mouseState.buttonPressed){
+            handle_click(mouseState);
+        }
     }
 
     function sendWaveOf(type) {
@@ -174,12 +177,9 @@
         }
     }
 
-    function handle_click(evt) {
+    function handle_click(mouseState) {
 
-        var screenCoords = {
-            x: evt.offsetX,
-            y: evt.offsetY
-        };
+        var screenCoords = mouseState;
         var worldCoords = camera.toWorldSpace(screenCoords);
         worldCoords.x = Math.round(worldCoords.x);
         worldCoords.y = Math.round(worldCoords.y);
@@ -189,11 +189,6 @@
             gameObjects.friendlies.push(entity);
             newBuilding = entity;
         }
-    }
-
-    function handle_mouseover(evt) {
-        cursor.x = evt.offsetX;
-        cursor.y = evt.offsetY;
     }
 
     function handleInput() {
@@ -207,7 +202,6 @@
         }
         if(keyboard.isKeyPressed(69)) {
             //e
-console.log('Bomber');
             sendWaveOf(sidera.entities.Bomber);
         }
 
@@ -228,9 +222,7 @@ console.log('Bomber');
     sidera.framework.namespace.define('sidera.game', {
         draw: draw,
         update: update,
-        start: start,
-        mouseover: handle_mouseover,
-        click: handle_click
+        start: start
     });
 
 }());
