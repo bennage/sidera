@@ -79,7 +79,7 @@
                     var measurement = ctx.measureText(text);
                     var x = (ctx.canvas.width - measurement.width) / 2;
                     ctx.fillText(text, x, y);
-                }
+                };
 
             ctx.fillStyle = 'white';
             ctx.font = '48px monospace';
@@ -158,7 +158,7 @@
 
         handleInput();
         var mouseState = sidera.mouse.getState();
-        if(mouseState.buttonPressed){
+        if(mouseState.buttonPressed) {
             handle_click(mouseState);
         }
     }
@@ -178,7 +178,9 @@
     }
 
     function handle_click(mouseState) {
-
+        if(!cursor.overValidPlacement) {
+            return;
+        }
         var screenCoords = mouseState;
         var worldCoords = camera.toWorldSpace(screenCoords);
         worldCoords.x = Math.round(worldCoords.x);
