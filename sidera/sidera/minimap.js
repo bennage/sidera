@@ -6,18 +6,29 @@
     var MiniMap = sidera.framework.class.derive(Entity, function(gameObjects, camera) {
         Entity.prototype.constructor.call(this, 'MiniMap');
 
-        this.cellSize = 5;
-        this.w = this.cellSize * sidera.entities.MapGrid.columns;
-        this.h = this.cellSize * sidera.entities.MapGrid.rows;
+        this.gameObjects = gameObjects;
+        this.camera = camera;
 
+        this.unit = 5;
+
+        // To create the correct size minimap, multiply the the grid by the unit
+        // size we're using for the minimap. We'll also add two extra for padding
+        // so that entities on the edge of the grid won't be on the edge of the 
+        // minimap. 
+        this.w = (this.unit * sidera.entities.MapGrid.columns) + this.unit + this.unit;
+        this.h = (this.unit * sidera.entities.MapGrid.rows) + this.unit + this.unit;
+
+        // We use this offset when rendering entities to the minimap to account
+        // for the padding.
+        this.entityOffset = this.unit;
+
+        // The minimap is rendered to an independent canvas, and this canvas is 
+        // later rendered to the main screen.
         var canvas = document.createElement('canvas');
         canvas.height = this.h;
         canvas.width = this.w;
 
         this.map = canvas.getContext('2d');
-
-        this.gameObjects = gameObjects;
-        this.camera = camera;
 
         this.colors = {};
         this.colors['enviroment'] = 'blue';
@@ -51,7 +62,8 @@
 
             ctx.beginPath();
             ctx.rect(this.x, this.y, this.w, this.h);
-            ctx.strokeStyle = 'rgb(255,255,255)';
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255,255,255, 0.3)';
             ctx.stroke();
 
         },
@@ -71,9 +83,9 @@
                 var x, y, r;
                 for(i = entities.length - 1; i >= 0; i--) {
                     entity = entities[i];
-                    x = Math.round(entity.x * self.cellSize);
-                    y = Math.round(entity.y * self.cellSize);
                     r = Math.round(entity.radius) || 1;
+                    x = Math.round(entity.x * self.unit) - r + self.entityOffset;
+                    y = Math.round(entity.y * self.unit) - r + self.entityOffset;
 
                     ctx.beginPath();
                     ctx.arc(x, y, r, 0, 2 * Math.PI, false);
@@ -86,11 +98,11 @@
             var cellSize = sidera.entities.MapGrid.cellSize;
             var viewport = this.camera.viewport;
 
-            var w = viewport.width / this.camera.scale / this.cellSize;
-            var h = viewport.height / this.camera.scale / this.cellSize;
+            var w = viewport.width / this.camera.scale / this.unit;
+            var h = viewport.height / this.camera.scale / this.unit;
 
-            var cx = this.camera.x * this.cellSize;
-            var cy = this.camera.y * this.cellSize;
+            var cx = this.camera.x * this.unit + self.entityOffset;
+            var cy = this.camera.y * this.unit + self.entityOffset;
 
             ctx.save();
             ctx.translate(cx, cy);

@@ -24,7 +24,14 @@
         }
 
     }, {
-        render: function (ctx, scale) {
+        render: function (ctx, camera) {
+
+            var coords = camera.project(this);
+            var scale = camera.scale;
+
+            ctx.save();
+            ctx.translate(coords.x, coords.y);
+
             var count = this.clouds.length;
             var puff;
             for (var i = 0; i < count; i++) {
@@ -36,6 +43,8 @@
                 ctx.arc(puff.x * scale, puff.y * scale, puff.r * scale, 0, fullCircle, false);
                 ctx.fill();
             }
+
+            ctx.restore();
         },
         update: function (elapsed) {
             var count = this.clouds.length;
