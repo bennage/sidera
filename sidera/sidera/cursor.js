@@ -11,6 +11,7 @@
         _entity: null,
         mode: 'nothing',
         overValidPlacement: true,
+        range: 0,
         worldSpace: {
             x: -1,
             y: -1
@@ -35,16 +36,16 @@
             // render red highlight if the placement is invalid
             if(!this.overValidPlacement) {
                 ctx.beginPath()
-                ctx.rect(-offset, -offset, cellSize, cellSize);
+                ctx.arc(0, 0, offset, 0, fullCircle, false);
                 ctx.fillStyle = 'rgba(255,0,0,0.3)';
                 ctx.fill();
             }
 
             // render the range of the entity (if applicable)
-            if(e.range && this.overValidPlacement) {
+            if(this.range > 0) {
                 ctx.beginPath();
                 ctx.lineWidth = 1;
-                ctx.arc(0, 0, e.range * cellSize, 0, fullCircle, false);
+                ctx.arc(0, 0, this.range * cellSize, 0, fullCircle, false);
                 ctx.strokeStyle = 'rgba(255,255,255,0.1)';
                 ctx.stroke();
                 ctx.fillStyle = 'rgba(255,255,255,0.1)';
@@ -62,7 +63,18 @@
 
             var mouse = sidera.mouse.getState();
 
-            if(!this._entity) return;
+            var rate = 0.25;
+
+            if(!this._entity || !this._entity.range || !this.overValidPlacement) {
+                if(this.range > 0) this.range -= rate;
+            } else {
+                if(this.range < this._entity.range) this.range += rate;
+                if(this.range > this._entity.range) this.range -= rate;
+            }
+
+            if(!this._entity) {
+                return;
+            }
 
             this.worldSpace = this.camera.toWorldSpace(mouse);
             this.worldSpace.x = Math.round(this.worldSpace.x);
