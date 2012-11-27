@@ -14,6 +14,59 @@
     var camera;
     var isGameOver = false;
 
+    var CommandBar = sidera.framework.class.derive(Entity, function() {
+        Entity.prototype.constructor.call(this, 'CommandBar');
+
+        this.x = sidera.resolution.width - 100;
+        this.y = 50;
+
+        this.commands = [{
+            key: 49,
+            action: Miner
+        }, {
+            key: 50,
+            action: Generator
+        }, {
+            key: 51,
+            action: Turret
+        }];
+
+    }, {
+        state: null,
+        render: function(ctx) {
+            var h = this.commands.length * 50 + 8;
+
+            ctx.save();
+            ctx.translate(this.x, this.y);
+
+            ctx.beginPath();
+            ctx.rect(0, 0, 100, h);
+            ctx.fillStyle = 'rgba(128,128,128,0.7)';
+            ctx.fill();
+
+            this.commands.forEach(function(command, index) {
+                var y = index * 50 + 8;
+                ctx.beginPath();
+                ctx.rect(8, y, 84, 42);
+                ctx.fillStyle = 'rgba(128,128,128,0.7)';
+                ctx.fill();
+
+
+                // hack
+                var _entity = new command.action();
+
+                ctx.fillStyle = "white";
+                ctx.font = "8px sans-serif";
+                ctx.fillText(_entity.type, 12, y + 8);
+            });
+
+            ctx.restore();
+        },
+        update: function() {
+
+        }
+    });
+
     function initializeGameObjectSets() {
 
         function entityArray() {
@@ -45,8 +98,8 @@
         cursor.setContext(Miner);
 
         status = new sidera.Status(level);
-        var minimap = new sidera.MiniMap(gameObjects, camera);
-        gameObjects.ui.push(minimap);
+        gameObjects.ui.push(new CommandBar());
+        gameObjects.ui.push(new sidera.MiniMap(gameObjects, camera));
         gameObjects.ui.push(new sidera.FPS());
         gameObjects.ui.push(status);
     }

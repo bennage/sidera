@@ -39,9 +39,8 @@
     }
 
     sidera.framework.namespace.define('sidera', {
+        resolution: resolution,
         bootstrap: function() {
-
-            sidera.resolution = resolution;
 
             canvas = document.querySelector('canvas#board');
             canvas.setAttribute('width', resolution.width);
