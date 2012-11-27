@@ -2,7 +2,7 @@
     'use strict';
 
     var Entity = sidera.entities.Entity;
-
+    
     var vector = sidera.math.vector;
     var geo = sidera.math.geometry;
 
@@ -27,12 +27,12 @@
 
         this.radius = 1;
         this.range = 3;
-        
+
     }, {
         render: function(ctx, camera) {
 
             var scale = camera.scale;
-            var size = 24 * scale;
+            var size = sidera.entities.MapGrid.cellSize * scale;
 
             var coords = camera.project(this);
             ctx.save();
@@ -42,7 +42,7 @@
             ctx.fillStyle = "white";
             ctx.font = "8px sans-serif";
             ctx.fillText(this.x + ',' + this.y, this.x, this.y);
-            
+
             ctx.strokeStyle = strokeByPulse(this);
             ctx.lineWidth = 1 * scale;
 

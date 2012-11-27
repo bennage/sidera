@@ -2,7 +2,6 @@
     'use strict';
 
     var Entity = sidera.entities.Entity;
-
     var vector = sidera.math.vector;
     var geo = sidera.math.geometry;
 
@@ -31,8 +30,8 @@
         render: function(ctx, camera) {
 
             var coords = camera.project(this);
-            var size = 10 * camera.scale;
             var scale = camera.scale;
+            var size = sidera.entities.MapGrid.cellSize * scale;
 
             ctx.save();
             ctx.translate(coords.x, coords.y);
@@ -70,7 +69,7 @@
             }, scale);
 
             ctx.rotate(this.orientation);
-            ctx.drawImage(this.sprites, 0, 0, 20, 20, -size / 2, -size / 2, size, size);
+            ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
 
             ctx.restore();
         },
@@ -115,23 +114,23 @@
         cost: 20,
         sprite: function() {
             var canvas = document.createElement('canvas');
-            canvas.height = 20;
-            canvas.width = 20;
+            canvas.height = 128;
+            canvas.width = 128;
 
             var ctx = canvas.getContext('2d');
 
             ctx.beginPath();
             ctx.fillStyle = 'green';
-            ctx.arc(10, 10, 10, 0, 2 * Math.PI, false);
+            ctx.arc(64, 64, 24, 0, 2 * Math.PI, false);
             ctx.fill();
 
             // cannon
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 6;
             ctx.strokeStyle = 'rgba(0,64,0,1)';
 
             ctx.beginPath();
-            ctx.moveTo(10, 10);
-            ctx.lineTo(20, 10);
+            ctx.moveTo(64, 64);
+            ctx.lineTo(96, 64);
             ctx.stroke();
 
             return canvas;

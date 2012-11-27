@@ -32,15 +32,14 @@
 
             var coords = camera.project(this);
             var scale = camera.scale;
-            var size = 32 * scale;
-            var offset = -16 * scale;
+            var size = sidera.entities.MapGrid.cellSize * scale;
 
             ctx.save();
             ctx.translate(coords.x, coords.y);
 
             ctx.beginPath();
 
-            ctx.drawImage(this.sprites, 0, 0, 128, 128, offset, offset, size, size);
+            ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
 
             ctx.fillStyle = fillByCharge(this);
             ctx.arc(0, 0, 8 * scale, 0, fullCircle, false);
