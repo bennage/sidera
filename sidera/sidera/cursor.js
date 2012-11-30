@@ -12,15 +12,14 @@
         mode: 'nothing',
         overValidPlacement: true,
         range: 0,
+        on: false,
         worldSpace: {
             x: -1,
             y: -1
         },
 
         render: function(ctx, camera) {
-            var e = this._entity;
-
-            if(!e) {
+            if(!this.on || !this._entity) {
                 return;
             }
 
@@ -54,13 +53,15 @@
 
             // render the actual sprite of the entity
             ctx.globalAlpha = 0.3
-            ctx.drawImage(e.sprites, -offset, -offset, cellSize, cellSize);
+            ctx.drawImage(this._entity.sprites, -offset, -offset, cellSize, cellSize);
 
             ctx.restore();
         },
 
         update: function(elapsed, gameObjects) {
-
+            if(!this.on) {
+                return;
+            }
             var mouse = sidera.mouse.getState();
 
             var rate = 0.25;

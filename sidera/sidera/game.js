@@ -149,34 +149,6 @@
         }
     }
 
-    function updateSet(entities, elapsed) {
-        var entity;
-        var dead = entities.dead;
-        var index;
-
-        for(var i = entities.length - 1; i >= 0; i--) {
-            entity = entities[i];
-            if(entity.update) entity.update(elapsed, gameObjects);
-
-            // collect the dead
-            if(entity.dead) {
-                dead.push(entity);
-            }
-        }
-
-        // bury the dead
-        for(var i = dead.length - 1; i >= 0; i--) {
-            index = entities.indexOf(dead[i]);
-            entities.splice(index, 1);
-
-            if(dead[i].shoudExplode) {
-                var explosion = new sidera.entities.Explosion(dead[i]);
-                gameObjects.doodads.push(explosion);
-            }
-        }
-        entities.dead = [];
-    }
-
     function update(elapsed) {
 
         status.mode = cursor.mode;
@@ -210,8 +182,57 @@
         }
 
         handleInput();
-        var mouseState = sidera.mouse.getState();
-        if(mouseState.buttonPressed) {
+
+        delegateMouse(sidera.mouse.getState(), gameObjects.ui);
+    }
+
+    function updateSet(entities, elapsed) {
+        var entity;
+        var dead = entities.dead;
+        var index;
+
+        for(var i = entities.length - 1; i >= 0; i--) {
+            entity = entities[i];
+            if(entity.update) entity.update(elapsed, gameObjects);
+
+            // collect the dead
+            if(entity.dead) {
+                dead.push(entity);
+            }
+        }
+
+        // bury the dead
+        for(var i = dead.length - 1; i >= 0; i--) {
+            index = entities.indexOf(dead[i]);
+            entities.splice(index, 1);
+
+            if(dead[i].shoudExplode) {
+                var explosion = new sidera.entities.Explosion(dead[i]);
+                gameObjects.doodads.push(explosion);
+            }
+        }
+        entities.dead = [];
+    }
+
+    function delegateMouse(mouseState, uiElements) {
+        var i, element;
+        var handled = false;
+
+        for(i = uiElements.length - 1; i >= 0; i--) {
+            element = uiElements[i];
+
+            if(element.handleMouse && mouseState.isCursorOver(element.bounds)) {
+                handled = element.handleMouse(mouseState);
+
+            }
+            if(handled) {
+                break;
+            }
+        }
+
+        cursor.on = !handled;
+
+        if(!handled && mouseState.buttonPressed) {
             handle_click(mouseState);
         }
     }

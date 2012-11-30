@@ -6,7 +6,8 @@
 		x: -1,
 		y: -1,
 		buttonPressed: false,
-		lastPressUp: new Date()
+		lastPressUp: new Date(),
+		isCursorOver: isCursorOver
 	};
 
 	function getState() {
@@ -25,6 +26,10 @@
 	function handle_mousemove(args) {
 		state.x = args.offsetX;
 		state.y = args.offsetY;
+	}
+
+	function isCursorOver(bounds) {
+		return(state.x >= bounds.left) && (state.x <= bounds.right) && (state.y >= bounds.top) && (state.y <= bounds.bottom);
 	}
 
 	function listen(target) {

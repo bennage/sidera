@@ -37,6 +37,13 @@
 
         this.x = 20;
         this.y = 420;
+        this.bounds = {
+            top: this.y,
+            left: this.x,
+            bottom: this.y + this.h,
+            right: this.x + this.w
+        };
+
         this.on = false;
         this.lastToggle = new Date();
     }, {
@@ -49,6 +56,13 @@
                     this.lastToggle = now;
                 }
             }
+        },
+        handleMouse: function(mouseState) {
+            if(!this.on) {
+                return false;
+            }
+
+            return true;
         },
         render: function(ctx) {
             if(!this.on) {
