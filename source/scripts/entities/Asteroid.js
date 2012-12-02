@@ -1,12 +1,12 @@
 define(['entities/Entity', 'assets'], function(Entity, assets) {
 
-    var Asteroid = function() {
-            Entity.prototype.constructor.call(this, 'Asteroid');
+    var Asteroid = Entity.extend(function() {
+        this._base(this, 'Asteroid');
 
-            this.amount = 0;
-            this.frame = Math.random() * 60;
-            this.sprites = assets['rocks.png'];
-        };
+        this.amount = 0;
+        this.frame = Math.random() * 60;
+        this.sprites = assets['rocks.png'];
+    });
 
     Asteroid.prototype.render = function(ctx, camera) {
 

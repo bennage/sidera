@@ -2,26 +2,25 @@ define(['entities/Entity', 'math/geometry'], function(Entity, geometry) {
 
     var fullCircle = geometry.fullCircle;
 
-    var Explosion = function(corpse) {
-            Entity.prototype.constructor.call(this, 'Explosion');
+    var Explosion = Entity.extend(function(corpse) {
+        this._base(this, 'Explosion');
 
-            this.clouds = [];
-            this.x = corpse.x;
-            this.y = corpse.y;
+        this.clouds = [];
+        this.x = corpse.x;
+        this.y = corpse.y;
 
-            var count = Math.ceil(Math.random() * 5);
-            for(var i = 0; i < count; i++) {
-                this.clouds.push({
-                    x: (Math.random() * 20) - 10,
-                    y: (Math.random() * 20) - 10,
-                    r: (Math.random() * 20) + 5,
-                    start: i * (300 / count),
-                    // start time offset
-                    life: 300 * Math.random() + 200
-                });
-            }
-
-        };
+        var count = Math.ceil(Math.random() * 5);
+        for(var i = 0; i < count; i++) {
+            this.clouds.push({
+                x: (Math.random() * 20) - 10,
+                y: (Math.random() * 20) - 10,
+                r: (Math.random() * 20) + 5,
+                start: i * (300 / count),
+                // start time offset
+                life: 300 * Math.random() + 200
+            });
+        }
+    });
 
     Explosion.prototype.render = function(ctx, camera) {
 

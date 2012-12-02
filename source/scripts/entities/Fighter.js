@@ -9,23 +9,23 @@
     var laser_cooldown = 500; // ms
     var choice = 1;
 
-    var Fighter = function(type) {
+    var Fighter = Entity.extend(function(type) {
 
-            Entity.prototype.constructor.call(this, type || 'Fighter');
+        this._base(this, type || 'Fighter');
 
-            this.enemy = true;
-            this.orientation = 0;
-            this.laser = 0;
-            this.hp = 5;
-            this.shoudExplode = true;
+        this.enemy = true;
+        this.orientation = 0;
+        this.laser = 0;
+        this.hp = 5;
+        this.shoudExplode = true;
 
-            this.cooldown = 0;
-            this.untilRecharge = rechargeRate;
+        this.cooldown = 0;
+        this.untilRecharge = rechargeRate;
 
-            this.target = null;
+        this.target = null;
 
-            this.sprites = assets['fighter.png'];
-        };
+        this.sprites = assets['fighter.png'];
+    });
 
     Fighter.prototype.render = function(ctx, camera) {
 

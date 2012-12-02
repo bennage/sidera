@@ -1,10 +1,10 @@
 define(function() {
 
-    var Entity = require('entities/Entity');
-    var assets = require('assets');
-
-    var vector = require('math/vector');
-    var geo = require('math/geometry');
+    var Entity = require('entities/Entity'),
+        MapGrid = require('entities/MapGrid'),
+        assets = require('assets'),
+        vector = require('math/vector'),
+        geo = require('math/geometry');
 
     var pulse_rate = 2500; //ms
     var mine_rate = 10;
@@ -12,28 +12,27 @@ define(function() {
     var max_battery = 15;
     var max_health = 5;
 
-    var Miner = function() {
-            Entity.prototype.constructor.call(this, 'Miner');
+    var Miner = Entity.extend(function() {
+        this._base(this, 'Miner');
 
-            this.sprites = assets['miner.png'];
+        this.sprites = assets['miner.png'];
 
-            this.untilPulse = 0;
-            this.battery = 0;
-            this.targets = [];
+        this.untilPulse = 0;
+        this.battery = 0;
+        this.targets = [];
 
-            this.powered = true;
-            this.hp = max_health;
-            this.shoudExplode = true;
+        this.powered = true;
+        this.hp = max_health;
+        this.shoudExplode = true;
 
-            this.radius = 1;
-            this.range = 3;
-
-        };
+        this.radius = 1;
+        this.range = 3;
+    });
 
     Miner.prototype.render = function(ctx, camera) {
 
         var scale = camera.scale;
-        var size = sidera.entities.MapGrid.cellSize * scale;
+        var size = MapGrid.cellSize * scale;
 
         var coords = camera.project(this);
         ctx.save();

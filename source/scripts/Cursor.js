@@ -2,21 +2,21 @@
 
     var mouse = require('mouse');
 
-    var Cursor = function(camera) {
+    var Cursor = Entity.extend(function(camera) {
 
-            Entity.prototype.constructor.call(this, 'Cursor');
+        this._base(this, 'Cursor');
 
-            this.camera = camera;
-            this._entity = null;
-            this.mode = 'nothing';
-            this.overValidPlacement = true;
-            this.range = 0;
-            this.on = false;
-            this.worldSpace = {
-                x: -1,
-                y: -1
-            };
+        this.camera = camera;
+        this._entity = null;
+        this.mode = 'nothing';
+        this.overValidPlacement = true;
+        this.range = 0;
+        this.on = false;
+        this.worldSpace = {
+            x: -1,
+            y: -1
         };
+    });
 
     Cursor.prototype.render = function(ctx, camera) {
         if(!this.on || !this._entity) {

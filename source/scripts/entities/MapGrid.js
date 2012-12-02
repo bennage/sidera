@@ -4,13 +4,12 @@ define(function() {
 
 	var padding = 0.5;
 
-	var MapGrid = function() {
-			Entity.prototype.constructor.call(this, 'MapGrid');
+	var MapGrid = Entity.extend(function() {
+		this._base(this, 'MapGrid');
 
-			this.x = 0;
-			this.y = 0;
-
-		};
+		this.x = 0;
+		this.y = 0;
+	});
 
 	MapGrid.prototype.update = function() {};
 

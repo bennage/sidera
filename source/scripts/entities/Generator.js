@@ -7,21 +7,20 @@ define(['entities/Entity', 'math/geometry', 'math/vector', 'entities/MapGrid', '
     var max_battery = 500;
     var max_health = 20;
 
-    var Generator = function() {
-            Entity.prototype.constructor.call(this, 'Generator');
+    var Generator = Entity.extend(function() {
+        this._base(this, 'Generator');
 
-            this.sprites = Generator.sprite();
+        this.sprites = Generator.sprite();
 
-            this.radius = 2;
-            this.wires = [];
-            this.hp = max_health;
-            this.shoudExplode = true;
-            this.untilPulse = 0;
-            this.charge = 10;
-            this.battery = 0;
-            this.range = 4;
-
-        };
+        this.radius = 2;
+        this.wires = [];
+        this.hp = max_health;
+        this.shoudExplode = true;
+        this.untilPulse = 0;
+        this.charge = 10;
+        this.battery = 0;
+        this.range = 4;
+    });
 
     Generator.prototype.render = function(ctx, camera) {
 

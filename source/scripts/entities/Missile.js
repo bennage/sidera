@@ -6,24 +6,23 @@ define(function() {
 
     var circle = geo.fullCircle;
 
-    var Missile = function(position, target) {
-            Entity.prototype.constructor.call(this, 'Missile');
+    var Missile = Entity.extend(function(position, target) {
+        this._base(this, 'Missile');
 
-            this.x = position.x;
-            this.y = position.y;
+        this.x = position.x;
+        this.y = position.y;
 
-            this.target = target;
+        this.target = target;
 
-            this.orientation = 0;
-            this.thrust = 0.017;
-            this.hp = 1;
-            this.shoudExplode = true;
-            this.enemy = true;
-            this.orient(target);
+        this.orientation = 0;
+        this.thrust = 0.017;
+        this.hp = 1;
+        this.shoudExplode = true;
+        this.enemy = true;
+        this.orient(target);
 
-            this.sprites = Missile.sprite();
-
-        };
+        this.sprites = Missile.sprite();
+    });
 
     Missile.prototype.render = function(ctx, camera) {
         var coords = camera.project(this);
@@ -62,7 +61,7 @@ define(function() {
         }
     };
 
-    Missile.sprite: function() {
+    Missile.sprite = function() {
 
         var canvas = document.createElement('canvas');
         canvas.height = 4;

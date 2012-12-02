@@ -1,8 +1,9 @@
 define(function() {
 
-    var Entity = require('entities/Entity');
-    var vector = require('math/vector');
-    var geo = require('math/geometry');
+    var Entity = require('entities/Entity'),
+        MapGrid = require('entities/MapGrid'),
+        vector = require('math/vector'),
+        geo = require('math/geometry');
 
     var laser_charge = 5;
     var laser_cooldown = 1 * 1000; // ms
@@ -10,28 +11,28 @@ define(function() {
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
-    var Turret = function() {
-            Entity.prototype.constructor.call(this, 'Turret');
+    var Turret = Entity.extend(function() {
+        this._base(this, 'Turret');
 
-            this.sprites = Turret.sprite();
+        this.sprites = Turret.sprite();
 
-            this.cooldown = 0;
-            this.battery = 0;
+        this.cooldown = 0;
+        this.battery = 0;
 
-            this.powered = true;
-            this.hp = max_health;
-            this.shoudExplode = true;
+        this.powered = true;
+        this.hp = max_health;
+        this.shoudExplode = true;
 
-            this.orientation = (Math.PI * 2) * Math.random(); // start with the turrent pointing a random direction
-            this.radius = 1;
-            this.range = 4;
-        };
+        this.orientation = (Math.PI * 2) * Math.random(); // start with the turrent pointing a random direction
+        this.radius = 1;
+        this.range = 4;
+    });
 
     Turret.prototype.render = function(ctx, camera) {
 
         var coords = camera.project(this);
         var scale = camera.scale;
-        var size = sidera.entities.MapGrid.cellSize * scale;
+        var size = MapGrid.cellSize * scale;
 
         ctx.save();
         ctx.translate(coords.x, coords.y);

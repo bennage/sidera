@@ -1,8 +1,11 @@
-define(['status', 'minimap', 'fps', 'Camera', 'Cursor', 'levels', 'entities/Miner', 'entities/Turret', 'entities/Generator', 'entities/Explosion', 'ui/CommandBar'], function(Status, MiniMap, FPS) {
+define(['status', 'minimap', 'fps', 'Camera', 'Cursor', 'levels', 'entities/Miner', 'entities/Explosion','entities/Fighter', 'entities/Bomber', 'entities/Turret', 'entities/Generator', 'entities/Explosion', 'ui/CommandBar'], function(Status, MiniMap, FPS) {
 
     var Miner = require('entities/Miner'),
         Turret = require('entities/Turret'),
         Generator = require('entities/Generator'),
+        Fighter = require('entities/Fighter'),
+        Bomber = require('entities/Bomber'),
+        Explosion = require('entities/Explosion'),
         CommandBar = require('ui/CommandBar'),
         keyboard = require('keyboard'),
         mouse = require('mouse'),

@@ -25,6 +25,7 @@ define(function() {
         ctx.lineTo(coords.x, coords.y);
         ctx.stroke();
     };
+    
     Wire.prototype.update = function(elapsed, entities) {
 
     };

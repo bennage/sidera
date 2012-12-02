@@ -11,10 +11,6 @@ define(['keyboard'], function(keyboard) {
             keyboard.mixinKeyCheck(this);
         };
 
-    function extend(type, constructor) {
-
-    }
-
     // Copy the members to this
     Entity.prototype.hydrate = function(members) {
         for(var p in members) {
@@ -61,6 +57,18 @@ define(['keyboard'], function(keyboard) {
             var d = Math.sqrt(Math.pow(self.x - entity.x, 2) + Math.pow(self.y - entity.y, 2));
             return d < (self.radius + entity.radius);
         });
+    };
+
+    Entity.extend = function(derivedType) {
+        function BaseEntity() {
+            this.constructor = derivedType;
+        }
+        BaseEntity.prototype = Entity.prototype;
+        derivedType.prototype = new BaseEntity();
+        derivedType.prototype._base = function(self, type) {
+            Entity.prototype.constructor.call(self, type)
+        };
+        return derivedType;
     };
 
     return Entity
