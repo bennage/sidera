@@ -1,0 +1,13 @@
+{
+	"name": "sidera",
+	"description": "a game",
+	"version": "0.1.0",
+	"author": "Christpher Bennage",
+	"homepage": "http://dev.bennage.com",
+	"dependencies": {
+		"almond": ""
+	},
+	"devDependencies": {
+		"grunt-contrib-requirejs": ""
+	}
+}
