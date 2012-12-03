@@ -4,6 +4,9 @@ define(['mouse', 'keyboard', 'game'], function(mouse, keyboard, game) {
     var direction = 1;
     var transitioning = false;
 
+    var mouseLastFrame = false,
+        keyLastFrame = false;
+
     function start() {
         transitioning = false;
     }
@@ -35,12 +38,19 @@ define(['mouse', 'keyboard', 'game'], function(mouse, keyboard, game) {
 
         var mouseState = mouse.getState();
         var anyKeyPressed = keyboard.isAnyKeyPressed();
-        if((mouseState.buttonPressed || anyKeyPressed) && !transitioning) {
+
+        var mouseJustReleased = !mouseState.buttonPressed && mouseLastFrame;
+        var keyJustReleased = !anyKeyPressed && keyLastFrame;
+
+        if(mouseJustReleased || keyJustReleased && !transitioning) {
             transitioning = true;
             this.transition(game, {
                 level: 1
             });
         }
+
+        mouseLastFrame = mouseState.buttonPressed;
+        keyLastFrame = anyKeyPressed;
     }
 
     return {

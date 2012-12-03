@@ -6,8 +6,8 @@ define(function() {
 
     var circle = geo.fullCircle;
 
-    var Missile = Entity.extend(function(position, target) {
-        this._base(this, 'Missile');
+    var Missile = Entity.mix('Missile',function(position, target) {
+        // this._base(this, 'Missile');
 
         this.x = position.x;
         this.y = position.y;

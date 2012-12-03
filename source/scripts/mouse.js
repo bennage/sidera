@@ -5,7 +5,8 @@ define(function() {
 		y: -1,
 		buttonPressed: false,
 		lastPressUp: new Date(),
-		isCursorOver: isCursorOver
+		isCursorOver: isCursorOver,
+		buttonJustUp: false
 	};
 
 	function getState() {

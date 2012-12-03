@@ -8,13 +8,12 @@
     var reloadRate = 1 * 4000; // ms
     var choice = 1;
 
-    var Bomber = function() {
-            Fighter.prototype.constructor.call(this, 'Bomber');
+    var Bomber = Fighter.extend(function() {
+        this._base(this, 'Bomber');
 
-            this.untilRecharge = reloadRate * Math.random() + 1000;
-            this.sprites = Bomber.sprite();
-
-        };
+        this.untilRecharge = reloadRate * Math.random() + 1000;
+        this.sprites = Bomber.sprite();
+    });
 
     Bomber.prototype.render = function(ctx, camera) {
         var coords = camera.project(this);

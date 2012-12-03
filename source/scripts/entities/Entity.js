@@ -59,16 +59,44 @@ define(['keyboard'], function(keyboard) {
         });
     };
 
-    Entity.extend = function(derivedType) {
-        function BaseEntity() {
+    function mix(type, constructor) {
+
+        var baseType = Entity;
+
+        Object.keys(baseType.prototype).forEach(function(member) {
+            constructor.prototype[member] = baseType.prototype[member];
+        });
+
+        return function() {
+            baseType.prototype.constructor.call(this, type);
+            constructor.prototype.constructor.apply(this, arguments);
+        };
+    }
+
+    function extend(derivedType, baseType) {
+
+        function __() {
             this.constructor = derivedType;
         }
-        BaseEntity.prototype = Entity.prototype;
-        derivedType.prototype = new BaseEntity();
+        __.prototype = baseType.prototype;
+
+        derivedType.prototype = new __();
         derivedType.prototype._base = function(self, type) {
-            Entity.prototype.constructor.call(self, type)
+            if(baseType.prototype._base) {
+                baseType.prototype._base.call(self, type);
+            } else {
+                baseType.prototype.constructor.call(self, type);
+            }
+        };
+        derivedType.extend = function(grandchild) {
+            var parent = derivedType;
+            return extend(grandchild, parent);
         };
         return derivedType;
+    };
+    Entity.mix = mix;
+    Entity.extend = function(derivedType) {
+        return extend(derivedType, Entity);
     };
 
     return Entity

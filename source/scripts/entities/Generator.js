@@ -7,8 +7,8 @@ define(['entities/Entity', 'math/geometry', 'math/vector', 'entities/MapGrid', '
     var max_battery = 500;
     var max_health = 20;
 
-    var Generator = Entity.extend(function() {
-        this._base(this, 'Generator');
+    var Generator = Entity.mix('Generator',function() {
+        // this._base(this, 'Generator');
 
         this.sprites = Generator.sprite();
 
