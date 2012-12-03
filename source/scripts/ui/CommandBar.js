@@ -15,7 +15,7 @@ define(['resolution'], function(resolution) {
 		command.bottom = command.top + commandButtonHeight;
 		command.right = padding + commandButtonWidth;
 		command.active = false;
-		command.label = new command.action().type;
+		command.label = command.action.type;
 	}
 
 	var CommandBar = function() {

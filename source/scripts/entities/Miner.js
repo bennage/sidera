@@ -12,9 +12,7 @@ define(function() {
     var max_battery = 15;
     var max_health = 5;
 
-    var Miner = Entity.mix('Miner',function() {
-        // this._base(this, 'Miner');
-
+    var Miner = Entity.mix('Miner', function() {
         this.sprites = assets['miner.png'];
 
         this.untilPulse = 0;

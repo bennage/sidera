@@ -11,9 +11,7 @@ define(function() {
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
-    var Turret = Entity.extend(function() {
-        this._base(this, 'Turret');
-
+    var Turret = Entity.mix('Turret', function() {
         this.sprites = Turret.sprite();
 
         this.cooldown = 0;

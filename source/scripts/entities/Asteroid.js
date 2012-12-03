@@ -1,8 +1,6 @@
 define(['entities/Entity', 'assets'], function(Entity, assets) {
 
-    var Asteroid = Entity.mix('Asteroid',function() {
-        // this._base(this, 'Asteroid');
-
+    var Asteroid = Entity.mix('Asteroid', function() {
         this.amount = 0;
         this.frame = Math.random() * 60;
         this.sprites = assets['rocks.png'];

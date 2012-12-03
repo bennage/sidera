@@ -2,10 +2,7 @@
 
     var mouse = require('mouse');
 
-    var Cursor = Entity.extend(function(camera) {
-
-        this._base(this, 'Cursor');
-
+    var Cursor = Entity.mix('Cursor', function(camera) {
         this.camera = camera;
         this._entity = null;
         this.mode = 'nothing';

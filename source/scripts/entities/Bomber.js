@@ -8,9 +8,7 @@
     var reloadRate = 1 * 4000; // ms
     var choice = 1;
 
-    var Bomber = Fighter.extend(function() {
-        this._base(this, 'Bomber');
-
+    var Bomber = Fighter.mix('Bomber', function() {
         this.untilRecharge = reloadRate * Math.random() + 1000;
         this.sprites = Bomber.sprite();
     });

@@ -2,9 +2,7 @@ define(['entities/Entity', 'math/geometry'], function(Entity, geometry) {
 
     var fullCircle = geometry.fullCircle;
 
-    var Explosion = Entity.extend(function(corpse) {
-        this._base(this, 'Explosion');
-
+    var Explosion = Entity.mix('Explosion', function(corpse) {
         this.clouds = [];
         this.x = corpse.x;
         this.y = corpse.y;

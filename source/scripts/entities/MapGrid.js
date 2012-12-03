@@ -4,9 +4,7 @@ define(function() {
 
 	var padding = 0.5;
 
-	var MapGrid = Entity.extend(function() {
-		this._base(this, 'MapGrid');
-
+	var MapGrid = Entity.mix('MapGrid', function() {
 		this.x = 0;
 		this.y = 0;
 	});

@@ -9,10 +9,7 @@
     var laser_cooldown = 500; // ms
     var choice = 1;
 
-    var Fighter = Entity.extend(function(type) {
-
-        this._base(this, type || 'Fighter');
-
+    var Fighter = Entity.mix('Fighter', function(type) {
         this.enemy = true;
         this.orientation = 0;
         this.laser = 0;
