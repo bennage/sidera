@@ -54,35 +54,52 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
+    <Content Include="..\grunt.js">
+      <Link>grunt.js</Link>
+    </Content>
+    <Content Include="..\package.json">
+      <Link>package.json</Link>
+    </Content>
     <Content Include="app.html" />
-    <Content Include="app.js" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
     <Content Include="css\default.css" />
     <Content Include="levels\level.json" />
-    <Content Include="sidera\entities\Missile.js" />
-    <Content Include="sidera\entities\Explosion.js" />
-    <Content Include="sidera\entities\Asteroid.js" />
-    <Content Include="sidera\entities\Entity.js" />
-    <Content Include="sidera\entities\Bomber.js" />
-    <Content Include="sidera\entities\Fighter.js" />
-    <Content Include="sidera\entities\Generator.js" />
-    <Content Include="sidera\entities\Miner.js" />
-    <Content Include="sidera\entities\Turret.js" />
-    <Content Include="sidera\entities\Wire.js" />
-    <Content Include="sidera\cursor.js" />
-    <Content Include="sidera\Camera.js" />
-    <Content Include="sidera\minimap.js" />
-    <Content Include="sidera\status.js" />
-    <Content Include="sidera\fps.js" />
-    <Content Include="sidera\game.js" />
-    <Content Include="sidera\levels.js" />
-    <Content Include="sidera\math\geometry.js" />
-    <Content Include="sidera\math\vector.js" />
-    <Content Include="sidera\bootstrap.js" />
-    <Content Include="sidera\start\screen.js" />
+    <Content Include="scripts\app.js" />
+    <Content Include="scripts\assets.js" />
+    <Content Include="scripts\bootstrap.js" />
+    <Content Include="scripts\Camera.js" />
+    <Content Include="scripts\Cursor.js" />
+    <Content Include="scripts\appActivated.js" />
+    <Content Include="scripts\domReady.js" />
+    <Content Include="scripts\entities\Asteroid.js" />
+    <Content Include="scripts\entities\Bomber.js" />
+    <Content Include="scripts\entities\Entity.js" />
+    <Content Include="scripts\entities\Explosion.js" />
+    <Content Include="scripts\entities\Fighter.js" />
+    <Content Include="scripts\entities\Generator.js" />
+    <Content Include="scripts\entities\MapGrid.js" />
+    <Content Include="scripts\entities\Miner.js" />
+    <Content Include="scripts\entities\Missile.js" />
+    <Content Include="scripts\entities\Turret.js" />
+    <Content Include="scripts\entities\Wire.js" />
+    <Content Include="scripts\fps.js" />
+    <Content Include="scripts\game.js" />
+    <Content Include="scripts\keyboard.js" />
+    <Content Include="scripts\levels.js" />
+    <Content Include="scripts\main.js" />
+    <Content Include="scripts\math\geometry.js" />
+    <Content Include="scripts\math\vector.js" />
+    <Content Include="scripts\minimap.js" />
+    <Content Include="scripts\mouse.js" />
+    <Content Include="scripts\require.js" />
+    <Content Include="scripts\resolution.js" />
+    <Content Include="scripts\start\screen.js" />
+    <Content Include="scripts\status.js" />
+    <Content Include="scripts\ui\CommandBar.js" />
+    <Content Include="shims\requestAnimationFrame.js" />
     <None Include="space_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
