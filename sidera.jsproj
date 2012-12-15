@@ -56,6 +56,8 @@
     <Content Include="assests\smalllogo.png" />
     <Content Include="assests\splashscreen.png" />
     <Content Include="assests\storelogo.png" />
+    <Content Include="grunt.js" />
+    <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="source\css\default.css" />
     <Content Include="source\images\fighter.png" />
