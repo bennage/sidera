@@ -4,7 +4,7 @@
   <Properties>
     <DisplayName>sidera</DisplayName>
     <PublisherDisplayName>Christopher Bennage</PublisherDisplayName>
-    <Logo>images\storelogo.png</Logo>
+    <Logo>assests\storelogo.png</Logo>
   </Properties>
   <Prerequisites>
     <OSMinVersion>6.2.0</OSMinVersion>
@@ -15,9 +15,12 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="app.html">
-      <VisualElements DisplayName="sidera" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="a strategy defense game" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="sidera" Logo="assests\logo.png" SmallLogo="assests\smalllogo.png" Description="a strategy defense game" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="images\splashscreen.png" />
+        <SplashScreen Image="assests\splashscreen.png" />
+        <InitialRotationPreference>
+          <Rotation Preference="landscape" />
+        </InitialRotationPreference>
       </VisualElements>
     </Application>
   </Applications>

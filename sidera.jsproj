@@ -51,55 +51,51 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\.gitignore">
-      <Link>.gitignore</Link>
-    </Content>
-    <Content Include="..\grunt.js">
-      <Link>grunt.js</Link>
-    </Content>
-    <Content Include="..\package.json">
-      <Link>package.json</Link>
-    </Content>
     <Content Include="app.html" />
-    <Content Include="images\logo.png" />
-    <Content Include="images\smalllogo.png" />
-    <Content Include="images\splashscreen.png" />
-    <Content Include="images\storelogo.png" />
-    <Content Include="css\default.css" />
-    <Content Include="levels\level.json" />
-    <Content Include="scripts\app.js" />
-    <Content Include="scripts\assets.js" />
-    <Content Include="scripts\bootstrap.js" />
-    <Content Include="scripts\Camera.js" />
-    <Content Include="scripts\Cursor.js" />
-    <Content Include="scripts\appActivated.js" />
-    <Content Include="scripts\domReady.js" />
-    <Content Include="scripts\entities\Asteroid.js" />
-    <Content Include="scripts\entities\Bomber.js" />
-    <Content Include="scripts\entities\Entity.js" />
-    <Content Include="scripts\entities\Explosion.js" />
-    <Content Include="scripts\entities\Fighter.js" />
-    <Content Include="scripts\entities\Generator.js" />
-    <Content Include="scripts\entities\MapGrid.js" />
-    <Content Include="scripts\entities\Miner.js" />
-    <Content Include="scripts\entities\Missile.js" />
-    <Content Include="scripts\entities\Turret.js" />
-    <Content Include="scripts\entities\Wire.js" />
-    <Content Include="scripts\fps.js" />
-    <Content Include="scripts\game.js" />
-    <Content Include="scripts\keyboard.js" />
-    <Content Include="scripts\levels.js" />
-    <Content Include="scripts\main.js" />
-    <Content Include="scripts\math\geometry.js" />
-    <Content Include="scripts\math\vector.js" />
-    <Content Include="scripts\minimap.js" />
-    <Content Include="scripts\mouse.js" />
-    <Content Include="scripts\require.js" />
-    <Content Include="scripts\resolution.js" />
-    <Content Include="scripts\start\screen.js" />
-    <Content Include="scripts\status.js" />
-    <Content Include="scripts\ui\CommandBar.js" />
-    <Content Include="shims\requestAnimationFrame.js" />
+    <Content Include="assests\logo.png" />
+    <Content Include="assests\smalllogo.png" />
+    <Content Include="assests\splashscreen.png" />
+    <Content Include="assests\storelogo.png" />
+    <Content Include="README.md" />
+    <Content Include="source\css\default.css" />
+    <Content Include="source\images\fighter.png" />
+    <Content Include="source\images\miner.png" />
+    <Content Include="source\images\rocks.png" />
+    <Content Include="source\levels\level.json" />
+    <Content Include="source\scripts\app.js" />
+    <Content Include="source\scripts\appActivated.js" />
+    <Content Include="source\scripts\assets.js" />
+    <Content Include="source\scripts\bootstrap.js" />
+    <Content Include="source\scripts\Camera.js" />
+    <Content Include="source\scripts\Cursor.js" />
+    <Content Include="source\scripts\domReady.js" />
+    <Content Include="source\scripts\entities\Asteroid.js" />
+    <Content Include="source\scripts\entities\Bomber.js" />
+    <Content Include="source\scripts\entities\Entity.js" />
+    <Content Include="source\scripts\entities\Explosion.js" />
+    <Content Include="source\scripts\entities\Fighter.js" />
+    <Content Include="source\scripts\entities\Generator.js" />
+    <Content Include="source\scripts\entities\MapGrid.js" />
+    <Content Include="source\scripts\entities\Miner.js" />
+    <Content Include="source\scripts\entities\Missile.js" />
+    <Content Include="source\scripts\entities\Turret.js" />
+    <Content Include="source\scripts\entities\Wire.js" />
+    <Content Include="source\scripts\fps.js" />
+    <Content Include="source\scripts\game.js" />
+    <Content Include="source\scripts\keyboard.js" />
+    <Content Include="source\scripts\levels.js" />
+    <Content Include="source\scripts\main.js" />
+    <Content Include="source\scripts\math\geometry.js" />
+    <Content Include="source\scripts\math\vector.js" />
+    <Content Include="source\scripts\minimap.js" />
+    <Content Include="source\scripts\mouse.js" />
+    <Content Include="source\scripts\require.js" />
+    <Content Include="source\scripts\resolution.js" />
+    <Content Include="source\scripts\start\screen.js" />
+    <Content Include="source\scripts\status.js" />
+    <Content Include="source\scripts\ui\CommandBar.js" />
+    <Content Include="source\shims\requestAnimationFrame.js" />
+    <Content Include="web.html" />
     <None Include="space_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
