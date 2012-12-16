@@ -83,20 +83,21 @@
     <Content Include="source\scripts\entities\Wire.js" />
     <Content Include="source\scripts\fps.js" />
     <Content Include="source\scripts\game.js" />
-    <Content Include="source\scripts\keyboard.js" />
+    <Content Include="source\scripts\input\keyboard.js" />
+    <Content Include="source\scripts\input\mouse.js" />
+    <Content Include="source\scripts\input\touch.js" />
     <Content Include="source\scripts\levels.js" />
     <Content Include="source\scripts\main.js" />
     <Content Include="source\scripts\math\geometry.js" />
     <Content Include="source\scripts\math\vector.js" />
     <Content Include="source\scripts\minimap.js" />
-    <Content Include="source\scripts\mouse.js" />
     <Content Include="source\scripts\require.js" />
     <Content Include="source\scripts\resolution.js" />
     <Content Include="source\scripts\start\screen.js" />
     <Content Include="source\scripts\status.js" />
     <Content Include="source\scripts\ui\CommandBar.js" />
     <Content Include="source\shims\requestAnimationFrame.js" />
-    <Content Include="web.html" />
+    <Content Include="source\web.html" />
     <None Include="space_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

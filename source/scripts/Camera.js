@@ -1,7 +1,7 @@
 ﻿define(function(require) {
 
     var MapGrid = require('entities/MapGrid'),
-        keyboard = require('keyboard');
+        keyboard = require('input/keyboard');
 
     var Camera = function(resolution) {
 

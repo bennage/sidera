@@ -2,8 +2,8 @@ define(function(require) {
 
     var resolution = require('resolution'),
         assets = require('assets'),
-        keyboard = require('keyboard'),
-        mouse = require('mouse'),
+        keyboard = require('input/keyboard'),
+        mouse = require('input/mouse'),
         startScreen = require('start/screen');
 
     var canvas, // the visible canvas element    

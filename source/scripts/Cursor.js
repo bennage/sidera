@@ -1,6 +1,6 @@
 ﻿define(function(require) {
 
-    var mouse = require('mouse'),
+    var mouse = require('input/mouse'),
         Entity = require('entities/Entity'),
         geometry = require('math/geometry'),
         MapGrid = require('entities/MapGrid');

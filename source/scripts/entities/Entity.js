@@ -1,6 +1,6 @@
 define(function(require) {
 
-    var keyboard = require('keyboard');
+    var keyboard = require('input/keyboard');
 
     var Entity = function(type) {
         this.type = type;
