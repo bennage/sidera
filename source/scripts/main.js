@@ -1,3 +1,3 @@
-﻿define(['bootstrap', 'domReady!'], function(bootstrap) {
-	bootstrap();
+﻿require(['bootstrap', 'domReady!'])(['bootstrap', 'domReady!'], function(bootstrap) {
+    bootstrap();
 });
