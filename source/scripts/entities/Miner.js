@@ -1,4 +1,4 @@
-define(function() {
+define(function(require) {
 
     var Entity = require('entities/Entity'),
         MapGrid = require('entities/MapGrid'),

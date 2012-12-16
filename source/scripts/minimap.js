@@ -1,50 +1,53 @@
-﻿define(['entities/Entity', 'entities/MapGrid'], function(Entity, MapGrid) {
+﻿define(function(require) {
+
+    var Entity = require('entities/Entity'),
+        MapGrid = require('entities/MapGrid');
 
     var MiniMap = function(gameObjects, camera) {
 
-            Entity.prototype.constructor.call(this, 'MiniMap');
+        Entity.prototype.constructor.call(this, 'MiniMap');
 
-            this.gameObjects = gameObjects;
-            this.camera = camera;
+        this.gameObjects = gameObjects;
+        this.camera = camera;
 
-            this.unit = 5;
+        this.unit = 5;
 
-            // To create the correct size minimap, multiply the the grid by the unit
-            // size we're using for the minimap. We'll also add two extra for padding
-            // so that entities on the edge of the grid won't be on the edge of the 
-            // minimap. 
-            this.w = (this.unit * MapGrid.columns) + this.unit + this.unit;
-            this.h = (this.unit * MapGrid.rows) + this.unit + this.unit;
+        // To create the correct size minimap, multiply the the grid by the unit
+        // size we're using for the minimap. We'll also add two extra for padding
+        // so that entities on the edge of the grid won't be on the edge of the 
+        // minimap. 
+        this.w = (this.unit * MapGrid.columns) + this.unit + this.unit;
+        this.h = (this.unit * MapGrid.rows) + this.unit + this.unit;
 
-            // We use this offset when rendering entities to the minimap to account
-            // for the padding.
-            this.entityOffset = this.unit;
+        // We use this offset when rendering entities to the minimap to account
+        // for the padding.
+        this.entityOffset = this.unit;
 
-            // The minimap is rendered to an independent canvas, and this canvas is 
-            // later rendered to the main screen.
-            var canvas = document.createElement('canvas');
-            canvas.height = this.h;
-            canvas.width = this.w;
+        // The minimap is rendered to an independent canvas, and this canvas is 
+        // later rendered to the main screen.
+        var canvas = document.createElement('canvas');
+        canvas.height = this.h;
+        canvas.width = this.w;
 
-            this.map = canvas.getContext('2d');
+        this.map = canvas.getContext('2d');
 
-            this.colors = {};
-            this.colors['enviroment'] = 'blue';
-            this.colors['friendlies'] = 'green';
-            this.colors['enemies'] = 'red';
+        this.colors = {};
+        this.colors['enviroment'] = 'blue';
+        this.colors['friendlies'] = 'green';
+        this.colors['enemies'] = 'red';
 
-            this.x = 20;
-            this.y = 420;
-            this.bounds = {
-                top: this.y,
-                left: this.x,
-                bottom: this.y + this.h,
-                right: this.x + this.w
-            };
-
-            this.on = false;
-            this.lastToggle = new Date();
+        this.x = 20;
+        this.y = 420;
+        this.bounds = {
+            top: this.y,
+            left: this.x,
+            bottom: this.y + this.h,
+            right: this.x + this.w
         };
+
+        this.on = false;
+        this.lastToggle = new Date();
+    };
 
     MiniMap.prototype.commands = {
         77: function() {

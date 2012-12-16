@@ -1,4 +1,9 @@
-﻿define(['entities/Fighter', 'entities/Missile', 'math/vector', 'math/geometry'], function(Fighter, Missile, vector, geo) {
+﻿define(function(require) {
+
+    var Fighter = require('entities/Fighter'),
+        Missile = require('entities/Missile'),
+        vector = require('math/vector'),
+        geo = require('math/geometry');
 
     var circle = geo.fullCircle;
 

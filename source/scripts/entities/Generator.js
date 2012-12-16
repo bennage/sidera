@@ -1,4 +1,11 @@
-define(['entities/Entity', 'math/geometry', 'math/vector', 'entities/MapGrid', 'entities/Wire'], function(Entity, geo, vector, MapGrid, Wire) {
+define(function(require) {
+
+    var Entity = require('entities/Entity'),
+        vector = require('math/vector'),
+        geo = require('math/geometry'),
+        MapGrid = require('entities/MapGrid'),
+        Wire = require('entities/Wire'),
+        assets = require('assets');
 
     var fullCircle = geo.fullCircle;
 

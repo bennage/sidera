@@ -1,4 +1,7 @@
-define(['entities/Entity', 'math/geometry'], function(Entity, geometry) {
+define(function(require) {
+
+    var Entity = require('entities/Entity'),
+        geometry = require('math/geometry');
 
     var fullCircle = geometry.fullCircle;
 

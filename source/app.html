@@ -7,11 +7,17 @@
     <!-- WinJS references -->
     <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
-    <!--<script src="//Microsoft.WinJS.1.0/js/ui.js"></script>-->
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
-    <link href="/css/default.css" rel="stylesheet" />
+    <link href="css/default.css" rel="stylesheet" />
 
-    <script data-main="scripts/app" src="scripts/require.js"></script>
+    <script type="text/javascript">
+        var require = {
+            baseUrl: 'scripts'
+        };
+    </script>
+    <script src="scripts/require.js"></script>
+    <script src="scripts/app.js"></script>
 
 </head>
 <body>

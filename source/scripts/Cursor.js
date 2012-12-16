@@ -1,6 +1,9 @@
-﻿define(['entities/Entity', 'math/geometry', 'entities/MapGrid'], function(Entity, geometry, MapGrid) {
+﻿define(function(require) {
 
-    var mouse = require('mouse');
+    var mouse = require('mouse'),
+        Entity = require('entities/Entity'),
+        geometry = require('math/geometry'),
+        MapGrid = require('entities/MapGrid');
 
     var Cursor = Entity.mix('Cursor', function(camera) {
         this.camera = camera;
@@ -92,7 +95,7 @@
         this._entity = new type();
         this.mode = this._entity.type;
 
-        this.find = (this._entity.find) ? this._entity.find.bind(this._entity) : function() {};
+        this.find = (this._entity.find) ? this._entity.find.bind(this._entity) : function() { };
     };
 
     Cursor.prototype.click = function(coords, level, gameObjects) {

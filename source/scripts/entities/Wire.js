@@ -1,10 +1,10 @@
-define(function() {
+define(function(require) {
 
     var Wire = function(head, tail) {
-            this.head = head;
-            this.tail = tail;
-            this.pumping = 0;
-        };
+        this.head = head;
+        this.tail = tail;
+        this.pumping = 0;
+    };
 
     Wire.prototype.render = function(ctx, camera) {
         var self = this;
@@ -25,7 +25,7 @@ define(function() {
         ctx.lineTo(coords.x, coords.y);
         ctx.stroke();
     };
-    
+
     Wire.prototype.update = function(elapsed, entities) {
 
     };

@@ -14,7 +14,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" StartPage="app.html">
+    <Application Id="App" StartPage="source\app.html">
       <VisualElements DisplayName="sidera" Logo="assests\logo.png" SmallLogo="assests\smalllogo.png" Description="a strategy defense game" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="assests\splashscreen.png" />

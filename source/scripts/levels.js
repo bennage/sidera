@@ -1,4 +1,7 @@
-﻿define(['entities/MapGrid', 'entities/Asteroid'], function(MapGrid, Asteroid) {
+﻿define(function(require) {
+
+    var MapGrid = require('entities/MapGrid'),
+        Asteroid = require('entities/Asteroid');
 
     var state = {
         money: 10000

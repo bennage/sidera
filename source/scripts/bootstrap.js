@@ -1,4 +1,10 @@
-define(['resolution', 'assets', 'keyboard', 'mouse', 'start/screen'], function(resolution, assets, keyboard, mouse, startScreen) {
+define(function(require) {
+
+    var resolution = require('resolution'),
+        assets = require('assets'),
+        keyboard = require('keyboard'),
+        mouse = require('mouse'),
+        startScreen = require('start/screen');
 
     var canvas, // the visible canvas element    
     surface, // the 2d context of `canvas`

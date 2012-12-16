@@ -1,15 +1,17 @@
-﻿define(['entities/Entity'], function(Entity) {
+﻿define(function(require) {
+
+    var Entity = require('entities/Entity');
 
     var FPS = function() {
-            Entity.prototype.constructor.call(this, 'FPS');
+        Entity.prototype.constructor.call(this, 'FPS');
 
-            this.x = 300;
-            this.y = 20;
+        this.x = 300;
+        this.y = 20;
 
-            this.frames = 0;
-            this.ms = 0;
-            this.fps = 0;
-        };
+        this.frames = 0;
+        this.ms = 0;
+        this.fps = 0;
+    };
 
     FPS.prototype.render = function(ctx) {
         ctx.fillStyle = 'yellow';
@@ -28,5 +30,4 @@
     };
 
     return FPS;
-
 });

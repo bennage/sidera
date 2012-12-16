@@ -1,6 +1,7 @@
-define(['resolution'], function(resolution) {
+define(function(require) {
 
-	var Entity = require('entities/Entity'),
+    var resolution = require('resolution'),
+        Entity = require('entities/Entity'),
 		Miner = require('entities/Miner'),
 		Turret = require('entities/Turret'),
 		Generator = require('entities/Generator');

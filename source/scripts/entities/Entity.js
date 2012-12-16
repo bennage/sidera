@@ -1,15 +1,17 @@
-define(['keyboard'], function(keyboard) {
+define(function(require) {
+
+    var keyboard = require('keyboard');
 
     var Entity = function(type) {
-            this.type = type;
-            this.scale = 1;
-            this.x = 0;
-            this.y = 0;
-            this.radius = 0;
-            this.shoudExplode = false;
+        this.type = type;
+        this.scale = 1;
+        this.x = 0;
+        this.y = 0;
+        this.radius = 0;
+        this.shoudExplode = false;
 
-            keyboard.mixinKeyCheck(this);
-        };
+        keyboard.mixinKeyCheck(this);
+    };
 
     // Copy the members to this
     Entity.prototype.hydrate = function(members) {

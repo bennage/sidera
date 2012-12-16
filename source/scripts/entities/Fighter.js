@@ -1,4 +1,9 @@
-﻿define(['entities/Entity', 'math/vector', 'math/geometry', 'assets'], function(Entity, vector, geo, assets) {
+﻿define(function(require) {
+
+    var Entity = require('entities/Entity'),
+        vector = require('math/vector'),
+        geo = require('math/geometry'),
+        assets = require('assets');
 
     var circle = geo.fullCircle;
 

@@ -1,4 +1,7 @@
-define(['entities/Entity', 'assets'], function(Entity, assets) {
+define(function(require) {
+
+    var Entity = require('entities/Entity'),
+        assets = require('assets');
 
     var Asteroid = Entity.mix('Asteroid', function() {
         this.amount = 0;

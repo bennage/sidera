@@ -1,8 +1,8 @@
-define(function() {
+define(function(require) {
 
-    var Entity = require('entities/Entity');
-    var vector = require('math/vector');
-    var geo = require('math/geometry');
+    var Entity = require('entities/Entity'),
+        vector = require('math/vector'),
+        geo = require('math/geometry');
 
     var circle = geo.fullCircle;
 

@@ -51,7 +51,6 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="app.html" />
     <Content Include="assests\logo.png" />
     <Content Include="assests\smalllogo.png" />
     <Content Include="assests\splashscreen.png" />
@@ -59,13 +58,13 @@
     <Content Include="grunt.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="source\app.html" />
     <Content Include="source\css\default.css" />
     <Content Include="source\images\fighter.png" />
     <Content Include="source\images\miner.png" />
     <Content Include="source\images\rocks.png" />
     <Content Include="source\levels\level.json" />
     <Content Include="source\scripts\app.js" />
-    <Content Include="source\scripts\appActivated.js" />
     <Content Include="source\scripts\assets.js" />
     <Content Include="source\scripts\bootstrap.js" />
     <Content Include="source\scripts\Camera.js" />

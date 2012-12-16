@@ -1,4 +1,4 @@
-define(['status', 'minimap', 'fps', 'Camera', 'Cursor', 'levels', 'entities/Miner', 'entities/Explosion','entities/Fighter', 'entities/Bomber', 'entities/Turret', 'entities/Generator', 'entities/Explosion', 'ui/CommandBar'], function(Status, MiniMap, FPS) {
+define(function(require) {
 
     var Miner = require('entities/Miner'),
         Turret = require('entities/Turret'),
@@ -13,7 +13,10 @@ define(['status', 'minimap', 'fps', 'Camera', 'Cursor', 'levels', 'entities/Mine
         Camera = require('Camera'),
         Cursor = require('Cursor'),
         levels = require('levels'),
-        MapGrid = require('entities/MapGrid');
+        MapGrid = require('entities/MapGrid'),
+        Status = require('status'),
+        MiniMap = require('minimap'),
+        FPS = require('fps');
 
     var newBuilding;
     var gameObjects;
@@ -84,10 +87,10 @@ define(['status', 'minimap', 'fps', 'Camera', 'Cursor', 'levels', 'entities/Mine
 
         if(isGameOver) {
             var centerText = function(ctx, text, y) {
-                    var measurement = ctx.measureText(text);
-                    var x = (ctx.canvas.width - measurement.width) / 2;
-                    ctx.fillText(text, x, y);
-                };
+                var measurement = ctx.measureText(text);
+                var x = (ctx.canvas.width - measurement.width) / 2;
+                ctx.fillText(text, x, y);
+            };
 
             ctx.fillStyle = 'white';
             ctx.font = '48px monospace';

@@ -1,4 +1,8 @@
-define(['mouse', 'keyboard', 'game'], function(mouse, keyboard, game) {
+define(function (require) {
+
+    var mouse = require('mouse'),
+        keyboard = require('keyboard'),
+        game = require('game');
 
     var hue = 0;
     var direction = 1;
@@ -33,8 +37,8 @@ define(['mouse', 'keyboard', 'game'], function(mouse, keyboard, game) {
 
     function update() {
         hue += 1 * direction;
-        if(hue > 255) direction = -1;
-        if(hue < 1) direction = 1;
+        if (hue > 255) direction = -1;
+        if (hue < 1) direction = 1;
 
         var mouseState = mouse.getState();
         var anyKeyPressed = keyboard.isAnyKeyPressed();
@@ -42,7 +46,7 @@ define(['mouse', 'keyboard', 'game'], function(mouse, keyboard, game) {
         var mouseJustReleased = !mouseState.buttonPressed && mouseLastFrame;
         var keyJustReleased = !anyKeyPressed && keyLastFrame;
 
-        if(mouseJustReleased || keyJustReleased && !transitioning) {
+        if (mouseJustReleased || keyJustReleased && !transitioning) {
             transitioning = true;
             this.transition(game, {
                 level: 1
