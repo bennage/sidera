@@ -7,22 +7,24 @@ define(function(require) {
         startScreen = require('start/screen');
 
     var canvas, // the visible canvas element    
-    surface, // the 2d context of `canvas`
-    currentScreen; // the currently rendered screen for the game
+        surface, // the 2d context of `canvas`
+        currentScreen; // the currently rendered screen for the game
 
     function beginLoop() {
         var frameId = 0;
         var lastFrame = Date.now();
+        var thisFrame = Date.now();
+        var elapsed = 0;
 
         function loop() {
-            var thisFrame = Date.now();
+            thisFrame = Date.now();
 
-            var elapsed = thisFrame - lastFrame;
+            elapsed = thisFrame - lastFrame;
 
             frameId = window.requestAnimationFrame(loop);
 
-            currentScreen.update(elapsed, thisFrame);
-            currentScreen.draw(surface, elapsed, thisFrame);
+            currentScreen.update(elapsed);
+            currentScreen.draw(surface, elapsed);
 
             lastFrame = thisFrame;
         }
