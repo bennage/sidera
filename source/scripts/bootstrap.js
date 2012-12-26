@@ -6,6 +6,8 @@ define(function(require) {
         mouse = require('input/mouse'),
         startScreen = require('start/screen');
 
+    var touch = require('input/touch');
+
     var canvas, // the visible canvas element    
         surface, // the 2d context of `canvas`
         currentScreen; // the currently rendered screen for the game
@@ -50,6 +52,7 @@ define(function(require) {
 
         keyboard.listen(window);
         mouse.listen(canvas);
+        touch.listen(canvas);
 
         assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
         assets.load(function() {

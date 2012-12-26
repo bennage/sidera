@@ -1,14 +1,14 @@
 define(function (require) {
 
-    var mouse = require('input/mouse'),
-        keyboard = require('input/keyboard'),
+    var keyboard = require('input/keyboard'),
+        touch = require('input/touch'),
         game = require('game');
 
     var hue = 0;
     var direction = 1;
     var transitioning = false;
 
-    var mouseLastFrame = false,
+    var tapLastFrame = false,
         keyLastFrame = false;
 
     function start() {
@@ -40,20 +40,20 @@ define(function (require) {
         if (hue > 255) direction = -1;
         if (hue < 1) direction = 1;
 
-        var mouseState = mouse.getState();
+        var inputState = touch.getState();
         var anyKeyPressed = keyboard.isAnyKeyPressed();
 
-        var mouseJustReleased = !mouseState.buttonPressed && mouseLastFrame;
+        var justTapped = !inputState.hasPoint && tapLastFrame;
         var keyJustReleased = !anyKeyPressed && keyLastFrame;
 
-        if (mouseJustReleased || keyJustReleased && !transitioning) {
+        if(justTapped || keyJustReleased && !transitioning) {
             transitioning = true;
             this.transition(game, {
                 level: 1
             });
         }
 
-        mouseLastFrame = mouseState.buttonPressed;
+        tapLastFrame = inputState.hasPoint;
         keyLastFrame = anyKeyPressed;
     }
 
