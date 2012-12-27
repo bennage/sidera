@@ -6,7 +6,7 @@ define(function(require) {
         mouse = require('input/mouse'),
         startScreen = require('start/screen');
 
-    var touch = require('input/touch');
+    var touch = require('input/provider');
 
     var canvas, // the visible canvas element    
         surface, // the 2d context of `canvas`

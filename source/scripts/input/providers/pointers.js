@@ -51,16 +51,9 @@ define(function() {
     }
 
     function listen(target) {
-
-        // support for IE10+
-        if(window.navigator.msPointerEnabled) {
-            target.addEventListener('MSPointerDown', handle_down);
-            target.addEventListener('MSPointerCancel', handle_cancel);
-            target.addEventListener('MSPointerUp', handle_up);
-        } else {
-
-        }
-
+        target.addEventListener('MSPointerDown', handle_down);
+        target.addEventListener('MSPointerUp', handle_up);
+        target.addEventListener('MSPointerCancel', handle_cancel);
     }
 
     return {

@@ -1,7 +1,7 @@
 define(function (require) {
 
     var keyboard = require('input/keyboard'),
-        touch = require('input/touch'),
+        touch = require('input/provider'),
         game = require('game');
 
     var hue = 0;
