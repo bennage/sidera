@@ -4,22 +4,22 @@ define(function() {
         x: -1,
         y: -1,
         pointers: [],
-        hasPoint: false
+        hasPointer: false
     };
 
     function handle_down(evt) {
         state.pointers.push({
-            x: evt.x,
-            y: evt.y,
+            x: evt.offsetX,
+            y: evt.offsetY,
             id: evt.pointerId
         });
 
         if(evt.isPrimary) {
-            state.x = evt.x;
-            state.y = evt.y;
+            state.x = evt.offsetX;
+            state.y = evt.offsetY;
         }
 
-        state.hasPoint = true;
+        state.hasPointer = true;
     }
 
     function removePointer(pointerId) {
@@ -33,7 +33,7 @@ define(function() {
         }
 
         if(state.pointers.length === 0) {
-            state.hasPoint = false;
+            state.hasPointer = false;
         }
     }
 
@@ -46,6 +46,28 @@ define(function() {
         removePointer(evt.pointerId);
     }
 
+    function handle_move(evt) {
+
+        var l = state.pointers.length;
+        var pointer;
+
+        if(!state.hasPointer) return;
+
+        for(var i = l - 1; i >= 0; i--) {
+            pointer = state.pointers[i];
+            if(pointer.id === evt.pointerId) {
+                pointer.x = evt.offsetX;
+                pointer.y = evt.offsetY;
+                break;
+            }
+        }
+
+        if(evt.isPrimary) {
+            state.x = evt.offsetX;
+            state.y = evt.offsetY;
+        }
+    }
+
     function getState() {
         return state;
     }
@@ -54,6 +76,7 @@ define(function() {
         target.addEventListener('MSPointerDown', handle_down);
         target.addEventListener('MSPointerUp', handle_up);
         target.addEventListener('MSPointerCancel', handle_cancel);
+        target.addEventListener('MSPointerMove', handle_move);
     }
 
     return {

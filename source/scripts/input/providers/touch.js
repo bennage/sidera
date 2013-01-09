@@ -4,7 +4,7 @@ define(function() {
         x: -1,
         y: -1,
         pointers: [],
-        hasPoint: false
+        hasPointer: false
     };
 
     // touch event handlers
@@ -20,7 +20,7 @@ define(function() {
             state.y = args.y;
         }
 
-        state.hasPoint = true;
+        state.hasPointer = true;
     }
 
     function removePointer(pointerId) {
@@ -34,7 +34,7 @@ define(function() {
         }
 
         if(state.pointers.length === 0) {
-            state.hasPoint = false;
+            state.hasPointer = false;
         }
     }
 
@@ -58,7 +58,7 @@ define(function() {
         state.x = args.x;
         state.y = args.y;
 
-        state.hasPoint = true;
+        state.hasPointer = true;
     }
 
     function handle_mouseup(args) {

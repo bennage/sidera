@@ -43,7 +43,7 @@ define(function (require) {
         var inputState = touch.getState();
         var anyKeyPressed = keyboard.isAnyKeyPressed();
 
-        var justTapped = !inputState.hasPoint && tapLastFrame;
+        var justTapped = !inputState.hasPointer && tapLastFrame;
         var keyJustReleased = !anyKeyPressed && keyLastFrame;
 
         if(justTapped || keyJustReleased && !transitioning) {
@@ -53,7 +53,7 @@ define(function (require) {
             });
         }
 
-        tapLastFrame = inputState.hasPoint;
+        tapLastFrame = inputState.hasPointer;
         keyLastFrame = anyKeyPressed;
     }
 

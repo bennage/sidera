@@ -8,7 +8,7 @@ define(function(require) {
         Explosion = require('entities/Explosion'),
         CommandBar = require('ui/CommandBar'),
         keyboard = require('input/keyboard'),
-        mouse = require('input/mouse'),
+        input = require('input/provider'),
         resolution = require('resolution'),
         Camera = require('Camera'),
         Cursor = require('Cursor'),
@@ -139,9 +139,9 @@ define(function(require) {
             this.transition(startScreen);
         }
 
-        handleInput();
-
-        delegateMouse(mouse.getState(), gameObjects.ui);
+        handleKeyboard();
+        handleInput(input.getState());
+        //delegateMouse(input.getState(), gameObjects.ui);
     }
 
     function updateSet(entities, elapsed) {
@@ -172,6 +172,42 @@ define(function(require) {
         entities.dead = [];
     }
 
+    function isCursorOver(bounds, state) {
+        return (state.x >= bounds.left) && (state.x <= bounds.right) && (state.y >= bounds.top) && (state.y <= bounds.bottom);
+    }
+
+    function handleInput(state) {
+
+        if(!state.hasPointer) return;
+
+        // only a single point
+        if(state.pointers.length === 1) {
+            handleSinglePointer(gameObjects.ui, state);
+        } else {
+            throw new Error('wat?');
+        }
+    }
+
+    function handleSinglePointer(ui, pointer) {
+        var i, element;
+        var handled = false;
+
+        for(i = ui.length - 1; i >= 0; i--) {
+            element = ui[i];
+
+            if(element.handleMouse && element.bounds && isCursorOver(element.bounds, pointer)) {
+                handled = element.handleMouse(pointer);
+            }
+            if(handled) {
+                break;
+            }
+        }
+
+        if(!handled) {
+            handle_click(pointer);
+        }
+    }
+
     function delegateMouse(mouseState, uiElements) {
         var i, element;
         var handled = false;
@@ -179,7 +215,7 @@ define(function(require) {
         for(i = uiElements.length - 1; i >= 0; i--) {
             element = uiElements[i];
 
-            if(element.handleMouse && element.bounds && mouseState.isCursorOver(element.bounds)) {
+            if(element.handleMouse && element.bounds && isCursorOver(element.bounds, mouseState)) {
                 handled = element.handleMouse(mouseState);
 
             }
@@ -209,11 +245,10 @@ define(function(require) {
         }
     }
 
-    function handle_click(mouseState) {
+    function handle_click(screenCoords) {
         if(!cursor.overValidPlacement) {
             return;
         }
-        var screenCoords = mouseState;
         var worldCoords = camera.toWorldSpace(screenCoords);
         worldCoords.x = Math.round(worldCoords.x);
         worldCoords.y = Math.round(worldCoords.y);
@@ -225,7 +260,7 @@ define(function(require) {
         }
     }
 
-    function handleInput() {
+    function handleKeyboard() {
 
         //TODO: this whole bit needs to go
         if(keyboard.isKeyPressed(81)) {
