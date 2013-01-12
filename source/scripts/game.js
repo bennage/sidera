@@ -16,6 +16,7 @@ define(function(require) {
         MapGrid = require('entities/MapGrid'),
         Status = require('status'),
         MiniMap = require('minimap'),
+        Builder = require('ui/Builder'),
         FPS = require('fps');
 
     var newBuilding;
@@ -57,6 +58,7 @@ define(function(require) {
 
         status = new Status(level);
         gameObjects.ui.push(new CommandBar());
+        gameObjects.ui.push(new Builder(camera, gameObjects));
         gameObjects.ui.push(new MiniMap(gameObjects, camera));
         gameObjects.ui.push(new FPS());
         gameObjects.ui.push(status);
@@ -141,7 +143,6 @@ define(function(require) {
 
         handleKeyboard();
         handleInput(input.getState());
-        //delegateMouse(input.getState(), gameObjects.ui);
     }
 
     function updateSet(entities, elapsed) {
@@ -172,9 +173,9 @@ define(function(require) {
         entities.dead = [];
     }
 
-    function isCursorOver(bounds, state) {
-        return (state.x >= bounds.left) && (state.x <= bounds.right) && (state.y >= bounds.top) && (state.y <= bounds.bottom);
-    }
+    // function isCursorOver(bounds, state) {
+    //     return (state.x >= bounds.left) && (state.x <= bounds.right) && (state.y >= bounds.top) && (state.y <= bounds.bottom);
+    // }
 
     function handleInput(state) {
 
@@ -195,39 +196,12 @@ define(function(require) {
         for(i = ui.length - 1; i >= 0; i--) {
             element = ui[i];
 
-            if(element.handleMouse && element.bounds && isCursorOver(element.bounds, pointer)) {
+            if(element.handleMouse) {
                 handled = element.handleMouse(pointer);
             }
             if(handled) {
                 break;
             }
-        }
-
-        if(!handled) {
-            handle_click(pointer);
-        }
-    }
-
-    function delegateMouse(mouseState, uiElements) {
-        var i, element;
-        var handled = false;
-
-        for(i = uiElements.length - 1; i >= 0; i--) {
-            element = uiElements[i];
-
-            if(element.handleMouse && element.bounds && isCursorOver(element.bounds, mouseState)) {
-                handled = element.handleMouse(mouseState);
-
-            }
-            if(handled) {
-                break;
-            }
-        }
-
-        cursor.on = !handled;
-
-        if(!handled && mouseState.buttonPressed) {
-            handle_click(mouseState);
         }
     }
 
@@ -242,21 +216,6 @@ define(function(require) {
             f.x = -1 - (i * 1.1);
             f.y = -1 - (i * 1.1);
             gameObjects.enemies.push(f);
-        }
-    }
-
-    function handle_click(screenCoords) {
-        if(!cursor.overValidPlacement) {
-            return;
-        }
-        var worldCoords = camera.toWorldSpace(screenCoords);
-        worldCoords.x = Math.round(worldCoords.x);
-        worldCoords.y = Math.round(worldCoords.y);
-        var entity = cursor.click(worldCoords, levels.current, gameObjects);
-
-        if(entity) {
-            gameObjects.friendlies.push(entity);
-            newBuilding = entity;
         }
     }
 
