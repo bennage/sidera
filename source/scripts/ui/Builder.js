@@ -1,6 +1,7 @@
 define(function(require) {
 
-	var MapGrid = require('entities/MapGrid');
+	var MapGrid = require('entities/MapGrid'),
+		input = require('input/provider');
 
 	var Builder = function(camera, gameObjects) {
 			this.camera = camera;
@@ -25,20 +26,6 @@ define(function(require) {
 		return false;
 	}
 
-	Builder.prototype.handleMouse = function(input) {
-
-		var worldCoords = this.camera.toWorldSpace(input);
-		worldCoords.x = Math.round(worldCoords.x);
-		worldCoords.y = Math.round(worldCoords.y);
-
-		if(isInGameBounds(worldCoords)) {
-			this.cell = worldCoords;
-			this.isValid = !isOverEntity(worldCoords, this.gameObjects.friendlies) && !isOverEntity(worldCoords, this.gameObjects.enviroment) ;
-		}
-
-		return(this.cell !== null);
-	};
-
 	Builder.prototype.render = function(ctx) {
 
 		if(this.cell === null) return;
@@ -57,6 +44,20 @@ define(function(require) {
 
 	Builder.prototype.update = function() {
 		this.cell = null;
+
+		if(input.state.handled) return;
+
+		if(input.state.pointers.length === 1) {
+			var worldCoords = this.camera.toWorldSpace(input.state);
+			worldCoords.x = Math.round(worldCoords.x);
+			worldCoords.y = Math.round(worldCoords.y);
+
+			if(isInGameBounds(worldCoords)) {
+				this.cell = worldCoords;
+				this.isValid = !isOverEntity(worldCoords, this.gameObjects.friendlies) && !isOverEntity(worldCoords, this.gameObjects.enviroment);
+			}
+
+		}
 	};
 
 	return Builder;

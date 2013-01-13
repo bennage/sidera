@@ -144,7 +144,6 @@ define(function(require) {
         }
 
         handleKeyboard();
-        handleInput(input.state);
     }
 
     function updateSet(entities, elapsed) {
@@ -173,38 +172,6 @@ define(function(require) {
             }
         }
         entities.dead = [];
-    }
-
-    // function isCursorOver(bounds, state) {
-    //     return (state.x >= bounds.left) && (state.x <= bounds.right) && (state.y >= bounds.top) && (state.y <= bounds.bottom);
-    // }
-
-    function handleInput(state) {
-
-        if(!state.hasPointer) return;
-
-        // only a single point
-        if(state.pointers.length === 1) {
-            handleSinglePointer(gameObjects.ui, state);
-        } else {
-            throw new Error('wat?');
-        }
-    }
-
-    function handleSinglePointer(ui, pointer) {
-        var i, element;
-        var handled = false;
-
-        for(i = ui.length - 1; i >= 0; i--) {
-            element = ui[i];
-
-            if(element.handleMouse) {
-                handled = element.handleMouse(pointer);
-            }
-            if(handled) {
-                break;
-            }
-        }
     }
 
     function sendWaveOf(type) {

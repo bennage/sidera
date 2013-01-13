@@ -28,7 +28,8 @@ define(function(require) {
                 x: interalState.x,
                 y: interalState.y,
                 hasPointer: interalState.hasPointer,
-                pointers: []
+                pointers: [],
+                handled: false
             };
 
             for(i = interalState.pointers.length - 1; i >= 0; i--) {
