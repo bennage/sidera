@@ -1,11 +1,6 @@
 define(function(require) {
 
-    var Miner = require('entities/Miner'),
-        Turret = require('entities/Turret'),
-        Generator = require('entities/Generator'),
-        Fighter = require('entities/Fighter'),
-        Bomber = require('entities/Bomber'),
-        Explosion = require('entities/Explosion'),
+    var Explosion = require('entities/Explosion'),
         CommandBar = require('ui/CommandBar'),
         keyboard = require('input/keyboard'),
         input = require('input/provider'),
@@ -54,7 +49,9 @@ define(function(require) {
         gameObjects.background.push(new MapGrid());
 
         var level = levels.next(gameObjects);
-        cursor.setContext(Miner);
+        gameObjects.ui.push(level);
+
+        // cursor.setContext(Miner);
 
         status = new Status(level);
         gameObjects.ui.push(new CommandBar());
@@ -112,6 +109,7 @@ define(function(require) {
     function update(elapsed) {
 
         input.update();
+        // keyboard.update();
 
         status.mode = cursor.mode;
 
@@ -142,8 +140,6 @@ define(function(require) {
             // pressed escape
             this.transition(startScreen);
         }
-
-        handleKeyboard();
     }
 
     function updateSet(entities, elapsed) {
@@ -172,46 +168,6 @@ define(function(require) {
             }
         }
         entities.dead = [];
-    }
-
-    function sendWaveOf(type) {
-        var now = new Date();
-        if(sendWaveOf.lastTime && (now - sendWaveOf.lastTime < 500)) {
-            return;
-        }
-        sendWaveOf.lastTime = now;
-        for(var i = 3; i > 0; i--) {
-            var f = new type();
-            f.x = -1 - (i * 1.1);
-            f.y = -1 - (i * 1.1);
-            gameObjects.enemies.push(f);
-        }
-    }
-
-    function handleKeyboard() {
-
-        //TODO: this whole bit needs to go
-        if(keyboard.isKeyPressed(81)) {
-            //q
-            sendWaveOf(Fighter);
-        }
-        if(keyboard.isKeyPressed(69)) {
-            //e
-            sendWaveOf(Bomber);
-        }
-
-        var types = {
-            49: Miner,
-            50: Generator,
-            51: Turret
-        };
-
-        Object.keys(types).forEach(function(key) {
-
-            if(keyboard.isKeyPressed(key)) {
-                cursor.setContext(types[key]);
-            }
-        });
     }
 
     return {

@@ -1,11 +1,41 @@
 ﻿define(function(require) {
 
-    var MapGrid = require('entities/MapGrid'),
+    var keyboard = require('input/keyboard'),
+        Fighter = require('entities/Fighter'),
+        Bomber = require('entities/Bomber'),
+        MapGrid = require('entities/MapGrid'),
         Asteroid = require('entities/Asteroid');
 
     var state = {
         money: 10000
     };
+
+    state.update = function(elapse) {
+        if(keyboard.isKeyPressed(81)) {
+            //q
+            sendWaveOf(Fighter);
+        }
+        if(keyboard.isKeyPressed(69)) {
+            //e
+            sendWaveOf(Bomber);
+        }
+    };
+
+    state.render = function(ctx) {};
+
+    function sendWaveOf(type) {
+        var now = new Date();
+        if(sendWaveOf.lastTime && (now - sendWaveOf.lastTime < 500)) {
+            return;
+        }
+        sendWaveOf.lastTime = now;
+        for(var i = 3; i > 0; i--) {
+            var f = new type();
+            f.x = -1 - (i * 1.1);
+            f.y = -1 - (i * 1.1);
+            state.objects.enemies.push(f);
+        }
+    }
 
     function next(objects) {
         var r = Math.random;
@@ -38,6 +68,7 @@
         a.amount = 2000;
         objects.enviroment.push(a);
 
+        state.objects = objects;
         return state;
     }
 
