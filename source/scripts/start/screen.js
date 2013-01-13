@@ -40,10 +40,11 @@ define(function (require) {
         if (hue > 255) direction = -1;
         if (hue < 1) direction = 1;
 
-        var inputState = touch.getState();
+        touch.update();
+
         var anyKeyPressed = keyboard.isAnyKeyPressed();
 
-        var justTapped = !inputState.hasPointer && tapLastFrame;
+        var justTapped = !touch.state.hasPointer && tapLastFrame;
         var keyJustReleased = !anyKeyPressed && keyLastFrame;
 
         if(justTapped || keyJustReleased && !transitioning) {
@@ -53,7 +54,7 @@ define(function (require) {
             });
         }
 
-        tapLastFrame = inputState.hasPointer;
+        tapLastFrame = touch.state.hasPointer;
         keyLastFrame = anyKeyPressed;
     }
 

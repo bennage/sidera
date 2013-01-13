@@ -111,6 +111,8 @@ define(function(require) {
 
     function update(elapsed) {
 
+        input.update();
+
         status.mode = cursor.mode;
 
         updateSet(gameObjects.background, elapsed);
@@ -142,7 +144,7 @@ define(function(require) {
         }
 
         handleKeyboard();
-        handleInput(input.getState());
+        handleInput(input.state);
     }
 
     function updateSet(entities, elapsed) {

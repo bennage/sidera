@@ -76,9 +76,9 @@ define(function() {
     }
 
     function listen(target) {
-        target.addEventListener("touchstart", hande_touchstart, false);
-        target.addEventListener("touchend", handle_touchend, false);
-        target.addEventListener("touchcancel", handle_touchcancel, false);
+        target.addEventListener('touchstart', hande_touchstart, false);
+        target.addEventListener('touchend', handle_touchend, false);
+        target.addEventListener('touchcancel', handle_touchcancel, false);
 
         target.addEventListener('mousedown', handle_mousedown);
         target.addEventListener('mouseup', handle_mouseup);
