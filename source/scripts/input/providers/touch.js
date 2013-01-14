@@ -50,13 +50,13 @@ define(function() {
     // mouse event handlers
     function handle_mousedown(args) {
         state.pointers.push({
-            x: args.x,
-            y: args.y,
+            x: args.offsetX,
+            y: args.offsetY,
             id: 'mouse'
         });
 
-        state.x = args.x;
-        state.y = args.y;
+        state.x = args.offsetX;
+        state.y = args.offsetY;
 
         state.hasPointer = true;
     }
