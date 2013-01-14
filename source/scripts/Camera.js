@@ -1,33 +1,34 @@
 ﻿define(function(require) {
 
     var MapGrid = require('entities/MapGrid'),
+        resolution = require('resolution'),
         keyboard = require('input/keyboard');
 
-    var Camera = function(resolution) {
+    var Camera = function() {
 
-        var map = MapGrid;
-        var aspectRatio = resolution.width / resolution.height;
+            var map = MapGrid;
+            var aspectRatio = resolution.width / resolution.height;
 
-        this.screen = resolution;
+            this.screen = resolution;
 
-        // x,y start off in the middle of the screen
-        this.centerX = Math.round(this.screen.width / 2);
-        this.centerY = Math.round(this.screen.height / 2);
+            // x,y start off in the middle of the screen
+            this.centerX = Math.round(this.screen.width / 2);
+            this.centerY = Math.round(this.screen.height / 2);
 
-        this.x = Math.round(map.columns / 2);
-        this.y = Math.round(map.rows / 2);
+            this.x = Math.round(map.columns / 2);
+            this.y = Math.round(map.rows / 2);
 
-        this.viewport = {
-            width: map.columns * map.cellSize,
-            height: map.rows * map.cellSize,
-            aspectRatio: aspectRatio
+            this.viewport = {
+                width: map.columns * map.cellSize,
+                height: map.rows * map.cellSize,
+                aspectRatio: aspectRatio
+            };
+
+            this.updateViewPort();
+
+            keyboard.mixinKeyCheck(this);
+
         };
-
-        this.updateViewPort();
-
-        keyboard.mixinKeyCheck(this);
-
-    };
 
     Camera.prototype.commands = {
         87: function() {
@@ -107,6 +108,5 @@
     Camera.zoomSpeed = 0.95;
     // minZoom: 0.5,
     // maxZoom: 4
-
     return Camera;
 });
