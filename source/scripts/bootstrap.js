@@ -3,7 +3,6 @@ define(function(require) {
     var resolution = require('resolution'),
         assets = require('assets'),
         keyboard = require('input/keyboard'),
-        mouse = require('input/mouse'),
         startScreen = require('start/screen');
 
     var touch = require('input/provider');
@@ -51,7 +50,6 @@ define(function(require) {
         surface = canvas.getContext('2d');
 
         keyboard.listen(window);
-        mouse.listen(canvas);
         touch.listen(canvas);
 
         assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
