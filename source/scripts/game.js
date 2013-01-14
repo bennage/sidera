@@ -4,7 +4,6 @@ define(function(require) {
         CommandBar = require('ui/CommandBar'),
         keyboard = require('input/keyboard'),
         input = require('input/provider'),
-        resolution = require('resolution'),
         Camera = require('Camera'),
         Cursor = require('Cursor'),
         levels = require('levels'),
@@ -14,7 +13,6 @@ define(function(require) {
         Builder = require('ui/Builder'),
         FPS = require('fps');
 
-    var newBuilding;
     var gameObjects;
     var status;
     var cursor;
@@ -42,7 +40,7 @@ define(function(require) {
     function start(options) {
 
         isGameOver = false;
-        camera = new Camera(resolution);
+        camera = new Camera();
         cursor = new Cursor(camera);
         gameObjects = initializeGameObjectSets();
 
@@ -122,15 +120,6 @@ define(function(require) {
 
         cursor.update(elapsed, gameObjects);
         camera.update();
-
-        if(newBuilding) {
-            var entity;
-            for(var i = gameObjects.friendlies.length - 1; i >= 0; i--) {
-                entity = gameObjects.friendlies[i];
-                if(entity.whenBuilding) entity.whenBuilding(newBuilding, gameObjects);
-            }
-            newBuilding = null;
-        }
 
         if(gameObjects.friendlies.length === 0 && status.state.money < 9999) {
             isGameOver = true;
