@@ -1,7 +1,6 @@
 define(function(require) {
 
     var Explosion = require('entities/Explosion'),
-        CommandBar = require('ui/CommandBar'),
         keyboard = require('input/keyboard'),
         input = require('input/provider'),
         Camera = require('Camera'),
@@ -13,7 +12,7 @@ define(function(require) {
         FPS = require('fps');
 
     var gameObjects;
-    var status;
+    var level;
     var camera;
     var isGameOver = false;
 
@@ -43,15 +42,13 @@ define(function(require) {
 
         gameObjects.background.push(new MapGrid());
 
-        var level = levels.next(gameObjects);
+        level = levels.next(gameObjects);
         gameObjects.ui.push(level);
 
-        status = new Status(level);
-        gameObjects.ui.push(new CommandBar());
-        gameObjects.ui.push(new Builder(camera, gameObjects));
+        gameObjects.ui.push(new Builder(camera, gameObjects, level));
         gameObjects.ui.push(new MiniMap(gameObjects, camera));
         gameObjects.ui.push(new FPS());
-        gameObjects.ui.push(status);
+        gameObjects.ui.push(new Status(level));
     }
 
     function draw(ctx, elapsed) {
@@ -77,10 +74,10 @@ define(function(require) {
 
         if(isGameOver) {
             var centerText = function(ctx, text, y) {
-                var measurement = ctx.measureText(text);
-                var x = (ctx.canvas.width - measurement.width) / 2;
-                ctx.fillText(text, x, y);
-            };
+                    var measurement = ctx.measureText(text);
+                    var x = (ctx.canvas.width - measurement.width) / 2;
+                    ctx.fillText(text, x, y);
+                };
 
             ctx.fillStyle = 'white';
             ctx.font = '48px monospace';
@@ -101,7 +98,6 @@ define(function(require) {
 
         input.update();
         // keyboard.update();
-
         updateSet(gameObjects.background, elapsed);
         updateSet(gameObjects.enviroment, elapsed);
         updateSet(gameObjects.friendlies, elapsed);
@@ -111,7 +107,7 @@ define(function(require) {
 
         camera.update();
 
-        if(gameObjects.friendlies.length === 0 && status.state.money < 9999) {
+        if(gameObjects.friendlies.length === 0 && level.money < 9999) {
             isGameOver = true;
         }
 
