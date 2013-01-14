@@ -5,7 +5,6 @@ define(function(require) {
         keyboard = require('input/keyboard'),
         input = require('input/provider'),
         Camera = require('Camera'),
-        Cursor = require('Cursor'),
         levels = require('levels'),
         MapGrid = require('entities/MapGrid'),
         Status = require('status'),
@@ -15,7 +14,6 @@ define(function(require) {
 
     var gameObjects;
     var status;
-    var cursor;
     var camera;
     var isGameOver = false;
 
@@ -41,15 +39,12 @@ define(function(require) {
 
         isGameOver = false;
         camera = new Camera();
-        cursor = new Cursor(camera);
         gameObjects = initializeGameObjectSets();
 
         gameObjects.background.push(new MapGrid());
 
         var level = levels.next(gameObjects);
         gameObjects.ui.push(level);
-
-        // cursor.setContext(Miner);
 
         status = new Status(level);
         gameObjects.ui.push(new CommandBar());
@@ -80,8 +75,6 @@ define(function(require) {
         drawSet(gameObjects.doodads, ctx);
         drawSet(gameObjects.ui, ctx);
 
-        cursor.render(ctx, camera);
-
         if(isGameOver) {
             var centerText = function(ctx, text, y) {
                 var measurement = ctx.measureText(text);
@@ -109,8 +102,6 @@ define(function(require) {
         input.update();
         // keyboard.update();
 
-        status.mode = cursor.mode;
-
         updateSet(gameObjects.background, elapsed);
         updateSet(gameObjects.enviroment, elapsed);
         updateSet(gameObjects.friendlies, elapsed);
@@ -118,7 +109,6 @@ define(function(require) {
         updateSet(gameObjects.doodads, elapsed);
         updateSet(gameObjects.ui, elapsed);
 
-        cursor.update(elapsed, gameObjects);
         camera.update();
 
         if(gameObjects.friendlies.length === 0 && status.state.money < 9999) {
