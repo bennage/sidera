@@ -12,9 +12,11 @@ define(function(require) {
 
 	var menuWidth = 120;
 
-	var Builder = function(camera, gameObjects) {
+	var Builder = function(camera, gameObjects, level) {
 			this.camera = camera;
 			this.gameObjects = gameObjects;
+			this.level = level;
+
 			this.cell = null;
 			this.isValid = true;
 
@@ -176,13 +178,17 @@ define(function(require) {
 					throw new Error('?');
 				}
 
+				if(!entityType.cost) throw new Error('no cost for unit: ' + entityType);
+
+				if(this.level.money < entityType.cost) return;
+
+				this.level.money -= entityType.cost;
+
 				var entity = new entityType();
 				entity.hydrate({
 					x: this.cell.x,
 					y: this.cell.y,
-					// onmining: function(take) {
-					// 	level.money += take;
-					// }
+					context: this.level
 				});
 
 				this.gameObjects.friendlies.push(entity);

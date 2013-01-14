@@ -14,7 +14,7 @@
     Status.prototype.render = function(ctx) {
         ctx.fillStyle = 'white';
         ctx.font = '18px sans-serif';
-        ctx.fillText('$' + this.state.money + ' >> ' + this.mode, this.x, this.y);
+        ctx.fillText('$' + this.state.money, this.x, this.y);
     };
 
     Status.prototype.update = function(elapsed) { };

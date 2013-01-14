@@ -7,7 +7,7 @@
         Asteroid = require('entities/Asteroid');
 
     var state = {
-        money: 10000
+        money: 12345
     };
 
     state.update = function(elapse) {
