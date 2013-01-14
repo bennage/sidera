@@ -26,9 +26,6 @@ define(function(require) {
         ctx.save();
         ctx.translate(coords.x, coords.y);
         ctx.drawImage(this.sprites, x0, y0, x1, y1, -size / 2, -size / 2, size, size);
-        ctx.fillStyle = "white";
-        ctx.font = "8px sans-serif";
-        ctx.fillText(this.x + ',' + this.y, this.x, this.y);
         ctx.restore();
     };
 
