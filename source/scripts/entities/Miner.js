@@ -134,7 +134,11 @@ define(function(require) {
             }
 
             self.battery -= required_charge;
-            candidate.mine(mine_rate, self.onmining);
+            candidate.mine(mine_rate, function(received) {
+                var context = self.context;
+                context.money += received;
+
+            });
 
             self.targets.push(candidate);
         }
