@@ -37,9 +37,6 @@ define(function(require) {
         ctx.translate(coords.x, coords.y);
 
         ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
-        ctx.fillStyle = "white";
-        ctx.font = "8px sans-serif";
-        ctx.fillText(this.x + ',' + this.y, this.x, this.y);
 
         ctx.strokeStyle = strokeByPulse(this);
         ctx.lineWidth = 1 * scale;
