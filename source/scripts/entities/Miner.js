@@ -116,7 +116,7 @@ define(function(require) {
 
         var candidate;
         var len = gameObjects.enviroment.length - 1;
-        for(var i = len; i != 0; i--) {
+        for(var i = len; i >= 0; i--) {
 
             if(self.battery < required_charge) return;
 
