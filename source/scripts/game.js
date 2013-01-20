@@ -108,7 +108,7 @@ define(function(require) {
 
         camera.update(elapsed);
 
-        if(gameObjects.friendlies.length === 0 && level.money < 9999) {
+        if(gameObjects.friendlies.length === 0) {
             isGameOver = true;
         }
 
