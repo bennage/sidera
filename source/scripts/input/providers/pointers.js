@@ -38,12 +38,15 @@ define(function() {
     }
 
     function handle_cancel(evt) {
-        debugger;
         removePointer(evt.pointerId);
     }
 
     function handle_up(evt) {
         removePointer(evt.pointerId);
+    }
+
+    function handle_over(evt) {
+        console.log(evt.pointerId + ' over canvas');
     }
 
     function handle_move(evt) {
@@ -76,6 +79,8 @@ define(function() {
         target.addEventListener('MSPointerDown', handle_down);
         target.addEventListener('MSPointerUp', handle_up);
         target.addEventListener('MSPointerCancel', handle_cancel);
+        target.addEventListener('MSPointerOut', handle_cancel);
+        target.addEventListener('MSPointerOver', handle_over);
         target.addEventListener('MSPointerMove', handle_move);
     }
 
