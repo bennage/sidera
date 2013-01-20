@@ -4,10 +4,25 @@ define(function(require) {
 		var total = 0;
 		var delta = end - start;
 
-		return function(elapsed) {
-			total += elapsed;
-			return(total >= duration) ? end : ease(start, delta, duration, total);
-		};
+		// setup the tween function to be returned
+		var tween = function(elapsed) {
+				var current;
+
+				total += elapsed;
+
+				if(total >= duration) {
+					tween.finished = true;
+					current = end
+				} else {
+					current = ease(start, delta, duration, total);
+				}
+				return current;
+			};
+
+		// initialize the tween's state
+		tween.finished = false;
+
+		return tween;
 	}
 
 	tweening.smooth = function(start, delta, duration, time) {
