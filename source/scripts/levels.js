@@ -4,15 +4,12 @@
         Fighter = require('entities/Fighter'),
         Bomber = require('entities/Bomber'),
         MapGrid = require('entities/MapGrid'),
-        Asteroid = require('entities/Asteroid');
-
-    var Generator = require('entities/Generator'),
+        Asteroid = require('entities/Asteroid'),
+        Generator = require('entities/Generator'),
         Turret = require('entities/Turret'),
         Miner = require('entities/Miner');
 
-    var state = {
-        money: 12345
-    };
+    var state = {};
 
     var level = {
         camera: {
@@ -22,6 +19,7 @@
                 height: 400
             }
         },
+        funds: 2500,
         friendlies: [{
             type: Generator,
             as: {
@@ -77,24 +75,38 @@
         }],
         waves: [{
             after: 2,
+            formation: triangle,
+            from: {
+                x: 0,
+                y: 0
+            },
             send: [{
                 type: Fighter,
-                count: 10,
-                formation: triangle,
-                from: {
-                    x: 0,
-                    y: 0
-                }
+                count: 5,
             }]
         }, {
             after: 5,
+            from: {
+                x: 0,
+                y: 0
+            },
             send: [{
                 type: Bomber,
-                count: 1,
-                from: {
-                    x: 0,
-                    y: 0
-                }
+                count: 1
+            }]
+        }, {
+            after: 12,
+            from: {
+                x: 0,
+                y: 0
+            },
+            formation: triangle,
+            send: [{
+                type: Bomber,
+                count: 1
+            }, {
+                type: Fighter,
+                count: 10
             }]
         }]
     };
@@ -151,15 +163,21 @@
     };
 
     state.sendWave = function() {
-        var wave = this.waves[this.waveId].send[0];
+        var wave = this.waves[this.waveId];
         var queue = [];
         var entity;
-        for(var i = wave.count; i > 0; i--) {
-            entity = new wave.type();
-            // entity.x = -1 - (i * 1.1);
-            // entity.y = -1 - (i * 1.1);
-            this.objects.enemies.push(entity);
-            queue.push(entity);
+        var type;
+        var count;
+
+        for(var i = wave.send.length - 1; i >= 0; i--) {
+            type = wave.send[i].type;
+            count = wave.send[i].count;
+            while(count > 0) {
+                entity = new type();
+                this.objects.enemies.push(entity);
+                queue.push(entity);
+                count--;
+            }
         }
 
         if(wave.formation) {
@@ -215,6 +233,7 @@
         state.waveId = 0;
         state.timeUntilNextWave = state.waves[0].after * 1000;;
         state.waveCount = state.waves.length;
+        state.money = level.funds;
 
         return state;
     }
