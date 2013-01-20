@@ -14,7 +14,14 @@
         money: 12345
     };
 
-    var start = {
+    var level = {
+        camera: {
+            x: 10,
+            y: 10,
+            viewport: {
+                height: 400
+            }
+        },
         friendlies: [{
             type: Generator,
             as: {
@@ -194,16 +201,17 @@
 
     function next(objects) {
 
-        start.friendlies.forEach(addTo.bind(objects.friendlies));
-        start.enviroment.forEach(addTo.bind(objects.enviroment));
+        level.friendlies.forEach(addTo.bind(objects.friendlies));
+        level.enviroment.forEach(addTo.bind(objects.enviroment));
 
         objects.friendlies.forEach(function(friendly) {
             friendly.context = state;
 
         });
 
+        state.camera = level.camera;
         state.objects = objects;
-        state.waves = start.waves;
+        state.waves = level.waves;
         state.waveId = 0;
         state.timeUntilNextWave = state.waves[0].after * 1000;;
         state.waveCount = state.waves.length;

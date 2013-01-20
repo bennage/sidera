@@ -44,6 +44,7 @@ define(function(require) {
 
         level = levels.next(gameObjects);
         gameObjects.ui.push(level);
+        camera.animateTo(level.camera);
 
         gameObjects.ui.push(new Builder(camera, gameObjects, level));
         gameObjects.ui.push(new MiniMap(gameObjects, camera));
@@ -96,8 +97,8 @@ define(function(require) {
 
     function update(elapsed) {
 
-        input.update();
-        // keyboard.update();
+        input.update(elapsed);
+        // keyboard.update(elapsed);
         updateSet(gameObjects.background, elapsed);
         updateSet(gameObjects.enviroment, elapsed);
         updateSet(gameObjects.friendlies, elapsed);
@@ -105,7 +106,7 @@ define(function(require) {
         updateSet(gameObjects.doodads, elapsed);
         updateSet(gameObjects.ui, elapsed);
 
-        camera.update();
+        camera.update(elapsed);
 
         if(gameObjects.friendlies.length === 0 && level.money < 9999) {
             isGameOver = true;
