@@ -124,12 +124,14 @@ define(function(require) {
 
 	Builder.prototype.update = function(elapsed) {
 
-		if(this.state === 'idle' && input.state.hasPointer && !input.state.handled) {
-			this.state = 'scanning';
-			this.menu.grow = tween(0, menuWidth, 300, tween.smooth);
-		}
+	    if(input.state.handled) {
+	        this.state = 'idle';
+	    }
 
-		switch(this.state) {
+	    switch(this.state) {
+	        case 'idle':
+	        this.idleUpdate(elapsed);
+	        break;
 		case 'scanning':
 			this.scanningUpdate(elapsed);
 			break;
@@ -143,12 +145,31 @@ define(function(require) {
 
 	};
 
+	Builder.prototype.idleUpdate = function(elapsed) {
+
+	    if(!input.state.handled && input.state.hasPointer && input.state.pointers.length === 1) {
+
+	        var worldCoords = this.camera.toWorldSpace(input.state);
+	        worldCoords.x = Math.round(worldCoords.x);
+	        worldCoords.y = Math.round(worldCoords.y);
+
+	        if(isInGameBounds(worldCoords)) {
+	            this.cell = worldCoords;
+	            this.state = 'scanning';
+	            this.menu.grow = tween(0, menuWidth, 300, tween.smooth);
+
+	            input.state.handled = true;
+	        }
+
+	    }
+	};
+
 	Builder.prototype.dismissingUpdate = function(elapsed) {
-		if(this.menu.width > 0) {
-			this.menu.width = this.menu.shrink(elapsed);
-		} else {
-			this.state = 'idle';
-		}
+	    if(this.menu.width > 0) {
+	        this.menu.width = this.menu.shrink(elapsed);
+	    } else {
+	        this.state = 'idle';
+	    }
 	};
 
 	Builder.prototype.displayingUpdate = function(elapsed) {
