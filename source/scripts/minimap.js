@@ -1,7 +1,8 @@
 ﻿define(function(require) {
 
     var Entity = require('entities/Entity'),
-        MapGrid = require('entities/MapGrid');
+        MapGrid = require('entities/MapGrid'),
+        resolution = require('resolution');
 
     var MiniMap = function(gameObjects, camera) {
 
@@ -36,8 +37,9 @@
         this.colors['friendlies'] = 'green';
         this.colors['enemies'] = 'red';
 
-        this.x = 20;
-        this.y = 420;
+        var pad = 20;
+        this.x = pad;
+        this.y = resolution.height - this.h - pad;
         this.bounds = {
             top: this.y,
             left: this.x,

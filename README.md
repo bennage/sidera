@@ -17,10 +17,10 @@ To run in a browser, locate `web.html` in the `build` directory and open it.
 
 Stuff
 -----
-You will need to provide a copy of `require.js` in the source]scripts directory. I did not include it in the repository.s
+You will need to provide a copy of `require.js` in the source]scripts directory. I did not include it in the repository.
 
 Known Issues
 ------------
-The game runs as a Windows Store app, but it still depends a great deal upon the keyboard.s
+The game runs as a Windows Store app, but it still depends a great deal upon the keyboard.
 
 http://dev.bennage.com
