@@ -2,6 +2,7 @@
 
     var Entity = require('entities/Entity'),
         MapGrid = require('entities/MapGrid'),
+        input = require('input/provider'),
         resolution = require('resolution');
 
     var MiniMap = function(gameObjects, camera) {
@@ -62,30 +63,22 @@
         }
     };
 
-    MiniMap.prototype.handleMouse = function(mouseState) {
-        if(!this.on) {
-            return false;
-        }
-
-        return true;
-    };
-
     MiniMap.prototype.render = function(ctx) {
-        if(!this.on) {
-            return;
+
+        if(this.on) {
+            this.renderMap(this.map);
+            ctx.drawImage(this.map.canvas, this.x, this.y);
+
+            ctx.beginPath();
+            ctx.rect(this.x, this.y, this.w, this.h);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255,255,255, 0.3)';
+            ctx.stroke();
+        } else {
+            ctx.fillStyle = 'rgba(255,255,255, 0.3)';
+            ctx.font = '42px sans-serif';
+            ctx.fillText('M', this.x, this.y + 140);
         }
-
-        var self = this;
-
-        this.renderMap(this.map);
-        ctx.drawImage(this.map.canvas, this.x, this.y);
-
-        ctx.beginPath();
-        ctx.rect(this.x, this.y, this.w, this.h);
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(255,255,255, 0.3)';
-        ctx.stroke();
-
     };
 
 
@@ -137,6 +130,23 @@
 
     MiniMap.prototype.update = function(elapsed) {
         this.checkCommands();
+
+        if(!input.state.handled && input.state.hasPointer) {
+
+            var inBound = input.isPointWithinBounds(input.state, { left: this.x, right: this.x + this.w, top: this.y, bottom: this.y + this.h });
+
+            if(inBound) {
+                this.down = true;
+                input.state.handled = true;
+            }
+        }
+
+        if(!input.state.hasPointer && this.down) {
+            this.on = !this.on;
+            this.down = false;
+            input.state.handled = true;
+        }
+
     };
 
     return MiniMap;

@@ -51,6 +51,7 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include=".gitignore" />
     <Content Include="assests\logo.png" />
     <Content Include="assests\smalllogo.png" />
     <Content Include="assests\splashscreen.png" />

@@ -6,6 +6,10 @@ define(function(require) {
         return(state.x >= bounds.left) && (state.x <= bounds.right) && (state.y >= bounds.top) && (state.y <= bounds.bottom);
     }
 
+    function isPointWithinBounds(p, bounds) {
+        return (p.x >= bounds.left) && (p.x <= bounds.right) && (p.y >= bounds.top) && (p.y <= bounds.bottom);
+    }
+
     if(window.navigator.msPointerEnabled) {
         // IE10 support
         provider = require('input/providers/pointers');
@@ -17,6 +21,7 @@ define(function(require) {
     // iteration of the game's main loop.
     return {
         state: {},
+        isPointWithinBounds: isPointWithinBounds,
         listen: provider.listen.bind(provider),
         update: function() {
 
