@@ -64,11 +64,11 @@
     <Content Include="source\images\miner.png" />
     <Content Include="source\images\rocks.png" />
     <Content Include="source\levels\level.json" />
+    <Content Include="source\scripts\animation\tween.js" />
     <Content Include="source\scripts\app.js" />
     <Content Include="source\scripts\assets.js" />
     <Content Include="source\scripts\bootstrap.js" />
     <Content Include="source\scripts\Camera.js" />
-    <Content Include="source\scripts\Cursor.js" />
     <Content Include="source\scripts\domReady.js" />
     <Content Include="source\scripts\entities\Asteroid.js" />
     <Content Include="source\scripts\entities\Bomber.js" />
@@ -84,7 +84,6 @@
     <Content Include="source\scripts\fps.js" />
     <Content Include="source\scripts\game.js" />
     <Content Include="source\scripts\input\keyboard.js" />
-    <Content Include="source\scripts\input\mouse.js" />
     <Content Include="source\scripts\input\provider.js" />
     <Content Include="source\scripts\input\providers\pointers.js" />
     <Content Include="source\scripts\input\providers\touch.js" />
@@ -97,7 +96,7 @@
     <Content Include="source\scripts\resolution.js" />
     <Content Include="source\scripts\start\screen.js" />
     <Content Include="source\scripts\status.js" />
-    <Content Include="source\scripts\ui\CommandBar.js" />
+    <Content Include="source\scripts\ui\Builder.js" />
     <Content Include="source\shims\requestAnimationFrame.js" />
     <Content Include="source\web.html" />
     <None Include="space_TemporaryKey.pfx" />

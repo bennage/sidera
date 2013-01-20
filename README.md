@@ -17,11 +17,10 @@ To run in a browser, locate `web.html` in the `build` directory and open it.
 
 Stuff
 -----
-
-The build uses [almond](https://github.com/jrburke/almond) in place of [RequireJS](http://www.requirejs.org/). The mechanism for putting it in place is a bit bumpy at the moment though.
+You will need to provide a copy of `require.js` in the source]scripts directory. I did not include it in the repository.s
 
 Known Issues
 ------------
-I plan to make this a Windows 8 app as well. However, it's not currently working. I'll get to that 
+The game runs as a Windows Store app, but it still depends a great deal upon the keyboard.s
 
 http://dev.bennage.com
