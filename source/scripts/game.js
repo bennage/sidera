@@ -6,10 +6,10 @@ define(function(require) {
         Camera = require('Camera'),
         levels = require('levels'),
         MapGrid = require('entities/MapGrid'),
-        Status = require('status'),
-        MiniMap = require('minimap'),
+        Status = require('ui/status'),
+        MiniMap = require('ui/minimap'),
         Builder = require('ui/Builder'),
-        FPS = require('fps');
+        FPS = require('ui/fps');
 
     var gameObjects;
     var level;

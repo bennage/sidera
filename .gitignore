@@ -1,3 +1,5 @@
+require.js
+
 .DS_Store
 nano.save
 *.sublime-workspace

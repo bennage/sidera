@@ -81,7 +81,6 @@
     <Content Include="source\scripts\entities\Missile.js" />
     <Content Include="source\scripts\entities\Turret.js" />
     <Content Include="source\scripts\entities\Wire.js" />
-    <Content Include="source\scripts\fps.js" />
     <Content Include="source\scripts\game.js" />
     <Content Include="source\scripts\input\keyboard.js" />
     <Content Include="source\scripts\input\provider.js" />
@@ -91,12 +90,13 @@
     <Content Include="source\scripts\main.js" />
     <Content Include="source\scripts\math\geometry.js" />
     <Content Include="source\scripts\math\vector.js" />
-    <Content Include="source\scripts\minimap.js" />
     <Content Include="source\scripts\require.js" />
     <Content Include="source\scripts\resolution.js" />
     <Content Include="source\scripts\start\screen.js" />
-    <Content Include="source\scripts\status.js" />
     <Content Include="source\scripts\ui\Builder.js" />
+    <Content Include="source\scripts\ui\fps.js" />
+    <Content Include="source\scripts\ui\minimap.js" />
+    <Content Include="source\scripts\ui\status.js" />
     <Content Include="source\shims\requestAnimationFrame.js" />
     <Content Include="source\web.html" />
     <None Include="space_TemporaryKey.pfx" />
