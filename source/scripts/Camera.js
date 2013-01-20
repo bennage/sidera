@@ -2,7 +2,9 @@
 
     var MapGrid = require('entities/MapGrid'),
         resolution = require('resolution'),
-        keyboard = require('input/keyboard');
+        keyboard = require('input/keyboard'),
+        vector = require('math/vector'),
+        tween = require('animation/tween');
 
     var Camera = function() {
 
@@ -50,12 +52,10 @@
         90: function() {
             //z
             this.viewport.height /= Camera.zoomSpeed;
-            // this.z = Math.max(this.z, Camera.minZoom);
         },
         67: function() {
             //c
             this.viewport.height *= Camera.zoomSpeed;
-            // this.z = Math.min(this.z, Camera.maxZoom);
         }
     };
 
@@ -98,15 +98,42 @@
         };
     };
 
-    Camera.prototype.update = function() {
+    Camera.prototype.update = function(elapsed) {
         this.updateViewPort();
         this.scale = this.screen.height / this.viewport.height;
         this.checkCommands();
+
+        // keep the zoom level to reasonable constraints
+        this.viewport.height = Math.min(this.viewport.height, Camera.max);
+        this.viewport.height = Math.max(this.viewport.height, Camera.min);
+
+        // has the camera been asked to animate to a location
+        if(this.animation) {
+            this.x = this.animation.x(elapsed);
+            this.y = this.animation.y(elapsed);
+            this.viewport.height = this.animation.viewport.height(elapsed);
+
+            if(this.animation.x.finished) {
+                this.animation = null;
+            }
+        }
+    };
+
+    Camera.prototype.animateTo = function(target) {
+        var duration = 1000;
+        this.animation = {
+            x: tween(this.x, target.x, duration, tween.smooth),
+            y: tween(this.y, target.y, duration, tween.smooth),
+            viewport: {
+                height: tween(this.viewport.height, target.viewport.height, duration, tween.smooth)
+            }
+        };
     };
 
     Camera.speed = 0.1;
     Camera.zoomSpeed = 0.95;
-    // minZoom: 0.5,
-    // maxZoom: 4
+    Camera.min = 140;
+    Camera.max = 900;
+
     return Camera;
 });
