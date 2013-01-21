@@ -3,34 +3,35 @@
     var MapGrid = require('entities/MapGrid'),
         resolution = require('resolution'),
         keyboard = require('input/keyboard'),
+        input = require('input/provider'),
         vector = require('math/vector'),
         tween = require('animation/tween');
 
     var Camera = function() {
 
-            var map = MapGrid;
-            var aspectRatio = resolution.width / resolution.height;
+        var map = MapGrid;
+        var aspectRatio = resolution.width / resolution.height;
 
-            this.screen = resolution;
+        this.screen = resolution;
 
-            // x,y start off in the middle of the screen
-            this.centerX = Math.round(this.screen.width / 2);
-            this.centerY = Math.round(this.screen.height / 2);
+        // x,y start off in the middle of the screen
+        this.centerX = Math.round(this.screen.width / 2);
+        this.centerY = Math.round(this.screen.height / 2);
 
-            this.x = Math.round(map.columns / 2);
-            this.y = Math.round(map.rows / 2);
+        this.x = Math.round(map.columns / 2);
+        this.y = Math.round(map.rows / 2);
 
-            this.viewport = {
-                width: map.columns * map.cellSize,
-                height: map.rows * map.cellSize,
-                aspectRatio: aspectRatio
-            };
-
-            this.updateViewPort();
-
-            keyboard.mixinKeyCheck(this);
-
+        this.viewport = {
+            width: map.columns * map.cellSize,
+            height: map.rows * map.cellSize,
+            aspectRatio: aspectRatio
         };
+
+        this.updateViewPort();
+
+        keyboard.mixinKeyCheck(this);
+
+    };
 
     Camera.prototype.commands = {
         87: function() {
@@ -116,6 +117,34 @@
             if(this.animation.x.finished) {
                 this.animation = null;
             }
+        }
+
+        // single touch to drag map
+        if(!input.state.handled && input.state.hasPointer && input.state.pointers.length === 1) {
+
+            if(this.lastPoint) {
+
+                var scale = 1 / this.scale / MapGrid.cellSize;
+                var delta = vector(input.state, this.lastPoint).multiply(scale);
+
+                this.x -= delta.x;
+                this.y -= delta.y;
+
+                input.state.handled = true;
+            }
+
+            this.lastPoint = {
+                x: input.state.x,
+                y: input.state.y
+            };
+
+        } else {
+            this.lastPoint = null;
+        }
+
+        // multi-touch to zoom
+        if(!input.state.handled && input.state.pointers.length === 2) {
+            //todo: pinch/pull
         }
     };
 
