@@ -129,7 +129,12 @@ define(function(require) {
 	    }
 
 	    switch(this.state) {
-	        case 'idle':
+	    case 'ignoring':
+	        if(!input.state.hasPointer) {
+	            this.state = 'idle';
+	        }
+	        break;
+	    case 'idle':
 	        this.idleUpdate(elapsed);
 	        break;
 		case 'scanning':
@@ -164,6 +169,74 @@ define(function(require) {
 	    }
 	};
 
+	Builder.prototype.scanningUpdate = function(elapsed) {
+
+	    if(!input.state.hasPointer) {
+	        this.state = this.isValid ? 'displaying' : 'idle';
+	    } else if(input.state.pointers.length === 1) {
+
+	        var worldCoords = this.camera.toWorldSpace(input.state);
+	        worldCoords.x = Math.round(worldCoords.x);
+	        worldCoords.y = Math.round(worldCoords.y);
+
+	        if(worldCoords.x === this.cell.x && worldCoords.y === this.cell.y) {
+	            this.isValid = !isOverEntity(worldCoords, this.gameObjects.friendlies) && !isOverEntity(worldCoords, this.gameObjects.enviroment);
+	            input.state.handled = true;
+	        } else {
+	           this.state = 'ignoring';
+	        }
+	    }
+
+	};
+
+	Builder.prototype.displayingUpdate = function(elapsed) {
+	    if(this.menu.width < menuWidth) {
+	        this.menu.width = this.menu.grow(elapsed);
+	    }
+
+	    if(input.state.hasPointer) {
+	        var origin = this.camera.project(this.cell);
+	        if(geo.lengthSquared(input.state, origin) > (menuWidth * menuWidth)) {
+	            this.state = 'dismissing';
+	            this.menu.shrink = tween(this.menu.width, 0, 300, tween.smooth);
+	        } else {
+	            var v = vector(origin, input.state);
+	            var third = Math.PI * 2 / 3;
+	            var entityType;
+
+	            var a = v.angle() - Math.PI; // off by 180 from the canvas arc()
+	            if(a < 0) a = (2 * Math.PI) + a; // normalize negative angles
+	            if(a < third) {
+	                entityType = Generator;
+	            } else if(a < 2 * third) {
+	                entityType = Miner;
+	            } else if(a < 3 * third) {
+	                entityType = Turret;
+	            } else {
+	                throw new Error('?');
+	            }
+
+	            if(!entityType.cost) throw new Error('no cost for unit: ' + entityType);
+
+	            if(this.level.money < entityType.cost) return;
+
+	            this.level.money -= entityType.cost;
+
+	            var entity = new entityType();
+	            entity.hydrate({
+	                x: this.cell.x,
+	                y: this.cell.y,
+	                context: this.level
+	            });
+
+	            this.gameObjects.friendlies.push(entity);
+
+	            this.state = 'dismissing';
+	            this.menu.shrink = tween(this.menu.width, 0, 300, tween.smooth);
+	        }
+	    }
+	};
+
 	Builder.prototype.dismissingUpdate = function(elapsed) {
 	    if(this.menu.width > 0) {
 	        this.menu.width = this.menu.shrink(elapsed);
@@ -172,75 +245,5 @@ define(function(require) {
 	    }
 	};
 
-	Builder.prototype.displayingUpdate = function(elapsed) {
-		if(this.menu.width < menuWidth) {
-			this.menu.width = this.menu.grow(elapsed);
-		}
-
-		if(input.state.hasPointer) {
-			var origin = this.camera.project(this.cell);
-			if(geo.lengthSquared(input.state, origin) > (menuWidth * menuWidth)) {
-				this.state = 'dismissing';
-				this.menu.shrink = tween(this.menu.width, 0, 300, tween.smooth);
-			} else {
-				var v = vector(origin, input.state);
-				var third = Math.PI * 2 / 3;
-				var entityType;
-
-				var a = v.angle() - Math.PI; // off by 180 from the canvas arc()
-				if(a < 0) a = (2 * Math.PI) + a; // normalize negative angles
-				if(a < third) {
-					entityType = Generator;
-				} else if(a < 2 * third) {
-					entityType = Miner;
-				} else if(a < 3 * third) {
-					entityType = Turret;
-				} else {
-					throw new Error('?');
-				}
-
-				if(!entityType.cost) throw new Error('no cost for unit: ' + entityType);
-
-				if(this.level.money < entityType.cost) return;
-
-				this.level.money -= entityType.cost;
-
-				var entity = new entityType();
-				entity.hydrate({
-					x: this.cell.x,
-					y: this.cell.y,
-					context: this.level
-				});
-
-				this.gameObjects.friendlies.push(entity);
-
-				this.state = 'dismissing';
-				this.menu.shrink = tween(this.menu.width, 0, 300, tween.smooth);
-			}
-		}
-	};
-
-	Builder.prototype.scanningUpdate = function(elapsed) {
-
-		if(!input.state.hasPointer) {
-			this.state = this.isValid ? 'displaying' : 'idle';
-		} else if(input.state.pointers.length === 1) {
-
-			var worldCoords = this.camera.toWorldSpace(input.state);
-			worldCoords.x = Math.round(worldCoords.x);
-			worldCoords.y = Math.round(worldCoords.y);
-
-			if(isInGameBounds(worldCoords)) {
-				this.cell = worldCoords;
-
-				this.isValid = !isOverEntity(worldCoords, this.gameObjects.friendlies) && !isOverEntity(worldCoords, this.gameObjects.enviroment);
-				input.state.handled = true;
-			}
-
-		}
-
-	};
-
 	return Builder;
-
 });
