@@ -41,6 +41,7 @@ define(function (require) {
         if (hue < 1) direction = 1;
 
         touch.update();
+        //keyboard.update();
 
         var anyKeyPressed = keyboard.isAnyKeyPressed();
 
@@ -50,7 +51,8 @@ define(function (require) {
         if(justTapped || keyJustReleased && !transitioning) {
             transitioning = true;
             this.transition(game, {
-                level: 1
+                level: 1,
+                exitScreen: this
             });
         }
 

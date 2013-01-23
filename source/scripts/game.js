@@ -15,6 +15,7 @@ define(function(require) {
     var level;
     var camera;
     var isGameOver = false;
+    var escapeRequested = false;
 
     function initializeGameObjectSets() {
 
@@ -35,6 +36,8 @@ define(function(require) {
     }
 
     function start(options) {
+
+        this.exitScreen = options.exitScreen;
 
         isGameOver = false;
         camera = new Camera();
@@ -112,10 +115,12 @@ define(function(require) {
             isGameOver = true;
         }
 
-        if(keyboard.isKeyPressed(27)) {
+        if(escapeRequested && !keyboard.isKeyPressed(27)) {
             // pressed escape
-            this.transition(startScreen);
+            this.transition(this.exitScreen);
         }
+
+        escapeRequested = keyboard.isKeyPressed(27);
     }
 
     function updateSet(entities, elapsed) {
