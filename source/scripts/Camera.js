@@ -65,16 +65,18 @@
     };
 
     Camera.prototype.project = function(objectToRender) {
-        var cellSize = MapGrid.cellSize;
-
         var scale = this.scale;
         var camera = this;
+
+        // dimetric projection results is 2:1
+        var w = MapGrid.cellSize;
+        var h = MapGrid.cellSize / 2;
 
         var _x = objectToRender.x - camera.x;
         var _y = objectToRender.y - camera.y;
 
-        var _x1 = (_x * scale * cellSize) + this.centerX;
-        var _y1 = (_y * scale * cellSize) + this.centerY;
+        var _x1 = (_x * w - _y * w) * scale + this.centerX;
+        var _y1 = (_x * h + _y * h) * scale + this.centerY;
 
         return {
             x: _x1,
