@@ -49,20 +49,30 @@ define(function(require) {
 
 		switch(this.state) {
 		case 'scanning':
+			if(!this.cell) return;
 			var coords = this.camera.project(this.cell);
-			var size = (MapGrid.cellSize * this.camera.scale);
+
+			var w = (MapGrid.cellSize * this.camera.scale);
+			var h = (MapGrid.cellSize * this.camera.scale) >> 1;
 
 			ctx.save();
 
 			ctx.fillStyle = this.isValid ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)';
 			ctx.translate(coords.x, coords.y);
-			ctx.fillRect(-size / 2, -size / 2, size, size);
+
+			// note: hard code to the dimetric projection
+			ctx.moveTo(-w, 0);
+			ctx.lineTo(0, h);
+			ctx.lineTo(w, 0);
+			ctx.lineTo(0, -h);
+			ctx.fill();
 
 			ctx.restore();
 			break;
 
 		case 'displaying':
 		case 'dismissing':
+			if(!this.cell) return;
 			var coords = this.camera.project(this.cell);
 			ctx.save();
 
@@ -214,6 +224,8 @@ define(function(require) {
 
 				this.isValid = !isOverEntity(worldCoords, this.gameObjects.friendlies) && !isOverEntity(worldCoords, this.gameObjects.enviroment);
 				input.state.handled = true;
+			} else {
+				this.cell = null;
 			}
 
 		}

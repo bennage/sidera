@@ -75,13 +75,13 @@
 
         // dimetric projection results is 2:1
         var w = MapGrid.cellSize;
-        var h = MapGrid.cellSize / 2;
+        var h = MapGrid.cellSize >> 1;
 
         var _x = objectToRender.x - camera.x;
         var _y = objectToRender.y - camera.y;
 
-        var _x1 = (_x * w - _y * w) * scale + this.centerX;
-        var _y1 = (_x * h + _y * h) * scale + this.centerY;
+        var _x1 = (_x * w - _y * w) * scale + camera.centerX;
+        var _y1 = (_x * h + _y * h) * scale + camera.centerY;
 
         return {
             x: _x1,
@@ -90,14 +90,22 @@
     };
 
     Camera.prototype.toWorldSpace = function(screenCoords) {
-        var cellSize = MapGrid.cellSize;
+        // dimetric projection results is 2:1
+        var w = MapGrid.cellSize << 1;
+        var h = MapGrid.cellSize;
+        var demoninator = w * h;
+
         var scale = this.scale;
+        var camera = this;
 
-        var _x = (screenCoords.x - this.centerX) / scale / cellSize;
-        var _y = (screenCoords.y - this.centerY) / scale / cellSize;
+        var _x = (screenCoords.x - camera.centerX) / scale;
+        var _y = (screenCoords.y - camera.centerY) / scale;
 
-        var _x1 = _x + this.x;
-        var _y1 = _y + this.y;
+        var _x1 = (w * _y + h * _x) / demoninator;
+        var _y1 = (w * _y - h * _x) / demoninator;
+
+        _x1 += camera.x;
+        _y1 += camera.y;
 
         return {
             x: _x1,
