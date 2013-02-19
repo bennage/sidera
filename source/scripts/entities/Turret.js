@@ -2,17 +2,18 @@ define(function(require) {
 
     var Entity = require('entities/Entity'),
         MapGrid = require('entities/MapGrid'),
+        assets = require('assets'),
         vector = require('math/vector'),
         geo = require('math/geometry');
 
     var laser_charge = 5;
-    var laser_cooldown = 1 * 1000; // ms
+    var laser_cooldown = 0.3 * 1000; // ms
     var max_battery = 25;
     var max_health = 20;
     var max_angle = Math.PI / 30;
 
     var Turret = Entity.mix('Turret', function() {
-        this.sprites = Turret.sprite();
+        this.sprites = assets['turret.png'];
 
         this.cooldown = 0;
         this.battery = 0;
@@ -32,8 +33,9 @@ define(function(require) {
         var scale = camera.scale;
         var size = MapGrid.cellSize * scale;
 
+        var visual_centering = size / 4;
         ctx.save();
-        ctx.translate(coords.x, coords.y);
+        ctx.translate(coords.x, coords.y - visual_centering);
 
         if(this.cooldown > 0 && this.target) {
 
@@ -47,7 +49,7 @@ define(function(require) {
             };
 
             ctx.lineWidth = 1 * scale;
-            ctx.strokeStyle = 'rgba(255,255,0,' + fade + ')';
+            ctx.strokeStyle = 'rgba(255,0,0,' + fade + ')';
 
             ctx.beginPath();
             ctx.moveTo(0, 0);
@@ -67,8 +69,23 @@ define(function(require) {
             y: 10
         }, scale);
 
+        var normalized_theta = this.orientation / (Math.PI * 2);
+        var frame = Math.floor(normalized_theta * 64);
+        var x0 = (frame % 9) * 128;
+        var y0 = Math.floor(frame / 9) * 128;
+        var x1 = 128;
+        var y1 = 128;
+        var size = 32 * camera.scale;
+
+        ctx.drawImage(this.sprites, x0, y0, x1, y1, -size / 2, -size / 2, size, size);
+
+        ctx.save();
         ctx.rotate(this.orientation);
-        ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, 30);
+        ctx.stroke();
+        ctx.restore();
 
         ctx.restore();
     };
@@ -95,8 +112,8 @@ define(function(require) {
         var sign = (delta !== 0) ? Math.abs(delta) / delta : 1;
         var adjust = Math.min(max_angle, Math.abs(delta));
         this.orientation -= (sign * adjust);
+        this.orientation %= (2 * Math.PI);
 
-        this.orientation = this.orientation % (2 * Math.PI);
 
         if(to_target.distance() <= this.range && Math.abs(delta) <= max_angle) {
             this.cooldown = laser_cooldown;

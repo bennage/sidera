@@ -52,7 +52,7 @@ define(function(require) {
         keyboard.listen(window);
         touch.listen(canvas);
 
-        assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
+        assets.files = ['rocks.png', 'fighter.png', 'miner.png','turret.png'];
         assets.load(function() {
 
             transition(startScreen);
