@@ -32,21 +32,26 @@
 
         };
 
+    //todo: movement is hard coded, indepedent of camera project, it doesn't respect the 2:1 either
     Camera.prototype.commands = {
         87: function() {
             //w
             this.y -= Camera.speed;
+            this.x -= Camera.speed;
         },
         83: function() {
             //s
             this.y += Camera.speed;
+            this.x += Camera.speed;
         },
         65: function() {
             //a
+            this.y += Camera.speed;
             this.x -= Camera.speed;
         },
         68: function() {
             //d
+            this.y -= Camera.speed;
             this.x += Camera.speed;
         },
         90: function() {
