@@ -57,9 +57,20 @@
             ctx.lineTo(p.x, p.y);
             ctx.stroke();
         }
+        //todo: tweak the art so that we don't need to adjust
+        var adjusted_theta = this.orientation + circle - (Math.PI/4);
+        var normalized_theta = (adjusted_theta % circle) / circle;
+        var frame = Math.floor(normalized_theta * 48);
+ 
+        var x0 = (frame % 7) * 64;
+        var y0 = Math.floor(frame / 7) * 64;
+        var x1 = 64;
+        var y1 = 64;
+        var size = 32 * camera.scale;
 
-        ctx.rotate(this.orientation);
-        ctx.drawImage(this.sprites, 0, 0, 128, 128, -size / 2, -size / 2, size, size);
+        ctx.drawImage(this.sprites, x0, y0, x1, y1, -size / 2, -size / 2, size, size);
+
+ 
         ctx.restore();
     };
 
@@ -142,24 +153,6 @@
                 }
             }
         }
-    };
-
-    Fighter.sprite = function() {
-        var canvas = document.createElement('canvas');
-        canvas.height = 10;
-        canvas.width = 20;
-
-        var ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.moveTo(20, 5);
-        ctx.lineTo(0, 0);
-        ctx.lineTo(5, 5);
-        ctx.lineTo(0, 10);
-        ctx.lineTo(20, 5);
-        ctx.fill();
-
-        return canvas;
     };
 
     function acquireTarget(self, gameObjects) {
