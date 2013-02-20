@@ -131,30 +131,6 @@ define(function(require) {
 
     Turret.cost = 20;
 
-    Turret.sprite = function() {
-        var canvas = document.createElement('canvas');
-        canvas.height = 128;
-        canvas.width = 128;
-
-        var ctx = canvas.getContext('2d');
-
-        ctx.beginPath();
-        ctx.fillStyle = 'green';
-        ctx.arc(64, 64, 24, 0, 2 * Math.PI, false);
-        ctx.fill();
-
-        // cannon
-        ctx.lineWidth = 6;
-        ctx.strokeStyle = 'rgba(0,64,0,1)';
-
-        ctx.beginPath();
-        ctx.moveTo(64, 64);
-        ctx.lineTo(96, 64);
-        ctx.stroke();
-
-        return canvas;
-    };
-
     function acquireTarget(self, gameObjects) {
         var entity, current_distance, closest, last_distance = Number.POSITIVE_INFINITY;
 
