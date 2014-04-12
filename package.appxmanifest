@@ -1,27 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="6f4822b7-750b-4c4d-abb8-b1e52f036aec" Version="1.0.0.0" Publisher="CN=bennage" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="6f4822b7-750b-4c4d-abb8-b1e52f036aec" Version="1.1.0.0" Publisher="CN=bennage" />
   <Properties>
     <DisplayName>sidera</DisplayName>
     <PublisherDisplayName>Christopher Bennage</PublisherDisplayName>
     <Logo>assests\storelogo.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2.0</OSMinVersion>
-    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" StartPage="source\app.html">
-      <VisualElements DisplayName="sidera" Logo="assests\logo.png" SmallLogo="assests\smalllogo.png" Description="a strategy defense game" ForegroundText="light" BackgroundColor="#464646">
-        <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="assests\splashscreen.png" />
-        <InitialRotationPreference>
-          <Rotation Preference="landscape" />
-        </InitialRotationPreference>
-      </VisualElements>
+      <m2:VisualElements DisplayName="sidera" Description="a strategy defense game" BackgroundColor="#464646" ForegroundText="light" Square150x150Logo="assests\logo.png" Square30x30Logo="assests\smalllogo.png">
+        <m2:DefaultTile>
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="landscape" />
+        </m2:InitialRotationPreference>
+        <m2:SplashScreen Image="assests\splashscreen.png" />
+      </m2:VisualElements>
     </Application>
   </Applications>
 </Package>
