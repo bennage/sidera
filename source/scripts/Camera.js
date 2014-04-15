@@ -53,29 +53,32 @@
         90: function() {
             //z
             this.viewport.height /= Camera.zoomSpeed;
+            this.updateViewPort();
         },
         67: function() {
             //c
             this.viewport.height *= Camera.zoomSpeed;
+            this.updateViewPort();
         }
     };
 
     Camera.prototype.updateViewPort = function() {
         // assume that the width needs to be adjusted
         this.viewport.width = this.viewport.height * this.viewport.aspectRatio;
+
+        // adjust the scale
+        this.scale = this.screen.height / this.viewport.height;
+        this.scaledCellSize = this.scale * MapGrid.cellSize;
     };
 
     Camera.prototype.project = function(objectToRender) {
-        var cellSize = MapGrid.cellSize;
-
-        var scale = this.scale;
         var camera = this;
 
         var _x = objectToRender.x - camera.x;
         var _y = objectToRender.y - camera.y;
 
-        var _x1 = (_x * scale * cellSize) + this.centerX;
-        var _y1 = (_y * scale * cellSize) + this.centerY;
+        var _x1 = (_x * this.scaledCellSize) + this.centerX;
+        var _y1 = (_y * this.scaledCellSize) + this.centerY;
 
         return {
             x: _x1,
@@ -84,11 +87,9 @@
     };
 
     Camera.prototype.toWorldSpace = function(screenCoords) {
-        var cellSize = MapGrid.cellSize;
-        var scale = this.scale;
 
-        var _x = (screenCoords.x - this.centerX) / scale / cellSize;
-        var _y = (screenCoords.y - this.centerY) / scale / cellSize;
+        var _x = (screenCoords.x - this.centerX) / this.scaledCellSize;
+        var _y = (screenCoords.y - this.centerY) / this.scaledCellSize;
 
         var _x1 = _x + this.x;
         var _y1 = _y + this.y;
@@ -100,8 +101,7 @@
     };
 
     Camera.prototype.update = function(elapsed) {
-        this.updateViewPort();
-        this.scale = this.screen.height / this.viewport.height;
+
         this.checkCommands();
 
         // keep the zoom level to reasonable constraints
@@ -117,6 +117,8 @@
             if(this.animation.x.finished) {
                 this.animation = null;
             }
+
+            this.updateViewPort();
         }
 
         // single touch to drag map
@@ -124,7 +126,7 @@
 
             if(this.lastPoint) {
 
-                var scale = 1 / this.scale / MapGrid.cellSize;
+                var scale = 1 / this.scaledCellSize;
                 var delta = vector(input.state, this.lastPoint).multiply(scale);
 
                 this.x -= delta.x;
