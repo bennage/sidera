@@ -1,4 +1,4 @@
-﻿define(function(require) {
+﻿define(function (require) {
 
     var keyboard = require('input/keyboard'),
         Fighter = require('entities/Fighter'),
@@ -63,7 +63,7 @@
             as: {
                 x: 12,
                 y: 12,
-                amount: 2000
+                amount: 4000
             }
         }, {
             type: Asteroid,
@@ -71,6 +71,48 @@
                 x: 14,
                 y: 9,
                 amount: 500
+            }
+        }, {
+            type: Asteroid,
+            as: {
+                x: 1,
+                y: 1,
+                amount: 3300
+            }
+        }, {
+            type: Asteroid,
+            as: {
+                x: 2,
+                y: 2,
+                amount: 3300
+            }
+        }, {
+            type: Asteroid,
+            as: {
+                x: 0,
+                y: 0,
+                amount: 3300
+            }
+        }, {
+            type: Asteroid,
+            as: {
+                x: 30,
+                y: 0,
+                amount: 3300
+            }
+        }, {
+            type: Asteroid,
+            as: {
+                x: 30,
+                y: 30,
+                amount: 3300
+            }
+        }, {
+            type: Asteroid,
+            as: {
+                x: 0,
+                y: 30,
+                amount: 3300
             }
         }],
         waves: [{
@@ -118,7 +160,7 @@
             offsetY = 0;
         var space = 1.75;
 
-        for(var i = entities.length - 1; i >= 0; i--) {
+        for (var i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
 
             entity.x = origin.x - offsetX * space;
@@ -126,53 +168,53 @@
 
             offsetX++;
 
-            if(offsetX > offsetY) {
+            if (offsetX > offsetY) {
                 offsetX = 0;
                 offsetY++;
             }
         }
     }
 
-    state.update = function(elapsed) {
+    state.update = function (elapsed) {
 
         this.timeUntilNextWave -= elapsed;
 
-        if(this.timeUntilNextWave <= 0) {
-            if(!this.waves[this.waveId]) return;
-            this.sendWave();
-            this.setupNextWave();
-        }
+        //if (this.timeUntilNextWave <= 0) {
+        //    if (!this.waves[this.waveId]) return;
+        //    this.sendWave();
+        //    this.setupNextWave();
+        //}
 
-        if(keyboard.isKeyPressed(81)) {
+        if (keyboard.isKeyPressed(81)) {
             //q
             sendWaveOf(Fighter);
         }
-        if(keyboard.isKeyPressed(69)) {
+        if (keyboard.isKeyPressed(69)) {
             //e
             sendWaveOf(Bomber);
         }
     };
 
-    state.render = function(ctx) {
+    state.render = function (ctx) {
 
-        if(this.levelOver) return;
+        if (this.levelOver) return;
 
         ctx.fillStyle = 'yellow';
         ctx.font = '18px sans-serif';
         ctx.fillText('next wave in ' + Math.round(this.timeUntilNextWave / 1000), 500, 20);
     };
 
-    state.sendWave = function() {
+    state.sendWave = function () {
         var wave = this.waves[this.waveId];
         var queue = [];
         var entity;
         var type;
         var count;
 
-        for(var i = wave.send.length - 1; i >= 0; i--) {
+        for (var i = wave.send.length - 1; i >= 0; i--) {
             type = wave.send[i].type;
             count = wave.send[i].count;
-            while(count > 0) {
+            while (count > 0) {
                 entity = new type();
                 this.objects.enemies.push(entity);
                 queue.push(entity);
@@ -180,16 +222,16 @@
             }
         }
 
-        if(wave.formation) {
+        if (wave.formation) {
             wave.formation(queue, wave.from);
         }
 
     }
 
-    state.setupNextWave = function() {
+    state.setupNextWave = function () {
         this.waveId++;
 
-        if(this.waveId < this.waveCount) {
+        if (this.waveId < this.waveCount) {
             this.timeUntilNextWave = this.waves[this.waveId].after * 1000;
         } else {
             this.levelOver = true;
@@ -199,11 +241,11 @@
 
     function sendWaveOf(type) {
         var now = new Date();
-        if(sendWaveOf.lastTime && (now - sendWaveOf.lastTime < 500)) {
+        if (sendWaveOf.lastTime && (now - sendWaveOf.lastTime < 500)) {
             return;
         }
         sendWaveOf.lastTime = now;
-        for(var i = 3; i > 0; i--) {
+        for (var i = 3; i > 0; i--) {
             var f = new type();
             f.x = -1 - (i * 1.1);
             f.y = -1 - (i * 1.1);
@@ -222,9 +264,8 @@
         level.friendlies.forEach(addTo.bind(objects.friendlies));
         level.enviroment.forEach(addTo.bind(objects.enviroment));
 
-        objects.friendlies.forEach(function(friendly) {
+        objects.friendlies.forEach(function (friendly) {
             friendly.context = state;
-
         });
 
         state.camera = level.camera;

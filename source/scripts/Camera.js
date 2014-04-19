@@ -1,4 +1,4 @@
-﻿define(function(require) {
+﻿define(function (require) {
 
     var MapGrid = require('entities/MapGrid'),
         resolution = require('resolution'),
@@ -7,7 +7,7 @@
         vector = require('math/vector'),
         tween = require('animation/tween');
 
-    var Camera = function() {
+    var Camera = function () {
 
         var map = MapGrid;
         var aspectRatio = resolution.aspectRatio;
@@ -30,39 +30,32 @@
         this.updateViewPort();
 
         keyboard.mixinKeyCheck(this);
-
     };
 
     Camera.prototype.commands = {
-        87: function() {
-            //w
+        87 /* w */: function () {
             this.y -= Camera.speed;
         },
-        83: function() {
-            //s
+        83 /* s */: function () {
             this.y += Camera.speed;
         },
-        65: function() {
-            //a
+        65 /* a */: function () {
             this.x -= Camera.speed;
         },
-        68: function() {
-            //d
+        68 /* d */: function () {
             this.x += Camera.speed;
         },
-        90: function() {
-            //z
+        90 /* z */: function () {
             this.viewport.height /= Camera.zoomSpeed;
             this.updateViewPort();
         },
-        67: function() {
-            //c
+        67 /* c */: function () {
             this.viewport.height *= Camera.zoomSpeed;
             this.updateViewPort();
         }
     };
 
-    Camera.prototype.updateViewPort = function() {
+    Camera.prototype.updateViewPort = function () {
         // assume that the width needs to be adjusted
         this.viewport.width = this.viewport.height * this.viewport.aspectRatio;
 
@@ -71,7 +64,7 @@
         this.scaledCellSize = this.scale * MapGrid.cellSize;
     };
 
-    Camera.prototype.project = function(objectToRender) {
+    Camera.prototype.project = function (objectToRender) {
         var camera = this;
 
         var _x = objectToRender.x - camera.x;
@@ -86,7 +79,7 @@
         };
     };
 
-    Camera.prototype.toWorldSpace = function(screenCoords) {
+    Camera.prototype.toWorldSpace = function (screenCoords) {
 
         var worldX = ((screenCoords.x / resolution.aspectRatio) - this.centerX) / this.scaledCellSize;
         var worldY = ((screenCoords.y / resolution.aspectRatio) - this.centerY) / this.scaledCellSize;
@@ -100,7 +93,7 @@
         };
     };
 
-    Camera.prototype.update = function(elapsed) {
+    Camera.prototype.update = function (elapsed) {
 
         this.checkCommands();
 
@@ -109,12 +102,12 @@
         this.viewport.height = Math.max(this.viewport.height, Camera.min);
 
         // has the camera been asked to animate to a location
-        if(this.animation) {
+        if (this.animation) {
             this.x = this.animation.x(elapsed);
             this.y = this.animation.y(elapsed);
             this.viewport.height = this.animation.viewport.height(elapsed);
 
-            if(this.animation.x.finished) {
+            if (this.animation.x.finished) {
                 this.animation = null;
             }
 
@@ -122,9 +115,9 @@
         }
 
         // single touch to drag map
-        if(!input.state.handled && input.state.hasPointer && input.state.pointers.length === 1) {
+        if (!input.state.handled && input.state.hasPointer && input.state.pointers.length === 1) {
 
-            if(this.lastPoint) {
+            if (this.lastPoint) {
 
                 var scale = 1 / this.scaledCellSize;
                 var delta = vector(input.state, this.lastPoint).multiply(scale);
@@ -145,12 +138,12 @@
         }
 
         // multi-touch to zoom
-        if(!input.state.handled && input.state.pointers.length === 2) {
+        if (!input.state.handled && input.state.pointers.length === 2) {
             //todo: pinch/pull
         }
     };
 
-    Camera.prototype.animateTo = function(target) {
+    Camera.prototype.animateTo = function (target) {
         var duration = 1000;
         this.animation = {
             x: tween(this.x, target.x, duration, tween.smooth),
