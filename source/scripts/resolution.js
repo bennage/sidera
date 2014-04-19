@@ -1,8 +1,13 @@
-define(function() {
+define(function () {
+
+    var aspectRatio = window.innerWidth / window.innerHeight;
+    var renderWidth = Math.min(window.innerWidth, 1024);
+    var renderHeight = (renderWidth / aspectRatio) + 1;
 
     return {
-        height: Math.min(window.innerHeight, 768),
-        width: Math.min(window.innerWidth, 1366)
+        height: renderHeight,
+        width: renderWidth,
+        aspectRatio: aspectRatio
     };
 
 });

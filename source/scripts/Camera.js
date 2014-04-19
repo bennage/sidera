@@ -10,7 +10,7 @@
     var Camera = function() {
 
         var map = MapGrid;
-        var aspectRatio = resolution.width / resolution.height;
+        var aspectRatio = resolution.aspectRatio;
 
         this.screen = resolution;
 
@@ -88,15 +88,15 @@
 
     Camera.prototype.toWorldSpace = function(screenCoords) {
 
-        var _x = (screenCoords.x - this.centerX) / this.scaledCellSize;
-        var _y = (screenCoords.y - this.centerY) / this.scaledCellSize;
+        var worldX = ((screenCoords.x / resolution.aspectRatio) - this.centerX) / this.scaledCellSize;
+        var worldY = ((screenCoords.y / resolution.aspectRatio) - this.centerY) / this.scaledCellSize;
 
-        var _x1 = _x + this.x;
-        var _y1 = _y + this.y;
+        var x1 = worldX + this.x;
+        var y1 = worldY + this.y;
 
         return {
-            x: _x1,
-            y: _y1
+            x: x1,
+            y: y1
         };
     };
 
