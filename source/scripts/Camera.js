@@ -22,8 +22,8 @@
         this.y = Math.round(map.rows / 2);
 
         this.viewport = {
-            width: map.columns * map.cellSize,
-            height: map.rows * map.cellSize,
+            height: (map.rows + 2) * map.cellSize,
+            width: null, /* derived from height */
             aspectRatio: aspectRatio
         };
 

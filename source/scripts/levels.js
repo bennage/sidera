@@ -179,11 +179,11 @@
 
         this.timeUntilNextWave -= elapsed;
 
-        //if (this.timeUntilNextWave <= 0) {
-        //    if (!this.waves[this.waveId]) return;
-        //    this.sendWave();
-        //    this.setupNextWave();
-        //}
+        if (this.timeUntilNextWave <= 0) {
+            if (!this.waves[this.waveId]) return;
+            this.sendWave();
+            this.setupNextWave();
+        }
 
         if (keyboard.isKeyPressed(81)) {
             //q
