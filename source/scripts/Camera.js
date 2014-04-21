@@ -67,15 +67,15 @@
     Camera.prototype.project = function (objectToRender) {
         var camera = this;
 
-        var _x = objectToRender.x - camera.x;
-        var _y = objectToRender.y - camera.y;
+        var x1 = objectToRender.x - camera.x;
+        var y1 = objectToRender.y - camera.y;
 
-        var _x1 = (_x * this.scaledCellSize) + this.centerX;
-        var _y1 = (_y * this.scaledCellSize) + this.centerY;
+        var x2 = (x1 * this.scaledCellSize) + this.centerX;
+        var y2 = (y1 * this.scaledCellSize) + this.centerY;
 
         return {
-            x: _x1,
-            y: _y1
+            x: x2,
+            y: y2
         };
     };
 
