@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var MapGrid = require('entities/MapGrid'),
+    var resolution = require('resolution'),
+        MapGrid = require('entities/MapGrid'),
 		tween = require('animation/tween'),
 		input = require('input/provider'),
 		vector = require('math/vector'),
@@ -196,7 +197,14 @@ define(function (require) {
 
         if (input.state.hasPointer) {
             var origin = this.camera.project(this.cell);
-            if (geo.lengthSquared(input.state, origin) > (menuWidth * menuWidth)) {
+
+            //TODO: should this be moved into `project`?
+            origin.x = origin.x * resolution.scale;
+            origin.y = origin.y * resolution.scale;
+
+            var scaledMenuWidth = menuWidth * resolution.scale;
+
+            if (geo.lengthSquared(input.state, origin) > (scaledMenuWidth * scaledMenuWidth)) {
                 this.state = 'dismissing';
                 this.menu.shrink = tween(this.menu.width, 0, 300, tween.smooth);
             } else {

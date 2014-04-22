@@ -10,21 +10,18 @@
     var Camera = function () {
 
         var map = MapGrid;
-        var aspectRatio = resolution.aspectRatio;
 
-        this.screen = resolution;
+        // record the middle point of the canvas
+        this.centerX = Math.round(resolution.width / 2);
+        this.centerY = Math.round(resolution.height / 2);
 
-        // x,y start off in the middle of the screen
-        this.centerX = Math.round(this.screen.width / 2);
-        this.centerY = Math.round(this.screen.height / 2);
-
+        // x,y start off in the middle of worldspace
         this.x = Math.round(map.columns / 2);
         this.y = Math.round(map.rows / 2);
 
         this.viewport = {
             height: (map.rows + 2) * map.cellSize,
-            width: null, /* derived from height */
-            aspectRatio: aspectRatio
+            width: null /* derived from height */
         };
 
         this.updateViewPort();
@@ -57,15 +54,16 @@
 
     Camera.prototype.updateViewPort = function () {
         // assume that the width needs to be adjusted
-        this.viewport.width = this.viewport.height * this.viewport.aspectRatio;
+        this.viewport.width = this.viewport.height * resolution.aspectRatio;
 
         // adjust the scale
-        this.scale = this.screen.height / this.viewport.height;
+        this.scale = resolution.height / this.viewport.height;
         this.scaledCellSize = this.scale * MapGrid.cellSize;
     };
 
     Camera.prototype.project = function (objectToRender) {
         var camera = this;
+        // TODO: I suspect that this needs to take resolution.scale into account
 
         var x1 = objectToRender.x - camera.x;
         var y1 = objectToRender.y - camera.y;
@@ -81,15 +79,23 @@
 
     Camera.prototype.toWorldSpace = function (screenCoords) {
 
-        var worldX = ((screenCoords.x / resolution.aspectRatio) - this.centerX) / this.scaledCellSize;
-        var worldY = ((screenCoords.y / resolution.aspectRatio) - this.centerY) / this.scaledCellSize;
+        /*
+        map actual screen coords to the canvas
+            (screenCoords.x / resolution.scale)
+        adjust for the center of the canvas
+            - this.centerX
+        we now have the spot that was clicked on the canvas
+        we need to adjust based on how high the camera is
+            / this.scaledCellSize
+        finally, recenter based on the camera's position in worldspace
+        */
 
-        var x1 = worldX + this.x;
-        var y1 = worldY + this.y;
+        var worldX = ((screenCoords.x / resolution.scale) - this.centerX) / this.scaledCellSize + this.x;
+        var worldY = ((screenCoords.y / resolution.scale) - this.centerY) / this.scaledCellSize + this.y;
 
         return {
-            x: x1,
-            y: y1
+            x: worldX,
+            y: worldY
         };
     };
 

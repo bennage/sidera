@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
 
     var resolution = require('resolution'),
         assets = require('assets'),
@@ -37,15 +37,18 @@ define(function(require) {
 
         currentScreen = screen;
 
-        if(currentScreen.start) currentScreen.start(options);
+        if (currentScreen.start) currentScreen.start(options);
         currentScreen.transition = transition;
     }
 
-    return function() {
+    return function () {
 
         canvas = document.querySelector('canvas#board');
         canvas.setAttribute('width', resolution.width);
         canvas.setAttribute('height', resolution.height);
+
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
 
         surface = canvas.getContext('2d');
 
@@ -53,15 +56,15 @@ define(function(require) {
         touch.listen(canvas);
 
         assets.files = ['rocks.png', 'fighter.png', 'miner.png'];
-        assets.load(function() {
+        assets.load(function () {
 
             transition(startScreen);
             currentScreen = startScreen;
             beginLoop();
 
-        }, function() {
+        }, function () {
             debugger;
-        }, function(percent) {
+        }, function (percent) {
             console.log('loaded ' + (percent * 100) + '%');
         });
     };
