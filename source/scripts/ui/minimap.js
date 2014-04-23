@@ -56,12 +56,9 @@
     };
 
     MiniMap.prototype.commands = {
-        77 /* m */: function () {
-            var now = new Date();
-            if (now - this.lastToggle > toggleDelay) {
-                this.on = !this.on;
-                this.lastToggle = now;
-            }
+        77 /* m */: {
+            command: function () { this.on = !this.on; },
+            delay: 300
         }
     };
 

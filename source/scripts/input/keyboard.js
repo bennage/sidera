@@ -35,19 +35,43 @@ define(function() {
 		});
 	}
 
+	function createCommandFrom(definition, target) {
+
+	    var delay = definition.delay || 300;
+	    var command = definition.command.bind(target);
+
+	    var f = function () {
+	        var now = new Date();
+	        var elasped = now - f.lastInvoked;
+	        if (elasped > delay) {
+	            command(elasped);
+	            f.lastInvoked = now;
+	        }
+	    };
+	    f.lastInvoked = new Date();
+
+	    return f;
+	}
+
 	function mixinKeyCheck(target) {
 
-		if(!target.commands) {
-			return;
-		}
+	    if (!target.commands) {
+	        return;
+	    }
 
-		// bind commands to target
-		Object.keys(target.commands).forEach(function(key) {
-			target.commands[key] = target.commands[key].bind(target);
-		});
+	    // bind commands to target
+	    Object.keys(target.commands).forEach(function (key) {
+	        var definition = target.commands[key];
 
-		// associate bound instance of method to detect keypresses
-		target.checkCommands = checkCommands.bind(target);
+	        if (definition instanceof Function) {
+	            target.commands[key] = definition.bind(target);
+	        } else {
+	            target.commands[key] = createCommandFrom(definition, target);
+	        }
+	    });
+
+	    // associate bound instance of method to detect keypresses
+	    target.checkCommands = checkCommands.bind(target);
 	}
 
 	handle = {
