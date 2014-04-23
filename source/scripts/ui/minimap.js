@@ -5,6 +5,9 @@
         input = require('input/provider'),
         resolution = require('resolution');
 
+    var toggleDelay = 300; //ms
+    var unitSize = 5; // how many pixels is 1 unit of worldspace?
+
     var MiniMap = function (gameObjects, camera) {
 
         Entity.prototype.constructor.call(this, 'MiniMap');
@@ -12,18 +15,16 @@
         this.gameObjects = gameObjects;
         this.camera = camera;
 
-        this.unit = 5;
-
         // To create the correct size minimap, multiply the the grid by the unit
         // size we're using for the minimap. We'll also add an extra row/column 
         // for padding so that entities on the edge of the grid won't be on the
         // edge of the minimap. 
-        this.w = this.unit * (MapGrid.columns + 2);
-        this.h = this.unit * (MapGrid.rows + 2);
+        this.w = unitSize * (MapGrid.columns + 2);
+        this.h = unitSize * (MapGrid.rows + 2);
 
         // We use this offset when rendering entities to the minimap to account
         // for the padding.
-        this.entityOffset = this.unit;
+        this.entityOffset = unitSize;
 
         // The minimap is rendered to an independent canvas, and this canvas is 
         // later rendered to the main screen.
@@ -57,7 +58,7 @@
     MiniMap.prototype.commands = {
         77 /* m */: function () {
             var now = new Date();
-            if (now - this.lastToggle > 500) {
+            if (now - this.lastToggle > toggleDelay) {
                 this.on = !this.on;
                 this.lastToggle = now;
             }
@@ -99,8 +100,8 @@
             for (i = entities.length - 1; i >= 0; i--) {
                 entity = entities[i];
                 r = Math.round(entity.radius || 1);
-                x = Math.round(entity.x * self.unit) + self.entityOffset;
-                y = Math.round(entity.y * self.unit) + self.entityOffset;
+                x = Math.round(entity.x * unitSize) + self.entityOffset;
+                y = Math.round(entity.y * unitSize) + self.entityOffset;
 
                 ctx.beginPath();
                 ctx.arc(x, y, r, 0, 2 * Math.PI, false);
@@ -111,11 +112,11 @@
         // camera position and view
         var viewport = this.camera.viewport;
 
-        var w = (viewport.width / MapGrid.cellSize) * this.unit;
-        var h = (viewport.height / MapGrid.cellSize) * this.unit;
+        var w = (viewport.width / MapGrid.cellSize) * unitSize;
+        var h = (viewport.height / MapGrid.cellSize) * unitSize;
 
-        var cx = this.camera.x * this.unit + self.entityOffset;
-        var cy = this.camera.y * this.unit + self.entityOffset;
+        var cx = this.camera.x * unitSize + self.entityOffset;
+        var cy = this.camera.y * unitSize + self.entityOffset;
 
         ctx.save();
         ctx.translate(cx, cy);
