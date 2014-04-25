@@ -12,6 +12,8 @@ define(function (require) {
         Menu = require('ui/Menu'),
         FPS = require('ui/fps');
 
+    var resolution = require('resolution');
+
     var gameObjects;
     var level;
     var camera;
@@ -19,10 +21,30 @@ define(function (require) {
     var isPaused = false;
     var escapeRequested = false;
 
+    var actionCount = 1;
+    var temporalSpeed = 4;
+    var maxTemporalSpeed = 4;
+
     var commands = {
         80 /* p */: {
             command: function () { isPaused = !isPaused; },
             delay: 300
+        },
+
+        189 /* - */: {
+            command: function () {
+                if (temporalSpeed < maxTemporalSpeed) {
+                    temporalSpeed += 1;
+                }
+            }
+        },
+
+        187 /* + */: {
+            command: function () {
+                if (temporalSpeed > 1) {
+                    temporalSpeed -= 1;
+                }
+            }
         }
     };
 
@@ -105,6 +127,13 @@ define(function (require) {
             ctx.font = '48px monospace';
             centerText(ctx, 'game over', 300);
         }
+
+        // TODO: move to an entity?
+        ctx.fillStyle = 'white';
+        ctx.font = '16px monospace';
+        var speedText = (maxTemporalSpeed - temporalSpeed + 1) + 'x';
+        var measurement = ctx.measureText(speedText);
+        ctx.fillText(speedText, resolution.width - measurement.width - 50, 50);
     }
 
     function drawSet(entities, ctx) {
@@ -121,17 +150,22 @@ define(function (require) {
         input.update(elapsed);
         this.checkCommands();
 
-        updateSet(gameObjects.background, elapsed);
-        updateSet(gameObjects.enviroment, elapsed);
+        actionCount = actionCount + 1;
+        if (actionCount > temporalSpeed) { actionCount = 1; }
+        if (actionCount % temporalSpeed === 0) {
 
-        if (isPaused) {
-            updateSet(gameObjects.paused, elapsed);
-        } else {
-            updateSet(gameObjects.friendlies, elapsed);
-            updateSet(gameObjects.enemies, elapsed);
+            updateSet(gameObjects.background, elapsed);
+            updateSet(gameObjects.enviroment, elapsed);
 
-            updateSet(gameObjects.doodads, elapsed);
-            updateSet(gameObjects.ui, elapsed);
+            if (isPaused) {
+                updateSet(gameObjects.paused, elapsed);
+            } else {
+                updateSet(gameObjects.friendlies, elapsed);
+                updateSet(gameObjects.enemies, elapsed);
+
+                updateSet(gameObjects.doodads, elapsed);
+                updateSet(gameObjects.ui, elapsed);
+            }
         }
 
         camera.update(elapsed);
