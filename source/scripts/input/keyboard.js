@@ -3,17 +3,17 @@ define(function() {
 	var keys = {};
 	var handle = {};
 	
-	function handle_keydown(args) {
+	function keydown(args) {
 		keys[args.keyCode] = true;
 	}
 
-	function handle_keyup(args) {
+	function keyup(args) {
 		keys[args.keyCode] = false;
 	}
 
 	function listen(target) {
-		target.addEventListener('keydown', handle_keydown);
-		target.addEventListener('keyup', handle_keyup);
+	    target.addEventListener('keydown', keydown);
+	    target.addEventListener('keyup', keyup);
 	}
 
 	function isKeyPressed(keyCode) {
