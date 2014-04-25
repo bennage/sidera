@@ -97,6 +97,7 @@
     <Content Include="source\scripts\resolution.js" />
     <Content Include="source\scripts\start\screen.js" />
     <Content Include="source\scripts\ui\Builder.js" />
+    <Content Include="source\scripts\ui\menu.js" />
     <Content Include="source\scripts\ui\fps.js" />
     <Content Include="source\scripts\ui\minimap.js" />
     <Content Include="source\scripts\ui\status.js" />

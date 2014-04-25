@@ -5,7 +5,6 @@
         input = require('input/provider'),
         resolution = require('resolution');
 
-    var toggleDelay = 300; //ms
     var unitSize = 5; // how many pixels is 1 unit of worldspace?
 
     var MiniMap = function (gameObjects, camera) {

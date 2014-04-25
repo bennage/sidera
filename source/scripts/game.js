@@ -9,13 +9,22 @@ define(function(require) {
         Status = require('ui/status'),
         MiniMap = require('ui/minimap'),
         Builder = require('ui/Builder'),
+        Menu = require('ui/Menu'),
         FPS = require('ui/fps');
 
     var gameObjects;
     var level;
     var camera;
     var isGameOver = false;
+    var isPaused = false;
     var escapeRequested = false;
+
+    var commands = {
+        80 /* p */: {
+            command: function() { isPaused = !isPaused; },
+            delay: 300
+        }
+    };
 
     function initializeGameObjectSets() {
 
@@ -31,11 +40,14 @@ define(function(require) {
             enemies: entityArray(),
             friendlies: entityArray(),
             doodads: entityArray(),
-            ui: entityArray()
+            ui: entityArray(),
+            paused: entityArray()
         };
     }
 
     function start(options) {
+
+        keyboard.mixinKeyCheck(this);
 
         this.exitScreen = options.exitScreen;
 
@@ -53,6 +65,8 @@ define(function(require) {
         gameObjects.ui.push(new MiniMap(gameObjects, camera));
         gameObjects.ui.push(new FPS());
         gameObjects.ui.push(new Status(level));
+
+        gameObjects.paused.push(new Menu());
     }
 
     function draw(ctx, elapsed) {
@@ -75,6 +89,10 @@ define(function(require) {
         drawSet(gameObjects.enemies, ctx);
         drawSet(gameObjects.doodads, ctx);
         drawSet(gameObjects.ui, ctx);
+
+        if (isPaused) {
+            drawSet(gameObjects.paused, ctx);
+        }
 
         if(isGameOver) {
             var centerText = function(ctx, text, y) {
@@ -101,13 +119,20 @@ define(function(require) {
     function update(elapsed) {
 
         input.update(elapsed);
-        // keyboard.update(elapsed);
+        this.checkCommands();
+
         updateSet(gameObjects.background, elapsed);
         updateSet(gameObjects.enviroment, elapsed);
-        updateSet(gameObjects.friendlies, elapsed);
-        updateSet(gameObjects.enemies, elapsed);
-        updateSet(gameObjects.doodads, elapsed);
-        updateSet(gameObjects.ui, elapsed);
+
+        if (isPaused) {
+            updateSet(gameObjects.paused, elapsed);
+        } else {
+            updateSet(gameObjects.friendlies, elapsed);
+            updateSet(gameObjects.enemies, elapsed);
+
+            updateSet(gameObjects.doodads, elapsed);
+            updateSet(gameObjects.ui, elapsed);
+        }
 
         camera.update(elapsed);
 
@@ -127,8 +152,9 @@ define(function(require) {
         var entity;
         var dead = entities.dead;
         var index;
+        var i;
 
-        for(var i = entities.length - 1; i >= 0; i--) {
+        for(i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
             if(entity.update) entity.update(elapsed, gameObjects);
 
@@ -139,7 +165,7 @@ define(function(require) {
         }
 
         // bury the dead
-        for(var i = dead.length - 1; i >= 0; i--) {
+        for(i = dead.length - 1; i >= 0; i--) {
             index = entities.indexOf(dead[i]);
             entities.splice(index, 1);
 
@@ -154,7 +180,8 @@ define(function(require) {
     return {
         draw: draw,
         update: update,
-        start: start
+        start: start,
+        commands: commands
     };
 
 });
