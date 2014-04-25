@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
 
     var Explosion = require('entities/Explosion'),
         keyboard = require('input/keyboard'),
@@ -21,7 +21,7 @@ define(function(require) {
 
     var commands = {
         80 /* p */: {
-            command: function() { isPaused = !isPaused; },
+            command: function () { isPaused = !isPaused; },
             delay: 300
         }
     };
@@ -94,12 +94,12 @@ define(function(require) {
             drawSet(gameObjects.paused, ctx);
         }
 
-        if(isGameOver) {
-            var centerText = function(ctx, text, y) {
-                    var measurement = ctx.measureText(text);
-                    var x = (ctx.canvas.width - measurement.width) / 2;
-                    ctx.fillText(text, x, y);
-                };
+        if (isGameOver) {
+            var centerText = function (ctx, text, y) {
+                var measurement = ctx.measureText(text);
+                var x = (ctx.canvas.width - measurement.width) / 2;
+                ctx.fillText(text, x, y);
+            };
 
             ctx.fillStyle = 'white';
             ctx.font = '48px monospace';
@@ -110,7 +110,7 @@ define(function(require) {
     function drawSet(entities, ctx) {
         var i, entity;
         var sprite;
-        for(i = entities.length - 1; i >= 0; i--) {
+        for (i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
             entity.render(ctx, camera);
         }
@@ -136,11 +136,13 @@ define(function(require) {
 
         camera.update(elapsed);
 
-        if(gameObjects.friendlies.length === 0) {
+        if (gameObjects.friendlies.length === 0) {
             isGameOver = true;
         }
 
-        if(escapeRequested && !keyboard.isKeyPressed(27)) {
+        // TODO: this action needs to be trigger on keyup only
+        // that is not currently support by the keyboard module
+        if (escapeRequested && !keyboard.isKeyPressed(27)) {
             // pressed escape
             this.transition(this.exitScreen);
         }
@@ -154,22 +156,22 @@ define(function(require) {
         var index;
         var i;
 
-        for(i = entities.length - 1; i >= 0; i--) {
+        for (i = entities.length - 1; i >= 0; i--) {
             entity = entities[i];
-            if(entity.update) entity.update(elapsed, gameObjects);
+            if (entity.update) entity.update(elapsed, gameObjects);
 
             // collect the dead
-            if(entity.dead) {
+            if (entity.dead) {
                 dead.push(entity);
             }
         }
 
         // bury the dead
-        for(i = dead.length - 1; i >= 0; i--) {
+        for (i = dead.length - 1; i >= 0; i--) {
             index = entities.indexOf(dead[i]);
             entities.splice(index, 1);
 
-            if(dead[i].shoudExplode) {
+            if (dead[i].shoudExplode) {
                 var explosion = new Explosion(dead[i]);
                 gameObjects.doodads.push(explosion);
             }
