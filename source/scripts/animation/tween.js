@@ -1,35 +1,35 @@
-define(function(require) {
+define(function (require) {
 
-	function tweening(start, end, duration, ease) {
-		var total = 0;
-		var delta = end - start;
+    function tweening(start, end, duration, ease) {
+        var total = 0;
+        var delta = end - start;
 
-		// setup the tween function to be returned
-		var tween = function(elapsed) {
-				var current;
+        // setup the tween function to be returned
+        var tween = function (elapsed) {
+            var current;
 
-				total += elapsed;
+            total += elapsed;
 
-				if(total >= duration) {
-					tween.finished = true;
-					current = end
-				} else {
-					current = ease(start, delta, duration, total);
-				}
-				return current;
-			};
+            if (total >= duration) {
+                tween.finished = true;
+                current = end;
+            } else {
+                current = ease(start, delta, duration, total);
+            }
+            return current;
+        };
 
-		// initialize the tween's state
-		tween.finished = false;
+        // initialize the tween's state
+        tween.finished = false;
 
-		return tween;
-	}
+        return tween;
+    }
 
-	tweening.smooth = function(start, delta, duration, time) {
-		// todo: replace with something better
-		return start + delta * (time / duration);
-	}
+    tweening.smooth = function (start, delta, duration, time) {
+        // todo: replace with something better
+        return start + delta * (time / duration);
+    }
 
-	return tweening;
+    return tweening;
 
 });
