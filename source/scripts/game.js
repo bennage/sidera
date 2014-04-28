@@ -24,6 +24,7 @@ define(function (require) {
     var actionCount = 1;
     var temporalSpeed = 4;
     var maxTemporalSpeed = 4;
+    var virtualElasped = 1000 / 60;
 
     var commands = {
         80 /* p */: {
@@ -150,22 +151,25 @@ define(function (require) {
         input.update(elapsed);
         this.checkCommands();
 
-        actionCount = actionCount + 1;
+        actionCount += 1;
         if (actionCount > temporalSpeed) { actionCount = 1; }
         if (actionCount % temporalSpeed === 0) {
 
-            updateSet(gameObjects.background, elapsed);
-            updateSet(gameObjects.enviroment, elapsed);
+            updateSet(gameObjects.background, virtualElasped);
+            updateSet(gameObjects.enviroment, virtualElasped);
 
-            if (isPaused) {
-                updateSet(gameObjects.paused, elapsed);
-            } else {
-                updateSet(gameObjects.friendlies, elapsed);
-                updateSet(gameObjects.enemies, elapsed);
+            if (!isPaused) {
+                updateSet(gameObjects.friendlies, virtualElasped);
+                updateSet(gameObjects.enemies, virtualElasped);
 
-                updateSet(gameObjects.doodads, elapsed);
-                updateSet(gameObjects.ui, elapsed);
+                updateSet(gameObjects.doodads, virtualElasped);
             }
+        }
+
+        if (isPaused) {
+            updateSet(gameObjects.paused, elapsed);
+        } else {
+            updateSet(gameObjects.ui, elapsed);
         }
 
         camera.update(elapsed);
